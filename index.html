@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DREP Piura - Dashboard de Gestión Educativa Pro</title>
+    <title>DREP Piura - Dashboard de GestiÃ³n Educativa Pro</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -973,7 +973,7 @@
                 <div id="logo-fallback" class="sidebar-logo-fallback hidden">DP</div>
                 <div class="logo-text">
                     <h2>DREP Piura</h2>
-                    <span>Gestión Educativa</span>
+                    <span>GestiÃ³n Educativa</span>
                 </div>
             </div>
 
@@ -987,9 +987,9 @@
                 <button class="nav-item" onclick="switchMainTab('tablas')">
                     <i class="ph ph-table"></i> Tablas de Datos
                 </button>
-                <!-- Información General: hidden, accessible via admin panel -->
+                <!-- InformaciÃ³n General: hidden, accessible via admin panel -->
                 <button class="nav-item" id="nav-informacion" onclick="switchMainTab('informacion')" style="display:none;">
-                    <i class="ph ph-info"></i> Información General
+                    <i class="ph ph-info"></i> InformaciÃ³n General
                 </button>
             </nav>
 
@@ -1010,7 +1010,7 @@
                         <i class="ph ph-trash"></i> Restablecer Demo
                     </button>
                     <button class="btn btn-outline" style="width:100%; font-size:0.75rem; padding:0.4rem; color:var(--text-muted);" onclick="lockAdminPanel()">
-                        <i class="ph ph-lock"></i> Cerrar Sesión Admin
+                        <i class="ph ph-lock"></i> Cerrar SesiÃ³n Admin
                     </button>
                 </div>
 
@@ -1021,7 +1021,7 @@
 
                 <div style="font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
                     &copy; 2026 DREP Piura <br>
-                    <strong>Versión 3.0 Premium</strong>
+                    <strong>VersiÃ³n 3.0 Premium</strong>
                 </div>
             </div>
         </aside>
@@ -1033,7 +1033,7 @@
             <header class="topbar">
                 <div class="topbar-title">
                     <h1 id="view-title">Dashboard Regional</h1>
-                    <p id="view-subtitle">Consolidado General de Indicadores Educativos - Región Piura</p>
+                    <p id="view-subtitle">Consolidado General de Indicadores Educativos - RegiÃ³n Piura</p>
                 </div>
                 <div class="topbar-actions">
                     <button class="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar Tema">
@@ -1063,7 +1063,7 @@
                                 <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#3b82f6,#8b5cf6); display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:0.85rem; flex-shrink:0;">A</div>
                                 <div>
                                     <div style="font-size:0.8rem; font-weight:700;">Administrador DREP</div>
-                                    <div style="font-size:0.7rem; color:var(--text-muted);" id="admin-panel-status">Sesión Local · <span style="color:#ef4444;">Bloqueado</span></div>
+                                    <div style="font-size:0.7rem; color:var(--text-muted);" id="admin-panel-status">SesiÃ³n Local Â· <span style="color:#ef4444;">Bloqueado</span></div>
                                 </div>
                                 <button onclick="closeAdminAccessPanel()" style="margin-left:auto; background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:1.1rem; line-height:1;">&times;</button>
                             </div>
@@ -1093,14 +1093,14 @@
                                     <i class="ph ph-file-pdf"></i> Exportar PDF Ejecutivo
                                 </button>
                                 <button class="btn btn-outline" style="width:100%; justify-content:flex-start; gap:0.5rem;" onclick="switchMainTab('informacion'); closeAdminAccessPanel();">
-                                    <i class="ph ph-info"></i> Información General
+                                    <i class="ph ph-info"></i> InformaciÃ³n General
                                 </button>
                                 <button class="btn btn-outline btn-warning" style="width:100%; font-size:0.78rem; justify-content:flex-start; gap:0.5rem;" onclick="resetDemoData(); closeAdminAccessPanel();">
                                     <i class="ph ph-trash"></i> Restablecer Demo
                                 </button>
                                 <div style="border-top:1px solid var(--border-color); padding-top:0.5rem; margin-top:0.25rem;">
                                     <button onclick="lockAdminPanel()" style="width:100%; background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:0.75rem; padding:0.35rem; display:flex; align-items:center; gap:0.4rem; border-radius:6px;" onmouseenter="this.style.background='var(--bg-hover)'" onmouseleave="this.style.background='none'">
-                                        <i class="ph ph-lock"></i> Cerrar sesión de administrador
+                                        <i class="ph ph-lock"></i> Cerrar sesiÃ³n de administrador
                                     </button>
                                 </div>
                             </div>
@@ -1115,13 +1115,13 @@
                 <!-- FILTERS PANEL -->
                 <section class="filters-panel">
                     <div class="filter-group">
-                        <label for="filter-year">Año Histórico</label>
+                        <label for="filter-year">AÃ±o HistÃ³rico</label>
                         <select id="filter-year" class="filter-select" onchange="applyFilters()">
                             <option value="Todos">Todos (2021-2025)</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="filter-ugel">Ugel / Región</label>
+                        <label for="filter-ugel">Ugel / RegiÃ³n</label>
                         <select id="filter-ugel" class="filter-select" onchange="applyFilters()">
                             <option value="Todas">Todas las UGELs</option>
                         </select>
@@ -1133,13 +1133,13 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="filter-area">Área Geográfica</label>
+                        <label for="filter-area">Ãrea GeogrÃ¡fica</label>
                         <select id="filter-area" class="filter-select" onchange="applyFilters()">
-                            <option value="Todas">Todas las Áreas</option>
+                            <option value="Todas">Todas las Ãreas</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="filter-sex">Sexo (Filtra Matrícula)</label>
+                        <label for="filter-sex">Sexo (Filtra MatrÃ­cula)</label>
                         <select id="filter-sex" class="filter-select" onchange="applyFilters()">
                             <option value="Todos">Todos</option>
                         </select>
@@ -1156,10 +1156,10 @@
                         <div class="kpi-sparkline-wrap">
                             <canvas id="spark-matricula"></canvas>
                         </div>
-                        <div class="kpi-spark-label">Evolución Histórica · Matrícula</div>
+                        <div class="kpi-spark-label">EvoluciÃ³n HistÃ³rica Â· MatrÃ­cula</div>
                         <div class="kpi-card-top">
                             <div class="kpi-info">
-                                <h4>Matrícula General</h4>
+                                <h4>MatrÃ­cula General</h4>
                                 <div class="kpi-value" id="kpi-matricula">0</div>
                                 <div class="kpi-sub" id="kpi-matricula-sub">Consolidado Alumnos</div>
                             </div>
@@ -1170,12 +1170,12 @@
                         <div class="kpi-sparkline-wrap">
                             <canvas id="spark-docentes"></canvas>
                         </div>
-                        <div class="kpi-spark-label">Evolución Histórica · Docentes</div>
+                        <div class="kpi-spark-label">EvoluciÃ³n HistÃ³rica Â· Docentes</div>
                         <div class="kpi-card-top">
                             <div class="kpi-info">
                                 <h4>Docentes Activos</h4>
                                 <div class="kpi-value" id="kpi-docentes">0</div>
-                                <div class="kpi-sub" id="kpi-docentes-sub">Relación Alumno/Doc: <strong id="kpi-ratio-pupil">0</strong></div>
+                                <div class="kpi-sub" id="kpi-docentes-sub">RelaciÃ³n Alumno/Doc: <strong id="kpi-ratio-pupil">0</strong></div>
                             </div>
                             <div class="kpi-icon"><i class="ph ph-chalkboard-teacher"></i></div>
                         </div>
@@ -1184,12 +1184,12 @@
                         <div class="kpi-sparkline-wrap">
                             <canvas id="spark-locales"></canvas>
                         </div>
-                        <div class="kpi-spark-label">Evolución Histórica · Locales</div>
+                        <div class="kpi-spark-label">EvoluciÃ³n HistÃ³rica Â· Locales</div>
                         <div class="kpi-card-top">
                             <div class="kpi-info">
                                 <h4>Locales Escolares</h4>
                                 <div class="kpi-value" id="kpi-locales">0</div>
-                                <div class="kpi-sub" id="kpi-locales-sub">% Pública: <strong id="kpi-pct-publica">0%</strong></div>
+                                <div class="kpi-sub" id="kpi-locales-sub">% PÃºblica: <strong id="kpi-pct-publica">0%</strong></div>
                             </div>
                             <div class="kpi-icon"><i class="ph ph-school"></i></div>
                         </div>
@@ -1198,7 +1198,7 @@
                         <div class="kpi-sparkline-wrap">
                             <canvas id="spark-servicios"></canvas>
                         </div>
-                        <div class="kpi-spark-label">Evolución Histórica · Servicios</div>
+                        <div class="kpi-spark-label">EvoluciÃ³n HistÃ³rica Â· Servicios</div>
                         <div class="kpi-card-top">
                             <div class="kpi-info">
                                 <h4>Servicios e Infra.</h4>
@@ -1214,8 +1214,8 @@
                 <section class="dashboard-card" id="alerts-card">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-title">
-                            <h3 style="display:flex; align-items:center; gap:0.5rem;"><i class="ph ph-bell" style="color: var(--warning);"></i> Semáforo y Alertas de Gestión</h3>
-                            <p>Monitoreo en tiempo real de alertas operativas por UGEL / Región (Relación Alumno/Docente)</p>
+                            <h3 style="display:flex; align-items:center; gap:0.5rem;"><i class="ph ph-bell" style="color: var(--warning);"></i> SemÃ¡foro y Alertas de GestiÃ³n</h3>
+                            <p>Monitoreo en tiempo real de alertas operativas por UGEL / RegiÃ³n (RelaciÃ³n Alumno/Docente)</p>
                         </div>
                     </div>
                     <div id="alerts-container" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
@@ -1229,8 +1229,8 @@
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
-                                <h3>Distribución Espacial UGEL Piura</h3>
-                                <p>Haz clic en los marcadores de las UGELs para filtrar los datos automáticamente</p>
+                                <h3>DistribuciÃ³n Espacial UGEL Piura</h3>
+                                <p>Haz clic en los marcadores de las UGELs para filtrar los datos automÃ¡ticamente</p>
                             </div>
                             <span class="badge" style="background-color: var(--accent-glow); color: var(--accent-primary); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 4px;">Interactivo</span>
                         </div>
@@ -1244,15 +1244,15 @@
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
                                 <h3>Ranking por UGEL</h3>
-                                <p>Distribución de Matrícula General por UGEL</p>
+                                <p>DistribuciÃ³n de MatrÃ­cula General por UGEL</p>
                             </div>
                         </div>
                         <div class="chart-box" style="height: 350px; position: relative;">
                             <canvas id="chart-ranking"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-ranking">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico para ver el ranking</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">El ranking no suma múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico para ver el ranking</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">El ranking no suma mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1265,14 +1265,14 @@
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
-                                <h3>TABLA 1: Matrícula Área y Geografía</h3>
-                                <p>Distribución de estudiantes matriculados</p>
+                                <h3>TABLA 1: MatrÃ­cula Ãrea y GeografÃ­a</h3>
+                                <p>DistribuciÃ³n de estudiantes matriculados</p>
                             </div>
                             <div class="dashboard-card-actions">
                                 <div class="toggle-btn-group" data-chart="chart-t1">
                                     <button class="toggle-btn active" onclick="changeChartDim('chart-t1', 'UGEL')">UGEL</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t1', 'Gestión')">Gestión</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t1', 'Área')">Área</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t1', 'GestiÃ³n')">GestiÃ³n</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t1', 'Ãrea')">Ãrea</button>
                                 </div>
                             </div>
                         </div>
@@ -1280,8 +1280,8 @@
                             <canvas id="chart-t1"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t1">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">Los grÃ¡ficos no suman mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1290,8 +1290,8 @@
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
-                                <h3>TABLA 2: Matrícula por Sexo</h3>
-                                <p>Distribución de matrícula según sexo</p>
+                                <h3>TABLA 2: MatrÃ­cula por Sexo</h3>
+                                <p>DistribuciÃ³n de matrÃ­cula segÃºn sexo</p>
                             </div>
                             <div class="dashboard-card-actions">
                                 <div class="toggle-btn-group" data-chart="chart-t2">
@@ -1304,8 +1304,8 @@
                             <canvas id="chart-t2"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t2">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">Los grÃ¡ficos no suman mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1315,13 +1315,13 @@
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
                                 <h3>TABLA 3: Personal Docente</h3>
-                                <p>Distribución de docentes en servicio</p>
+                                <p>DistribuciÃ³n de docentes en servicio</p>
                             </div>
                             <div class="dashboard-card-actions">
                                 <div class="toggle-btn-group" data-chart="chart-t3">
                                     <button class="toggle-btn active" onclick="changeChartDim('chart-t3', 'UGEL')">UGEL</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t3', 'Gestión')">Gestión</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t3', 'Área')">Área</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t3', 'GestiÃ³n')">GestiÃ³n</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t3', 'Ãrea')">Ãrea</button>
                                 </div>
                             </div>
                         </div>
@@ -1329,8 +1329,8 @@
                             <canvas id="chart-t3"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t3">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">Los grÃ¡ficos no suman mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1340,13 +1340,13 @@
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
                                 <h3>TABLA 4: Personal Administrativo (No Docente)</h3>
-                                <p>Distribución de personal no docente</p>
+                                <p>DistribuciÃ³n de personal no docente</p>
                             </div>
                             <div class="dashboard-card-actions">
                                 <div class="toggle-btn-group" data-chart="chart-t4">
                                     <button class="toggle-btn active" onclick="changeChartDim('chart-t4', 'UGEL')">UGEL</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t4', 'Gestión')">Gestión</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t4', 'Área')">Área</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t4', 'GestiÃ³n')">GestiÃ³n</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t4', 'Ãrea')">Ãrea</button>
                                 </div>
                             </div>
                         </div>
@@ -1354,8 +1354,8 @@
                             <canvas id="chart-t4"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t4">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">Los grÃ¡ficos no suman mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1370,8 +1370,8 @@
                             <div class="dashboard-card-actions">
                                 <div class="toggle-btn-group" data-chart="chart-t5">
                                     <button class="toggle-btn active" onclick="changeChartDim('chart-t5', 'UGEL')">UGEL</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t5', 'Gestión')">Gestión</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t5', 'Área')">Área</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t5', 'GestiÃ³n')">GestiÃ³n</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t5', 'Ãrea')">Ãrea</button>
                                 </div>
                             </div>
                         </div>
@@ -1379,8 +1379,8 @@
                             <canvas id="chart-t5"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t5">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">Los grÃ¡ficos no suman mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1390,13 +1390,13 @@
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
                                 <h3>TABLA 6: Locales Educativos</h3>
-                                <p>Locales físicos y locales escolares de la región</p>
+                                <p>Locales fÃ­sicos y locales escolares de la regiÃ³n</p>
                             </div>
                             <div class="dashboard-card-actions">
                                 <div class="toggle-btn-group" data-chart="chart-t6">
                                     <button class="toggle-btn active" onclick="changeChartDim('chart-t6', 'UGEL')">UGEL</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t6', 'Gestión')">Gestión</button>
-                                    <button class="toggle-btn" onclick="changeChartDim('chart-t6', 'Área')">Área</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t6', 'GestiÃ³n')">GestiÃ³n</button>
+                                    <button class="toggle-btn" onclick="changeChartDim('chart-t6', 'Ãrea')">Ãrea</button>
                                 </div>
                             </div>
                         </div>
@@ -1404,8 +1404,8 @@
                             <canvas id="chart-t6"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t6">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
-                                <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
+                                <span>Selecciona un aÃ±o especÃ­fico</span>
+                                <span style="font-size:0.75rem; opacity:0.7;">Los grÃ¡ficos no suman mÃºltiples aÃ±os</span>
                             </div>
                         </div>
                     </div>
@@ -1417,8 +1417,8 @@
             <div id="tab-tablas" class="tab-panel">
                 <div class="data-tables-card">
                     <div class="data-tables-header-tabs">
-                        <button class="table-tab-btn active" onclick="switchTableTab(0)">1. Matrícula Área y Gestión</button>
-                        <button class="table-tab-btn" onclick="switchTableTab(1)">2. Matrícula Sexo</button>
+                        <button class="table-tab-btn active" onclick="switchTableTab(0)">1. MatrÃ­cula Ãrea y GestiÃ³n</button>
+                        <button class="table-tab-btn" onclick="switchTableTab(1)">2. MatrÃ­cula Sexo</button>
                         <button class="table-tab-btn" onclick="switchTableTab(2)">3. Docentes</button>
                         <button class="table-tab-btn" onclick="switchTableTab(3)">4. No Docentes</button>
                         <button class="table-tab-btn" onclick="switchTableTab(4)">5. Servicios</button>
@@ -1430,12 +1430,12 @@
                         <table id="dt-table-0" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Año</th>
+                                    <th>AÃ±o</th>
                                     <th>UGEL</th>
                                     <th>Nivel</th>
-                                    <th>Gestión</th>
-                                    <th>Área</th>
-                                    <th>Total Matrícula</th>
+                                    <th>GestiÃ³n</th>
+                                    <th>Ãrea</th>
+                                    <th>Total MatrÃ­cula</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -1446,11 +1446,11 @@
                         <table id="dt-table-1" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Año</th>
+                                    <th>AÃ±o</th>
                                     <th>UGEL</th>
                                     <th>Nivel</th>
                                     <th>Sexo</th>
-                                    <th>Total Matrícula</th>
+                                    <th>Total MatrÃ­cula</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -1461,11 +1461,11 @@
                         <table id="dt-table-2" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Año</th>
+                                    <th>AÃ±o</th>
                                     <th>UGEL</th>
                                     <th>Nivel</th>
-                                    <th>Gestión</th>
-                                    <th>Área</th>
+                                    <th>GestiÃ³n</th>
+                                    <th>Ãrea</th>
                                     <th>Total Docentes</th>
                                 </tr>
                             </thead>
@@ -1477,11 +1477,11 @@
                         <table id="dt-table-3" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Año</th>
+                                    <th>AÃ±o</th>
                                     <th>UGEL</th>
                                     <th>Nivel</th>
-                                    <th>Gestión</th>
-                                    <th>Área</th>
+                                    <th>GestiÃ³n</th>
+                                    <th>Ãrea</th>
                                     <th>Total Administrativos</th>
                                 </tr>
                             </thead>
@@ -1493,11 +1493,11 @@
                         <table id="dt-table-4" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Año</th>
+                                    <th>AÃ±o</th>
                                     <th>UGEL</th>
                                     <th>Nivel</th>
-                                    <th>Gestión</th>
-                                    <th>Área</th>
+                                    <th>GestiÃ³n</th>
+                                    <th>Ãrea</th>
                                     <th>Total Servicios</th>
                                 </tr>
                             </thead>
@@ -1509,11 +1509,11 @@
                         <table id="dt-table-5" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Año</th>
+                                    <th>AÃ±o</th>
                                     <th>UGEL</th>
                                     <th>Nivel</th>
-                                    <th>Gestión</th>
-                                    <th>Área</th>
+                                    <th>GestiÃ³n</th>
+                                    <th>Ãrea</th>
                                     <th>Total Locales</th>
                                 </tr>
                             </thead>
@@ -1528,8 +1528,8 @@
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-title">
-                            <h3>Proyecciones de Matrícula Regional (2026 - 2028)</h3>
-                            <p>Modelo predictivo por regresión lineal simple basado en la tendencia de matrícula de los años 2021-2025</p>
+                            <h3>Proyecciones de MatrÃ­cula Regional (2026 - 2028)</h3>
+                            <p>Modelo predictivo por regresiÃ³n lineal simple basado en la tendencia de matrÃ­cula de los aÃ±os 2021-2025</p>
                         </div>
                         <span class="badge" style="background-color: var(--accent-glow); color: var(--accent-primary); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 4px;">Predicciones</span>
                     </div>
@@ -1551,7 +1551,7 @@
                                 <span class="detail-kpi-val" id="forecast-2028" style="font-size: 1.3rem;">0</span>
                             </div>
                             <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; padding: 0.5rem;">
-                                * El cálculo utiliza mínimos cuadrados sobre los años consolidados disponibles para realizar la estimación regional o de la UGEL seleccionada.
+                                * El cÃ¡lculo utiliza mÃ­nimos cuadrados sobre los aÃ±os consolidados disponibles para realizar la estimaciÃ³n regional o de la UGEL seleccionada.
                             </div>
                         </div>
                     </div>
@@ -1563,15 +1563,15 @@
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <div class="dashboard-card-title">
-                            <h3>Información y Manual de Operaciones</h3>
-                            <p>Detalles técnicos sobre el procesamiento de datos del Dashboard</p>
+                            <h3>InformaciÃ³n y Manual de Operaciones</h3>
+                            <p>Detalles tÃ©cnicos sobre el procesamiento de datos del Dashboard</p>
                         </div>
                     </div>
                     <div style="font-size:0.92rem; line-height: 1.6; display:flex; flex-direction:column; gap:1rem;">
-                        <p>Este sistema ha sido diseñado como un <strong>Dashboard Premium Tipo Power BI</strong> para el análisis exhaustivo de la matrícula, docentes, administrativos y locales educativos bajo la administración de la <strong>Dirección Regional de Educación de Piura (DREP)</strong>.</p>
+                        <p>Este sistema ha sido diseÃ±ado como un <strong>Dashboard Premium Tipo Power BI</strong> para el anÃ¡lisis exhaustivo de la matrÃ­cula, docentes, administrativos y locales educativos bajo la administraciÃ³n de la <strong>DirecciÃ³n Regional de EducaciÃ³n de Piura (DREP)</strong>.</p>
                         
                         <h4 style="font-family:'Outfit'; margin-top:0.5rem; color:var(--accent-primary);">1. Estructura de Datos Requerida (Excel)</h4>
-                        <p>Para cargar información actualizada, el archivo Excel debe contener 6 hojas obligatorias tituladas de cualquiera de las dos siguientes formas:</p>
+                        <p>Para cargar informaciÃ³n actualizada, el archivo Excel debe contener 6 hojas obligatorias tituladas de cualquiera de las dos siguientes formas:</p>
                         <table style="width: 100%; border-collapse: collapse; margin:0.5rem 0; font-size: 0.82rem;">
                             <thead>
                                 <tr style="background:var(--bg-main); text-align: left;">
@@ -1584,41 +1584,41 @@
                                 <tr>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TB_MATRICULA_GESTION_AREA`</td>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TABLA 1: MATRICULA AREA Y GEOGRAFIA`</td>
-                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">Año, UGEL, Nivel, Gestión, Área, Total</td>
+                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">AÃ±o, UGEL, Nivel, GestiÃ³n, Ãrea, Total</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TB_MATRICULA_SEXO`</td>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TABLA 2: MATRICULA SEXO`</td>
-                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">Año, UGEL, Nivel, Sexo, Total</td>
+                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">AÃ±o, UGEL, Nivel, Sexo, Total</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TB_DOCENTES`</td>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TABLA 3: DOCENTES`</td>
-                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">Año, UGEL, Nivel, Gestión, Área, Total</td>
+                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">AÃ±o, UGEL, Nivel, GestiÃ³n, Ãrea, Total</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TB_NO_DOCENTE`</td>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TABLA 4: NO DOCENTES`</td>
-                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">Año, UGEL, Nivel, Gestión, Área, Total</td>
+                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">AÃ±o, UGEL, Nivel, GestiÃ³n, Ãrea, Total</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TB_SERVICIOS`</td>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TABLA 5: SERVICIOS EDUCATIVOS`</td>
-                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">Año, UGEL, Nivel, Gestión, Área, Total</td>
+                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">AÃ±o, UGEL, Nivel, GestiÃ³n, Ãrea, Total</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TB_LOCALES`</td>
                                     <td style="padding: 0.5rem; border:1px solid var(--border-color);">`TABLA 6: LOCALES EDUCATIVOS`</td>
-                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">Año, UGEL, Nivel, Gestión, Área, Total</td>
+                                    <td style="padding: 0.5rem; border:1px solid var(--border-color);">AÃ±o, UGEL, Nivel, GestiÃ³n, Ãrea, Total</td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <h4 style="font-family:'Outfit'; margin-top:0.5rem; color:var(--accent-primary);">2. Seguridad y Persistencia de Actualizaciones</h4>
                         <ul>
-                            <li><strong>Cargar Excel (Consulta):</strong> Permite arrastrar o seleccionar un archivo de forma temporal. Al recargar la página, se perderán estos datos para no afectar a otros usuarios.</li>
-                            <li><strong>Actualizar Data (Administrador):</strong> Requiere la contraseña oficial (<code>DREP2026</code>). Al ingresar la clave correcta, los datos del Excel cargado se almacenan de forma persistente en el navegador (en <code>localStorage</code>). La base de datos permanecerá activa incluso si se apaga el equipo o se refresca el navegador.</li>
-                            <li><strong>Restablecer Demo:</strong> Si desea borrar los datos subidos y volver a ver los datos históricos de demostración, haga clic en el botón de restablecer data demo en la barra lateral.</li>
+                            <li><strong>Cargar Excel (Consulta):</strong> Permite arrastrar o seleccionar un archivo de forma temporal. Al recargar la pÃ¡gina, se perderÃ¡n estos datos para no afectar a otros usuarios.</li>
+                            <li><strong>Actualizar Data (Administrador):</strong> Requiere la contraseÃ±a oficial (<code>DREP2026</code>). Al ingresar la clave correcta, los datos del Excel cargado se almacenan de forma persistente en el navegador (en <code>localStorage</code>). La base de datos permanecerÃ¡ activa incluso si se apaga el equipo o se refresca el navegador.</li>
+                            <li><strong>Restablecer Demo:</strong> Si desea borrar los datos subidos y volver a ver los datos histÃ³ricos de demostraciÃ³n, haga clic en el botÃ³n de restablecer data demo en la barra lateral.</li>
                         </ul>
                         
                         <h4 style="font-family:'Outfit'; margin-top:0.5rem; color:var(--accent-primary);">3. Colores por UGEL Asignados</h4>
@@ -1628,8 +1628,8 @@
                             <span class="btn" style="background:#4D96FF; color:white; font-size:0.72rem;">UGEL Chulucanas</span>
                             <span class="btn" style="background:#6BCB77; color:white; font-size:0.72rem;">UGEL Huancabamba</span>
                             <span class="btn" style="background:#FFD93D; color:black; font-size:0.72rem;">UGEL Huarmaca</span>
-                            <span class="btn" style="background:#B983FF; color:white; font-size:0.72rem;">UGEL La Unión</span>
-                            <span class="btn" style="background:#FF8AAE; color:white; font-size:0.72rem;">UGEL Morropón</span>
+                            <span class="btn" style="background:#B983FF; color:white; font-size:0.72rem;">UGEL La UniÃ³n</span>
+                            <span class="btn" style="background:#FF8AAE; color:white; font-size:0.72rem;">UGEL MorropÃ³n</span>
                             <span class="btn" style="background:#6FF6FF; color:black; font-size:0.72rem;">UGEL Paita</span>
                             <span class="btn" style="background:#00C49F; color:white; font-size:0.72rem;">UGEL Piura</span>
                             <span class="btn" style="background:#FF7849; color:white; font-size:0.72rem;">UGEL Sechura</span>
@@ -1648,13 +1648,13 @@
     <div id="password-modal" class="modal-overlay" style="display:none;">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>Verificación del Administrador</h3>
+                <h3>VerificaciÃ³n del Administrador</h3>
                 <button class="modal-close-btn" onclick="closePasswordModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Ingrese la contraseña de seguridad para subir un nuevo archivo Excel y reemplazar la base de datos de forma permanente:</p>
-                <input type="password" id="admin-password-input" placeholder="Ingrese contraseña aquí...">
-                <div id="password-error-message" class="modal-error hidden">La contraseña ingresada no es válida.</div>
+                <p>Ingrese la contraseÃ±a de seguridad para subir un nuevo archivo Excel y reemplazar la base de datos de forma permanente:</p>
+                <input type="password" id="admin-password-input" placeholder="Ingrese contraseÃ±a aquÃ­...">
+                <div id="password-error-message" class="modal-error hidden">La contraseÃ±a ingresada no es vÃ¡lida.</div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closePasswordModal()">Cancelar</button>
@@ -1663,30 +1663,7 @@
         </div>
     </div>
 
-    <!-- STATIC EXPORT MODAL -->
-    <div id="static-export-modal" class="modal-overlay" style="display:none;">
-        <div class="modal-card" style="max-width:460px;">
-            <div class="modal-header" style="background:linear-gradient(135deg,#10b981,#059669); color:white; border-radius:12px 12px 0 0;">
-                <h3 style="color:white; display:flex; align-items:center; gap:0.5rem;">
-                    <i class="ph ph-check-circle"></i> ¡Datos Actualizados!
-                </h3>
-                <button class="modal-close-btn" onclick="closeStaticExportModal()" style="color:white;">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:1rem; margin-bottom:1rem;">
-                    <p style="font-size:0.85rem; color:#166534; margin:0; line-height:1.6;">
-                        <strong>El Excel se cargó correctamente.</strong> Para que los datos sean visibles para todos en GitHub Pages, descarga el archivo actualizado y súbelo a tu repositorio.
-                    </p>
-                </div>
-
-                <div style="display:flex; flex-direction:column; gap:0.75rem;">
-                    <div style="display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem; background:var(--bg-main); border-radius:8px; border:1px solid var(--border-color);">
-                        <div style="width:28px; height:28px; border-radius:50%; background:#2563eb; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:0.8rem; flex-shrink:0;">1</div>
-                        <div>
-                            <div style="font-size:0.82rem; font-weight:700; margin-bottom:0.2rem;">Descargar index.html actualizado</div>
-                            <div style="font-size:0.75rem; color:var(--text-muted);">Los datos del Excel quedan incrustados en el archivo.</div>
-                        </div>
-                    </div>
+    
                     <div style="display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem; background:var(--bg-main); border-radius:8px; border:1px solid var(--border-color);">
                         <div style="width:28px; height:28px; border-radius:50%; background:#2563eb; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:0.8rem; flex-shrink:0;">2</div>
                         <div>
@@ -1697,8 +1674,8 @@
                     <div style="display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem; background:var(--bg-main); border-radius:8px; border:1px solid var(--border-color);">
                         <div style="width:28px; height:28px; border-radius:50%; background:#10b981; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:0.8rem; flex-shrink:0;">3</div>
                         <div>
-                            <div style="font-size:0.82rem; font-weight:700; margin-bottom:0.2rem;">¡Listo! Todos verán los datos</div>
-                            <div style="font-size:0.75rem; color:var(--text-muted);">Cualquier persona que abra el link de GitHub Pages verá los datos reales.</div>
+                            <div style="font-size:0.82rem; font-weight:700; margin-bottom:0.2rem;">Â¡Listo! Todos verÃ¡n los datos</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">Cualquier persona que abra el link de GitHub Pages verÃ¡ los datos reales.</div>
                         </div>
                     </div>
                 </div>
@@ -1719,7 +1696,7 @@
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast" class="toast-notification hidden">
         <i class="ph ph-check-circle" style="font-size:1.5rem; color:var(--success);" id="toast-icon"></i>
-        <span id="toast-message">Actualización completa</span>
+        <span id="toast-message">ActualizaciÃ³n completa</span>
     </div>
 
     <script>
@@ -1730,8 +1707,8 @@
             "UGEL Chulucanas": "#4D96FF",
             "UGEL Huancabamba": "#6BCB77",
             "UGEL Huarmaca": "#FFD93D",
-            "UGEL La Unión": "#B983FF",
-            "UGEL Morropón": "#FF8AAE",
+            "UGEL La UniÃ³n": "#B983FF",
+            "UGEL MorropÃ³n": "#FF8AAE",
             "UGEL Paita": "#05befa",
             "UGEL Piura": "#00C49F",
             "UGEL Sechura": "#FF7849",
@@ -1746,8 +1723,8 @@
             "UGEL Chulucanas": [-5.0931, -80.1625],
             "UGEL Huancabamba": [-5.2397, -79.4508],
             "UGEL Huarmaca": [-5.5684, -79.5218],
-            "UGEL La Unión": [-5.4006, -80.7425],
-            "UGEL Morropón": [-5.1843, -79.9717],
+            "UGEL La UniÃ³n": [-5.4006, -80.7425],
+            "UGEL MorropÃ³n": [-5.1843, -79.9717],
             "UGEL Paita": [-5.0747, -81.1144],
             "UGEL Piura": [-5.1945, -80.6328],
             "UGEL Sechura": [-5.5569, -80.8222],
@@ -1756,7 +1733,7 @@
             "UGEL Tambogrande": [-4.9272, -80.3514]
         };
 
-        // Data Storage — @@DREP_DATA_START@@
+        // Data Storage â€” @@DREP_DATA_START@@
         window.dashboardData = {
             matriculaArea: [],
             matriculaSexo: [],
@@ -1801,9 +1778,9 @@
             initApp();
         });
 
-        function initApp() {
+        async function initApp() {
             loadThemeFromStorage();
-            loadDashboardData();
+            await loadDashboardData();
             initLeafletMap();
             populateFilters();
             applyFilters(true); // first run setup
@@ -1865,8 +1842,8 @@
         function generateStructuredMockData() {
             const years = ["2021", "2022", "2023", "2024", "2025"];
             const ugels = Object.keys(UGEL_COLORS);
-            const levels = ["Inicial", "Primaria", "Secundaria", "Básica Alternativa", "Básica Especial", "Técnico-Productiva", "Superior Tecnológica", "Superior Pedagógica", "Superior Artística"];
-            const gestiones = ["Pública", "Privada"];
+            const levels = ["Inicial", "Primaria", "Secundaria", "BÃ¡sica Alternativa", "BÃ¡sica Especial", "TÃ©cnico-Productiva", "Superior TecnolÃ³gica", "Superior PedagÃ³gica", "Superior ArtÃ­stica"];
+            const gestiones = ["PÃºblica", "Privada"];
             const areas = ["Urbana", "Rural"];
             const sexs = ["Masculino", "Femenino"];
 
@@ -1895,8 +1872,8 @@
                 "UGEL Paita": 22000,
                 "UGEL Chulucanas": 19000,
                 "UGEL Tambogrande": 26000,
-                "UGEL La Unión": 17000,
-                "UGEL Morropón": 14000,
+                "UGEL La UniÃ³n": 17000,
+                "UGEL MorropÃ³n": 14000,
                 "UGEL Sechura": 15000,
                 "UGEL Huancabamba": 16000,
                 "UGEL Ayabaca": 13000,
@@ -1913,10 +1890,10 @@
                 "UGEL Talara": 0.1,
                 "UGEL Paita": 0.2,
                 "UGEL Sechura": 0.35,
-                "UGEL La Unión": 0.45,
+                "UGEL La UniÃ³n": 0.45,
                 "UGEL Tambogrande": 0.6,
                 "UGEL Chulucanas": 0.5,
-                "UGEL Morropón": 0.55
+                "UGEL MorropÃ³n": 0.55
             };
 
             // Loop and generate
@@ -1941,36 +1918,36 @@
 
                         // 1. MATRICULA AREA Y GEOGRAFIA
                         gestiones.forEach((gestion) => {
-                            let gestWeight = (gestion === "Pública") ? 0.82 : 0.18;
-                            if (originalUgel === "UGEL Piura" && level === "Superior Tecnológica") gestWeight = 0.55; // more private in capital
+                            let gestWeight = (gestion === "PÃºblica") ? 0.82 : 0.18;
+                            if (originalUgel === "UGEL Piura" && level === "Superior TecnolÃ³gica") gestWeight = 0.55; // more private in capital
                             
                             areas.forEach((area) => {
                                 let areaWeight = (area === "Rural") ? ruralPct : (1 - ruralPct);
                                 
-                                // We skip some rare combinations (e.g. Private Rural Artística) to match actual registry count
+                                // We skip some rare combinations (e.g. Private Rural ArtÃ­stica) to match actual registry count
                                 if (gestion === "Privada" && area === "Rural" && random() > 0.15) return;
-                                if ((isSuperiorLevel(level) || level === "Técnico-Productiva") && area === "Rural" && random() > 0.2) return;
+                                if ((isSuperiorLevel(level) || level === "TÃ©cnico-Productiva") && area === "Rural" && random() > 0.2) return;
 
                                 const students = Math.round(ugelBase * lvlWeight * gestWeight * areaWeight + (random() * 5));
                                 if (students > 0) {
                                     data.matriculaArea.push({
-                                        "Año": parseInt(year),
+                                        "AÃ±o": parseInt(year),
                                         "UGEL": targetUgel,
                                         "Nivel": level,
-                                        "Gestión": gestion,
-                                        "Área": area,
+                                        "GestiÃ³n": gestion,
+                                        "Ãrea": area,
                                         "Total": students
                                     });
 
                                     // 3. DOCENTES (Student-teacher ratio around 18-24)
-                                    const ratio = (gestion === "Pública") ? 22 + (random() * 4) : 14 + (random() * 3);
+                                    const ratio = (gestion === "PÃºblica") ? 22 + (random() * 4) : 14 + (random() * 3);
                                     const teachers = Math.max(1, Math.round(students / ratio));
                                     data.docentes.push({
-                                        "Año": parseInt(year),
+                                        "AÃ±o": parseInt(year),
                                         "UGEL": targetUgel,
                                         "Nivel": level,
-                                        "Gestión": gestion,
-                                        "Área": area,
+                                        "GestiÃ³n": gestion,
+                                        "Ãrea": area,
                                         "Total": teachers
                                     });
 
@@ -1978,35 +1955,35 @@
                                     const admins = Math.max(0, Math.round(teachers * 0.12 + (random() * 0.5)));
                                     if (admins > 0 || random() > 0.5) {
                                         data.noDocentes.push({
-                                            "Año": parseInt(year),
+                                            "AÃ±o": parseInt(year),
                                             "UGEL": targetUgel,
                                             "Nivel": level,
-                                            "Gestión": gestion,
-                                            "Área": area,
+                                            "GestiÃ³n": gestion,
+                                            "Ãrea": area,
                                             "Total": Math.max(1, admins)
                                         });
                                     }
 
                                     // 5. SERVICIOS (approx 1 service per 60 students in public, 30 in private)
-                                    const servScale = (gestion === "Pública") ? 65 : 35;
+                                    const servScale = (gestion === "PÃºblica") ? 65 : 35;
                                     const services = Math.max(1, Math.round(students / servScale + (random() * 0.4)));
                                     data.servicios.push({
-                                        "Año": parseInt(year),
+                                        "AÃ±o": parseInt(year),
                                         "UGEL": targetUgel,
                                         "Nivel": level,
-                                        "Gestión": gestion,
-                                        "Área": area,
+                                        "GestiÃ³n": gestion,
+                                        "Ãrea": area,
                                         "Total": services
                                     });
 
                                     // 6. LOCALES (approx 1 school building can house 1.2 services)
                                     const locales = Math.max(1, Math.round(services * 0.8 + (random() * 0.3)));
                                     data.locales.push({
-                                        "Año": parseInt(year),
+                                        "AÃ±o": parseInt(year),
                                         "UGEL": targetUgel,
                                         "Nivel": level,
-                                        "Gestión": gestion,
-                                        "Área": area,
+                                        "GestiÃ³n": gestion,
+                                        "Ãrea": area,
                                         "Total": locales
                                     });
                                 }
@@ -2019,7 +1996,7 @@
                             const sexStudents = Math.round(ugelBase * lvlWeight * sexWeight);
                             if (sexStudents > 0) {
                                 data.matriculaSexo.push({
-                                    "Año": parseInt(year),
+                                    "AÃ±o": parseInt(year),
                                     "UGEL": targetUgel,
                                     "Nivel": level,
                                     "Sexo": sex,
@@ -2035,36 +2012,85 @@
             return data;
         }
 
-        // LOAD FROM LOCAL STORAGE OR GENERATOR
-        function loadDashboardData() {
-            // 1. First check if static data was injected into the HTML (GitHub Pages export)
-            if (window.dashboardData && window.dashboardData.matriculaArea && window.dashboardData.matriculaArea.length > 0) {
-                showToast("Base de datos oficial cargada correctamente", false);
-                return;
+                // LOAD DASHBOARD DATA FROM GOOGLE SHEETS
+        async function loadDashboardData(isManualUpdate = false) {
+            if (isManualUpdate) {
+                showToast("Sincronizando con Google Sheets... Espere por favor.", false);
+                document.body.style.cursor = "wait";
             }
+            try {
+                const response = await fetch("https://docs.google.com/spreadsheets/d/1_pjUc6QBclcRSB1kzIIX0-Rjn2XfmyvS/export?format=xlsx");
+                if (!response.ok) throw new Error("Network error");
+                
+                const data = await response.arrayBuffer();
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                const sheetsMap = {
+                    matriculaArea: ["TB_MATRICULA_GESTION_AREA", "TABLA 1: MATRICULA AREA Y GEOGRAFIA", "TABLA 1", "MATRICULA AREA Y GEOGRAFIA"],
+                    matriculaSexo: ["TB_MATRICULA_SEXO", "TABLA 2: MATRICULA SEXO", "TABLA 2", "MATRICULA SEXO"],
+                    docentes: ["TB_DOCENTES", "TABLA 3: DOCENTES", "TABLA 3", "DOCENTES"],
+                    noDocentes: ["TB_NO_DOC_EX", "TB_NO_DOCENTE", "TB_NO_DOCENTES", "TABLA 4: NO DOCENTES", "TABLA 4", "NO DOCENTES"],
+                    servicios: ["TB_SERVICIOS", "TABLA 5: SERVICIOS EDUCATIVOS", "TABLA 5", "SERVICIOS"],
+                    locales: ["TB_LOCALES", "TABLA 6: LOCALES EDUCATIVOS", "TABLA 6", "LOCALES"]
+                };
 
-            // 2. Then check LocalStorage (local testing)
-            const hasSavedData = localStorage.getItem("drep_data_loaded") === "true";
-            if (hasSavedData) {
-                try {
-                    window.dashboardData.matriculaArea = JSON.parse(localStorage.getItem("drep_data_matriculaArea"));
-                    window.dashboardData.matriculaSexo = JSON.parse(localStorage.getItem("drep_data_matriculaSexo"));
-                    window.dashboardData.docentes = JSON.parse(localStorage.getItem("drep_data_docentes"));
-                    window.dashboardData.noDocentes = JSON.parse(localStorage.getItem("drep_data_noDocentes"));
-                    window.dashboardData.servicios = JSON.parse(localStorage.getItem("drep_data_servicios"));
-                    window.dashboardData.locales = JSON.parse(localStorage.getItem("drep_data_locales"));
-                    
-                    showToast("Base de datos cargada desde almacenamiento local", false);
-                    return;
-                } catch(e) {
-                    console.error("Error reading localStorage, loading Demo Mock instead", e);
+                const parsedData = {
+                    matriculaArea: null,
+                    matriculaSexo: null,
+                    docentes: null,
+                    noDocentes: null,
+                    servicios: null,
+                    locales: null
+                };
+
+                workbook.SheetNames.forEach(sheetName => {
+                    const upperSheetName = sheetName.toUpperCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    for (const [key, names] of Object.entries(sheetsMap)) {
+                        const match = names.some(n => {
+                            const normN = n.toUpperCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                            return upperSheetName === normN || upperSheetName.includes(normN) || normN.includes(upperSheetName);
+                        });
+                        if (match && !parsedData[key]) {
+                            const worksheet = workbook.Sheets[sheetName];
+                            const json = XLSX.utils.sheet_to_json(worksheet);
+                            parsedData[key] = json.map(normalizeRow);
+                        }
+                    }
+                });
+
+                const missingSheets = [];
+                for (const [key, val] of Object.entries(parsedData)) {
+                    if (!val || val.length === 0) {
+                        missingSheets.push(sheetsMap[key][1]);
+                    }
+                }
+
+                if (missingSheets.length > 0) {
+                    throw new Error("Faltan hojas en el Excel: " + missingSheets.join(", "));
+                }
+
+                window.dashboardData = parsedData;
+
+                if (isManualUpdate) {
+                    showToast("¡Base de datos sincronizada correctamente desde Google Sheets!", false);
+                    populateFilters();
+                    clearAllFilters();
+                    applyFilters(true);
+                    updateDataTablesContent();
+                }
+
+            } catch(e) {
+                console.error("Error fetching Google Sheets, loading Demo Mock instead", e);
+                if (isManualUpdate) {
+                    alert("Error al sincronizar: " + e.message + "\n\nAsegúrese de que el enlace de Google Sheets esté público.");
+                } else {
+                    window.dashboardData = generateStructuredMockData();
+                }
+            } finally {
+                if (isManualUpdate) {
+                    document.body.style.cursor = "default";
                 }
             }
-
-            // 3. Fallback to mock data if no storage found
-            const mock = generateStructuredMockData();
-            window.dashboardData = mock;
-            showToast("Datos de demostración regional cargados correctamente", false);
         }
 
         // PERSIST DATA IN LOCALSTORAGE
@@ -2087,7 +2113,7 @@
 
         // RESET STORAGE AND RESTORE DEMO DATA
         function resetDemoData() {
-            if (confirm("¿Estás seguro de restablecer los datos? Esto eliminará cualquier Excel subido y recargará la data de demostración de Piura.")) {
+            if (confirm("Â¿EstÃ¡s seguro de restablecer los datos? Esto eliminarÃ¡ cualquier Excel subido y recargarÃ¡ la data de demostraciÃ³n de Piura.")) {
                 localStorage.removeItem("drep_data_matriculaArea");
                 localStorage.removeItem("drep_data_matriculaSexo");
                 localStorage.removeItem("drep_data_docentes");
@@ -2097,7 +2123,7 @@
                 localStorage.removeItem("drep_data_loaded");
                 
                 initApp();
-                showToast("Data de demostración restaurada con éxito", false);
+                showToast("Data de demostraciÃ³n restaurada con Ã©xito", false);
             }
         }
 
@@ -2114,14 +2140,14 @@
 
             if (tabId === 'dashboard') {
                 document.getElementById("view-title").innerText = "Dashboard Regional";
-                document.getElementById("view-subtitle").innerText = "Consolidado General de Indicadores Educativos - Región Piura";
+                document.getElementById("view-subtitle").innerText = "Consolidado General de Indicadores Educativos - RegiÃ³n Piura";
                 // Trigger Leaflet map invalidateSize to redraw correctly
                 if (window.map) {
                     setTimeout(() => window.map.invalidateSize(), 200);
                 }
             } else if (tabId === 'proyecciones') {
-                document.getElementById("view-title").innerText = "Proyecciones Históricas y Forecast";
-                document.getElementById("view-subtitle").innerText = "Modelo predictivo del comportamiento de la matrícula escolar para los periodos 2026 - 2028";
+                document.getElementById("view-title").innerText = "Proyecciones HistÃ³ricas y Forecast";
+                document.getElementById("view-subtitle").innerText = "Modelo predictivo del comportamiento de la matrÃ­cula escolar para los periodos 2026 - 2028";
                 setTimeout(() => updateForecast(), 100);
             } else if (tabId === 'tablas') {
                 document.getElementById("view-title").innerText = "Visor de Tablas de Datos";
@@ -2133,8 +2159,8 @@
                     });
                 }, 100);
             } else {
-                document.getElementById("view-title").innerText = "Manual e Información";
-                document.getElementById("view-subtitle").innerText = "Manual técnico de importación, colores asignados e infraestructura del dashboard";
+                document.getElementById("view-title").innerText = "Manual e InformaciÃ³n";
+                document.getElementById("view-subtitle").innerText = "Manual tÃ©cnico de importaciÃ³n, colores asignados e infraestructura del dashboard";
             }
         }
 
@@ -2154,12 +2180,11 @@
             document.getElementById("password-modal").style.display = "none";
         }
 
-        function validatePasswordAndProceed() {
+                function validatePasswordAndProceed() {
             const pwd = document.getElementById("admin-password-input").value;
             if (pwd === "DREP2026") {
                 closePasswordModal();
-                showToast("Acceso Concedido. Seleccione el archivo Excel.", false);
-                document.getElementById("excel-file-actualizar").click();
+                loadDashboardData(true);
             } else {
                 document.getElementById("password-error-message").classList.remove("hidden");
             }
@@ -2198,7 +2223,7 @@
                 document.getElementById("admin-gate").style.display = "none";
                 document.getElementById("admin-controls").style.display = "flex";
                 // Update status text
-                document.getElementById("admin-panel-status").innerHTML = 'Sesión Local &middot; <span style="color:#10b981;">Desbloqueado</span>';
+                document.getElementById("admin-panel-status").innerHTML = 'SesiÃ³n Local &middot; <span style="color:#10b981;">Desbloqueado</span>';
                 // Show green dot
                 document.getElementById("admin-lock-dot").style.background = "#10b981";
                 // Show sidebar admin actions too
@@ -2218,7 +2243,7 @@
             // Reset panel to locked state
             document.getElementById("admin-gate").style.display = "block";
             document.getElementById("admin-controls").style.display = "none";
-            document.getElementById("admin-panel-status").innerHTML = 'Sesión Local &middot; <span style="color:#ef4444;">Bloqueado</span>';
+            document.getElementById("admin-panel-status").innerHTML = 'SesiÃ³n Local &middot; <span style="color:#ef4444;">Bloqueado</span>';
             document.getElementById("admin-lock-dot").style.background = "#ef4444";
             // Hide sidebar admin actions
             const sidebarActions = document.getElementById("sidebar-admin-actions");
@@ -2246,124 +2271,6 @@
             }
         });
 
-        // PARSE EXCEL SHEETS WITH SHEETJS
-        // PARSE EXCEL SHEETS WITH SHEETJS
-        function handleExcelUpload(input, isPermanent) {
-            if (!input.files || input.files.length === 0) return;
-            const file = input.files[0];
-            const reader = new FileReader();
-
-            showToast("Procesando archivo Excel... Espere por favor", false);
-
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    
-                    const sheetsMap = {
-                        matriculaArea: ["TB_MATRICULA_GESTION_AREA", "TABLA 1: MATRICULA AREA Y GEOGRAFIA"],
-                        matriculaSexo: ["TB_MATRICULA_SEXO", "TABLA 2: MATRICULA SEXO"],
-                        docentes: ["TB_DOCENTES", "TABLA 3: DOCENTES"],
-                        noDocentes: ["TB_NO_DOC_EX", "TB_NO_DOCENTE", "TB_NO_DOCENTES", "TABLA 4: NO DOCENTES"],
-                        servicios: ["TB_SERVICIOS", "TABLA 5: SERVICIOS EDUCATIVOS"],
-                        locales: ["TB_LOCALES", "TABLA 6: LOCALES EDUCATIVOS"]
-                    };
-
-                    const parsedData = {
-                        matriculaArea: null,
-                        matriculaSexo: null,
-                        docentes: null,
-                        noDocentes: null,
-                        servicios: null,
-                        locales: null
-                    };
-
-                    // 1. Direct/Fuzzy Match on Sheet Names (Normalized for spaces and accents)
-                    workbook.SheetNames.forEach(sheetName => {
-                        const upperSheetName = sheetName.toUpperCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                        
-                        for (const [key, names] of Object.entries(sheetsMap)) {
-                            const match = names.some(n => {
-                                const normN = n.toUpperCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                                return upperSheetName === normN || upperSheetName.includes(normN) || normN.includes(upperSheetName);
-                            });
-                            
-                            if (match && !parsedData[key]) {
-                                const worksheet = workbook.Sheets[sheetName];
-                                const json = XLSX.utils.sheet_to_json(worksheet);
-                                parsedData[key] = json.map(normalizeRow);
-                            }
-                        }
-                    });
-
-                    // 2. Keyword fallback for sheets that were not matched (in case names are different)
-                    workbook.SheetNames.forEach(sheetName => {
-                        const upperSheetName = sheetName.toUpperCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                        
-                        if (!parsedData.matriculaArea && (upperSheetName.includes("MATRICULA") && upperSheetName.includes("AREA") || upperSheetName.includes("GESTION") && upperSheetName.includes("AREA") || upperSheetName.includes("TABLA 1") || upperSheetName.includes("TABLA1"))) {
-                            parsedData.matriculaArea = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]).map(normalizeRow);
-                        }
-                        if (!parsedData.matriculaSexo && (upperSheetName.includes("MATRICULA") && upperSheetName.includes("SEXO") || upperSheetName.includes("TABLA 2") || upperSheetName.includes("TABLA2"))) {
-                            parsedData.matriculaSexo = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]).map(normalizeRow);
-                        }
-                        if (!parsedData.docentes && (upperSheetName.includes("DOCENTES") && !upperSheetName.includes("NO") || upperSheetName.includes("TABLA 3") || upperSheetName.includes("TABLA3"))) {
-                            parsedData.docentes = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]).map(normalizeRow);
-                        }
-                        if (!parsedData.noDocentes && (upperSheetName.includes("NO") && upperSheetName.includes("DOCENTE") || upperSheetName.includes("TABLA 4") || upperSheetName.includes("TABLA4"))) {
-                            parsedData.noDocentes = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]).map(normalizeRow);
-                        }
-                        if (!parsedData.servicios && (upperSheetName.includes("SERVICIOS") || upperSheetName.includes("TABLA 5") || upperSheetName.includes("TABLA5"))) {
-                            parsedData.servicios = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]).map(normalizeRow);
-                        }
-                        if (!parsedData.locales && (upperSheetName.includes("LOCALES") || upperSheetName.includes("TABLA 6") || upperSheetName.includes("TABLA6"))) {
-                            parsedData.locales = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]).map(normalizeRow);
-                        }
-                    });
-
-                    // Validate that all sheets are successfully found and parsed
-                    const missingSheets = [];
-                    for (const [key, val] of Object.entries(parsedData)) {
-                        if (!val || val.length === 0) {
-                            missingSheets.push(sheetsMap[key][0]);
-                        }
-                    }
-
-                    if (missingSheets.length > 0) {
-                        alert(`Error de Formato: No se pudieron encontrar u obtener datos de las siguientes pestañas requeridas:\n- ${missingSheets.join("\n- ")}\n\nAsegúrese de que el Excel contenga las 6 hojas correctas.`);
-                        input.value = "";
-                        return;
-                    }
-
-                    // Apply parsed data to memory
-                    window.dashboardData = parsedData;
-
-                    if (isPermanent) {
-                        const saved = saveDashboardToStorage();
-                        if (saved) {
-                            showToast("¡Base de datos oficial guardada!", false);
-                            // Offer to download updated HTML for GitHub
-                            setTimeout(() => offerStaticExport(), 800);
-                        }
-                    } else {
-                        showToast("Excel cargado correctamente en modo consulta temporal", false);
-                    }
-
-                    // Refresh whole interface
-                    populateFilters();
-                    clearAllFilters();
-                    applyFilters(true);
-                    updateDataTablesContent();
-
-                } catch (error) {
-                    console.error("Excel Read Error", error);
-                    alert("Ocurrió un error al procesar el archivo Excel. Verifique que no esté corrupto y use formatos .xlsx estándar.");
-                }
-                input.value = ""; // clear input
-            };
-
-            reader.readAsArrayBuffer(file);
-        }
-
         // ROW COLUMN KEY NORMALIZER WITH FUZZY COLUMNS DETECTION
         function normalizeRow(row) {
             const norm = {};
@@ -2375,21 +2282,21 @@
                 let targetKey = key;
                 
                 // Exact key mappings
-                if (cleanKey === 'ano' || cleanKey === 'anio' || cleanKey === 'year') targetKey = 'Año';
+                if (cleanKey === 'ano' || cleanKey === 'anio' || cleanKey === 'year') targetKey = 'AÃ±o';
                 else if (cleanKey === 'ugel') targetKey = 'UGEL';
                 else if (cleanKey === 'nivel') targetKey = 'Nivel';
-                else if (cleanKey === 'gestion') targetKey = 'Gestión';
-                else if (cleanKey === 'area') targetKey = 'Área';
+                else if (cleanKey === 'gestion') targetKey = 'GestiÃ³n';
+                else if (cleanKey === 'area') targetKey = 'Ãrea';
                 else if (cleanKey === 'sexo' || cleanKey === 'sex') targetKey = 'Sexo';
                 else if (cleanKey === 'total' || cleanKey === 'cantidad') targetKey = 'Total';
                 
                 // Fallback fuzzy contains mappings
                 if (targetKey === key) {
-                    if (cleanKey.includes('ano') || cleanKey.includes('anio') || cleanKey.includes('year')) targetKey = 'Año';
+                    if (cleanKey.includes('ano') || cleanKey.includes('anio') || cleanKey.includes('year')) targetKey = 'AÃ±o';
                     else if (cleanKey.includes('ugel')) targetKey = 'UGEL';
                     else if (cleanKey.includes('nivel')) targetKey = 'Nivel';
-                    else if (cleanKey.includes('gestion')) targetKey = 'Gestión';
-                    else if (cleanKey.includes('area')) targetKey = 'Área';
+                    else if (cleanKey.includes('gestion')) targetKey = 'GestiÃ³n';
+                    else if (cleanKey.includes('area')) targetKey = 'Ãrea';
                     else if (cleanKey.includes('sexo') || cleanKey.includes('genero')) targetKey = 'Sexo';
                     else if (cleanKey.includes('total') || cleanKey.includes('cant') || cleanKey.includes('matricula') || cleanKey.includes('docentes') || cleanKey.includes('servicios') || cleanKey.includes('locales')) targetKey = 'Total';
                 }
@@ -2398,11 +2305,11 @@
             }
             
             // Standardize cell properties to safe default types
-            norm.Año = (norm.Año !== undefined && norm.Año !== null) ? norm.Año.toString().trim() : "";
+            norm.AÃ±o = (norm.AÃ±o !== undefined && norm.AÃ±o !== null) ? norm.AÃ±o.toString().trim() : "";
             norm.UGEL = (norm.UGEL !== undefined && norm.UGEL !== null) ? norm.UGEL.toString().trim() : "No Definido";
             norm.Nivel = (norm.Nivel !== undefined && norm.Nivel !== null) ? norm.Nivel.toString().trim() : "No Definido";
-            norm.Gestión = (norm.Gestión !== undefined && norm.Gestión !== null) ? norm.Gestión.toString().trim() : "No Definido";
-            norm.Área = (norm.Área !== undefined && norm.Área !== null) ? norm.Área.toString().trim() : "No Definido";
+            norm.GestiÃ³n = (norm.GestiÃ³n !== undefined && norm.GestiÃ³n !== null) ? norm.GestiÃ³n.toString().trim() : "No Definido";
+            norm.Ãrea = (norm.Ãrea !== undefined && norm.Ãrea !== null) ? norm.Ãrea.toString().trim() : "No Definido";
             norm.Sexo = (norm.Sexo !== undefined && norm.Sexo !== null) ? norm.Sexo.toString().trim() : "No Definido";
             
             // Safe conversions of Total numbers (prevents NaN values)
@@ -2414,7 +2321,7 @@
                 norm.Total = isNaN(parsedVal) ? 0 : parsedVal;
             }
             
-            // Remap UGEL based on level: Superior level -> DRE Piura, Básica under DRE -> UGEL Piura
+            // Remap UGEL based on level: Superior level -> DRE Piura, BÃ¡sica under DRE -> UGEL Piura
             if (norm.UGEL && norm.Nivel) {
                 const ugelStr = norm.UGEL.toString().trim();
                 const nivelStr = norm.Nivel.toString().trim();
@@ -2457,10 +2364,10 @@
             const data = window.dashboardData.matriculaArea;
             
             // Extract Unique Values
-            const yearsSet = new Set(data.map(d => d.Año).filter(Boolean));
+            const yearsSet = new Set(data.map(d => d.AÃ±o).filter(Boolean));
             const ugelsSet = new Set(data.map(d => d.UGEL).filter(Boolean));
             const levelsSet = new Set(data.map(d => d.Nivel).filter(Boolean));
-            const areasSet = new Set(data.map(d => d.Área).filter(Boolean));
+            const areasSet = new Set(data.map(d => d.Ãrea).filter(Boolean));
             
             // Sex comes from TB_MATRICULA_SEXO
             const sexsSet = new Set(window.dashboardData.matriculaSexo.map(d => d.Sexo).filter(Boolean));
@@ -2469,7 +2376,7 @@
             updateDropdown("filter-year", Array.from(yearsSet).sort(), "Todos (2021-2025)", "Todos");
             updateDropdown("filter-ugel", Array.from(ugelsSet).sort(), "Todas las UGELs", "Todas");
             updateDropdown("filter-level", Array.from(levelsSet).sort(), "Todos los Niveles", "Todos");
-            updateDropdown("filter-area", Array.from(areasSet).sort(), "Todas las Áreas", "Todas");
+            updateDropdown("filter-area", Array.from(areasSet).sort(), "Todas las Ãreas", "Todas");
             updateDropdown("filter-sex", Array.from(sexsSet).sort(), "Todos", "Todos");
         }
 
@@ -2522,11 +2429,11 @@
                 if (!dataset || !Array.isArray(dataset)) return [];
                 return dataset.filter(row => {
                     if (!row) return false;
-                    const rowYear = row.Año ? row.Año.toString().trim() : "";
+                    const rowYear = row.AÃ±o ? row.AÃ±o.toString().trim() : "";
                     const matchYear = (yearVal === "Todos" || rowYear === yearVal);
                     const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
                     const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
-                    const matchArea = (areaVal === "Todas" || !row.Área || row.Área === areaVal);
+                    const matchArea = (areaVal === "Todas" || !row.Ãrea || row.Ãrea === areaVal);
                     return matchYear && matchUgel && matchLvl && matchArea;
                 });
             };
@@ -2535,7 +2442,7 @@
                 if (!dataset || !Array.isArray(dataset)) return [];
                 return dataset.filter(row => {
                     if (!row) return false;
-                    const rowYear = row.Año ? row.Año.toString().trim() : "";
+                    const rowYear = row.AÃ±o ? row.AÃ±o.toString().trim() : "";
                     const matchYear = (yearVal === "Todos" || rowYear === yearVal);
                     const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
                     const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
@@ -2572,9 +2479,9 @@
             // If UGEL filter active, narrow data
             const src = ugelFilter !== "Todas" ? base.filter(d => d.UGEL === ugelFilter) : base;
             // Get sorted unique years
-            const years = Array.from(new Set(src.map(d => d.Año).filter(Boolean))).sort();
+            const years = Array.from(new Set(src.map(d => d.AÃ±o).filter(Boolean))).sort();
             // Sum totals per year (each year in isolation)
-            const vals = years.map(yr => src.filter(d => d.Año === yr).reduce((s,d) => s + d.Total, 0));
+            const vals = years.map(yr => src.filter(d => d.AÃ±o === yr).reduce((s,d) => s + d.Total, 0));
             return { years, vals };
         }
 
@@ -2667,14 +2574,14 @@
 
             if (isAllYears) {
                 // Show "-" when all years selected (would inflate numbers)
-                document.getElementById("kpi-matricula").innerText = "—";
-                document.getElementById("kpi-docentes").innerText  = "—";
-                document.getElementById("kpi-locales").innerText   = "—";
-                document.getElementById("kpi-servicios").innerText = "—";
-                document.getElementById("kpi-ratio-pupil").innerText  = "—";
-                document.getElementById("kpi-pct-publica").innerText  = "—";
-                document.getElementById("kpi-pct-rural").innerText    = "—";
-                document.getElementById("kpi-matricula-sub").innerText = `Ver gráfico de evolución histórica`;
+                document.getElementById("kpi-matricula").innerText = "â€”";
+                document.getElementById("kpi-docentes").innerText  = "â€”";
+                document.getElementById("kpi-locales").innerText   = "â€”";
+                document.getElementById("kpi-servicios").innerText = "â€”";
+                document.getElementById("kpi-ratio-pupil").innerText  = "â€”";
+                document.getElementById("kpi-pct-publica").innerText  = "â€”";
+                document.getElementById("kpi-pct-rural").innerText    = "â€”";
+                document.getElementById("kpi-matricula-sub").innerText = `Ver grÃ¡fico de evoluciÃ³n histÃ³rica`;
                 // Show overlay on ranking chart
                 const ov = document.getElementById("overlay-ranking");
                 if (ov) ov.classList.add("visible");
@@ -2695,11 +2602,11 @@
             const pupilTeacherRatio = totalDocentes > 0 ? (totalMatricula / totalDocentes).toFixed(1) : "N/D";
             
             // % Public Locales
-            const publicLocales = window.filteredData.locales.filter(d => d.Gestión === "Pública").reduce((sum, d) => sum + d.Total, 0);
+            const publicLocales = window.filteredData.locales.filter(d => d.GestiÃ³n === "PÃºblica").reduce((sum, d) => sum + d.Total, 0);
             const pctPublic = totalLocales > 0 ? Math.round((publicLocales / totalLocales) * 100) : 0;
 
-            // % Rural Matrícula
-            const ruralMatricula = window.filteredData.matriculaArea.filter(d => d.Área === "Rural").reduce((sum, d) => sum + d.Total, 0);
+            // % Rural MatrÃ­cula
+            const ruralMatricula = window.filteredData.matriculaArea.filter(d => d.Ãrea === "Rural").reduce((sum, d) => sum + d.Total, 0);
             const pctRural = totalMatricula > 0 ? Math.round((ruralMatricula / totalMatricula) * 100) : 0;
 
             // Assign values to HTML DOM
@@ -2713,7 +2620,7 @@
             document.getElementById("kpi-pct-rural").innerText = `${pctRural}%`;
             
             // Subtexts adjustments
-            document.getElementById("kpi-matricula-sub").innerText = `Matrícula ${yearFilterVal} en ${ugelFilterVal === 'Todas' ? 'Toda la Región' : ugelFilterVal}`;
+            document.getElementById("kpi-matricula-sub").innerText = `MatrÃ­cula ${yearFilterVal} en ${ugelFilterVal === 'Todas' ? 'Toda la RegiÃ³n' : ugelFilterVal}`;
         }
 
         // SWITCH CHART DIMENSION
@@ -2751,18 +2658,18 @@
             };
         }
 
-        // Aggregate by Gestión×Área (4 partitions: Pública-Urbana, Pública-Rural, Privada-Urbana, Privada-Rural)
+        // Aggregate by GestiÃ³nÃ—Ãrea (4 partitions: PÃºblica-Urbana, PÃºblica-Rural, Privada-Urbana, Privada-Rural)
         function getAggregateDataGestionArea(dataset) {
             dataset = dataset || [];
             const combos = {
-                "Pública - Urbana": 0,
-                "Pública - Rural": 0,
+                "PÃºblica - Urbana": 0,
+                "PÃºblica - Rural": 0,
                 "Privada - Urbana": 0,
                 "Privada - Rural": 0
             };
             dataset.forEach(row => {
-                const gestion = row["Gestión"] || "No Definido";
-                const area = row["Área"] || "No Definido";
+                const gestion = row["GestiÃ³n"] || "No Definido";
+                const area = row["Ãrea"] || "No Definido";
                 const key = `${gestion} - ${area}`;
                 if (combos.hasOwnProperty(key)) {
                     combos[key] = (combos[key] || 0) + row.Total;
@@ -2809,7 +2716,7 @@
                 chartTitle = "Estudiantes Matriculados";
             } else if (chartId === "chart-t2") {
                 dataset = window.filteredData.matriculaSexo;
-                chartTitle = "Matrícula Sexo";
+                chartTitle = "MatrÃ­cula Sexo";
                 // Sex has no Area, ensure toggle is mapped correctly
                 if (dimension !== "UGEL" && dimension !== "Sexo") {
                     dimension = "UGEL";
@@ -2848,8 +2755,8 @@
                 return;
             }
 
-            // Use 4-partition Gestión×Área when dimension is "Área"
-            const aggregated = (dimension === "Área" && chartId !== "chart-t2")
+            // Use 4-partition GestiÃ³nÃ—Ãrea when dimension is "Ãrea"
+            const aggregated = (dimension === "Ãrea" && chartId !== "chart-t2")
                 ? getAggregateDataGestionArea(dataset)
                 : getAggregateData(dataset, dimension);
 
@@ -2865,10 +2772,10 @@
             }
 
             // Colors setup: assign unique colors by dimension
-            // Área dimension: 4 colors linking Gestión to Urbana(strong)/Rural(tenue)
+            // Ãrea dimension: 4 colors linking GestiÃ³n to Urbana(strong)/Rural(tenue)
             const GESTION_AREA_COLORS = {
-                "Pública - Urbana": "#0891b2",   // Teal strong
-                "Pública - Rural": "#67e8f9",    // Teal light/tenue
+                "PÃºblica - Urbana": "#0891b2",   // Teal strong
+                "PÃºblica - Rural": "#67e8f9",    // Teal light/tenue
                 "Privada - Urbana": "#d97706",   // Amber strong
                 "Privada - Rural": "#fcd34d"     // Amber light/tenue
             };
@@ -2877,9 +2784,9 @@
                 colors = aggregated.labels.map(lbl => getUgelColor(lbl));
             } else if (dimension === "Sexo") {
                 colors = aggregated.labels.map(lbl => lbl === "Masculino" ? "#2563eb" : "#ec4899");
-            } else if (dimension === "Gestión") {
-                colors = aggregated.labels.map(lbl => lbl === "Pública" ? "#06b6d4" : "#f59e0b");
-            } else if (dimension === "Área") {
+            } else if (dimension === "GestiÃ³n") {
+                colors = aggregated.labels.map(lbl => lbl === "PÃºblica" ? "#06b6d4" : "#f59e0b");
+            } else if (dimension === "Ãrea") {
                 colors = aggregated.labels.map(lbl => GESTION_AREA_COLORS[lbl] || "#94a3b8");
             }
 
@@ -3065,7 +2972,7 @@
                 // Setup dynamic HTML content for popups
                 const popupContent = `
                     <div class="ugel-popup-title">${ugel}</div>
-                    <div class="ugel-popup-detail"><span>Matrícula:</span><strong>${ugelMatricula.toLocaleString()}</strong></div>
+                    <div class="ugel-popup-detail"><span>MatrÃ­cula:</span><strong>${ugelMatricula.toLocaleString()}</strong></div>
                     <div class="ugel-popup-detail"><span>Docentes:</span><strong>${ugelDocentes.toLocaleString()}</strong></div>
                     <div class="ugel-popup-detail"><span>Locales:</span><strong>${ugelLocales.toLocaleString()}</strong></div>
                     <div style="font-size:0.65rem; color:var(--text-muted); text-align:center; border-top:1px solid var(--border-color); padding-top:0.3rem; margin-top:0.4rem;">Haz clic para filtrar esta UGEL</div>
@@ -3127,11 +3034,11 @@
                 dt0.clear();
                 window.filteredData.matriculaArea.forEach(row => {
                     dt0.row.add([
-                        row.Año || "",
+                        row.AÃ±o || "",
                         row.UGEL || "",
                         row.Nivel || "",
-                        row.Gestión || "",
-                        row.Área || "",
+                        row.GestiÃ³n || "",
+                        row.Ãrea || "",
                         row.Total !== undefined && row.Total !== null ? row.Total : 0
                     ]);
                 });
@@ -3144,7 +3051,7 @@
                 dt1.clear();
                 window.filteredData.matriculaSexo.forEach(row => {
                     dt1.row.add([
-                        row.Año || "",
+                        row.AÃ±o || "",
                         row.UGEL || "",
                         row.Nivel || "",
                         row.Sexo || "",
@@ -3160,11 +3067,11 @@
                 dt2.clear();
                 window.filteredData.docentes.forEach(row => {
                     dt2.row.add([
-                        row.Año || "",
+                        row.AÃ±o || "",
                         row.UGEL || "",
                         row.Nivel || "",
-                        row.Gestión || "",
-                        row.Área || "",
+                        row.GestiÃ³n || "",
+                        row.Ãrea || "",
                         row.Total !== undefined && row.Total !== null ? row.Total : 0
                     ]);
                 });
@@ -3177,11 +3084,11 @@
                 dt3.clear();
                 window.filteredData.noDocentes.forEach(row => {
                     dt3.row.add([
-                        row.Año || "",
+                        row.AÃ±o || "",
                         row.UGEL || "",
                         row.Nivel || "",
-                        row.Gestión || "",
-                        row.Área || "",
+                        row.GestiÃ³n || "",
+                        row.Ãrea || "",
                         row.Total !== undefined && row.Total !== null ? row.Total : 0
                     ]);
                 });
@@ -3194,11 +3101,11 @@
                 dt4.clear();
                 window.filteredData.servicios.forEach(row => {
                     dt4.row.add([
-                        row.Año || "",
+                        row.AÃ±o || "",
                         row.UGEL || "",
                         row.Nivel || "",
-                        row.Gestión || "",
-                        row.Área || "",
+                        row.GestiÃ³n || "",
+                        row.Ãrea || "",
                         row.Total !== undefined && row.Total !== null ? row.Total : 0
                     ]);
                 });
@@ -3211,11 +3118,11 @@
                 dt5.clear();
                 window.filteredData.locales.forEach(row => {
                     dt5.row.add([
-                        row.Año || "",
+                        row.AÃ±o || "",
                         row.UGEL || "",
                         row.Nivel || "",
-                        row.Gestión || "",
-                        row.Área || "",
+                        row.GestiÃ³n || "",
+                        row.Ãrea || "",
                         row.Total !== undefined && row.Total !== null ? row.Total : 0
                     ]);
                 });
@@ -3247,7 +3154,7 @@
                                 <i class="ph ph-warning" style="color: #f59e0b; font-size: 1.25rem;"></i>
                                 <div>
                                     <strong style="color: var(--text-main); font-size: 0.82rem;">${ugel} - Ratio Elevado</strong>
-                                    <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente (límite recomendado: 30).</p>
+                                    <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente (lÃ­mite recomendado: 30).</p>
                                 </div>
                             </div>
                         `);
@@ -3257,7 +3164,7 @@
                                 <i class="ph ph-info" style="color: #3b82f6; font-size: 1.25rem;"></i>
                                 <div>
                                     <strong style="color: var(--text-main); font-size: 0.82rem;">${ugel} - Baja Densidad</strong>
-                                    <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente. Posible sobredotación.</p>
+                                    <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente. Posible sobredotaciÃ³n.</p>
                                 </div>
                             </div>
                         `);
@@ -3270,8 +3177,8 @@
                     <div class="alert-item success" style="flex: 1 1 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #10b981; background-color: rgba(16, 185, 129, 0.08); display: flex; align-items: center; gap: 0.5rem;">
                         <i class="ph ph-check-circle" style="color: #10b981; font-size: 1.25rem;"></i>
                         <div>
-                            <strong style="color: var(--text-main); font-size: 0.82rem;">Parámetros Estables</strong>
-                            <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Todos los indicadores de gestión de las UGELs de Piura se encuentran en los rangos recomendados.</p>
+                            <strong style="color: var(--text-main); font-size: 0.82rem;">ParÃ¡metros Estables</strong>
+                            <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Todos los indicadores de gestiÃ³n de las UGELs de Piura se encuentran en los rangos recomendados.</p>
                         </div>
                     </div>
                 `;
@@ -3290,8 +3197,8 @@
             historicalYears.forEach(y => { yearSum[y] = 0; });
             
             dataset.forEach(row => {
-                if (row && row.Año && historicalYears.includes(row.Año.toString())) {
-                    const y = row.Año.toString();
+                if (row && row.AÃ±o && historicalYears.includes(row.AÃ±o.toString())) {
+                    const y = row.AÃ±o.toString();
                     yearSum[y] = (yearSum[y] || 0) + (row.Total || 0);
                 }
             });
@@ -3358,7 +3265,7 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Matrícula Histórica (2021-2025)',
+                            label: 'MatrÃ­cula HistÃ³rica (2021-2025)',
                             data: histData,
                             borderColor: '#3b82f6',
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -3369,7 +3276,7 @@
                             tension: 0.1
                         },
                         {
-                            label: 'Proyección Predictiva (2026-2028)',
+                            label: 'ProyecciÃ³n Predictiva (2026-2028)',
                             data: projData,
                             borderColor: '#e11d48',
                             backgroundColor: 'rgba(225, 29, 72, 0.05)',
@@ -3401,7 +3308,7 @@
                             callbacks: {
                                 label: function(context) {
                                     const currentValue = context.raw || 0;
-                                    return ` Matrícula: ${currentValue.toLocaleString()}`;
+                                    return ` MatrÃ­cula: ${currentValue.toLocaleString()}`;
                                 }
                             }
                         }
@@ -3423,479 +3330,10 @@
         // ============================================================
         // STATIC HTML EXPORT (for GitHub Pages deployment)
         // ============================================================
-        function offerStaticExport() {
-            document.getElementById("static-export-modal").style.display = "flex";
-        }
-
-        function closeStaticExportModal() {
-            document.getElementById("static-export-modal").style.display = "none";
-        }
-
-        async function exportUpdatedHTML() {
-            const btn = document.getElementById("btn-download-html");
-            const progress = document.getElementById("static-export-progress");
-            btn.disabled = true;
-            btn.innerHTML = '<i class="ph ph-spinner" style="animation:spin 1s linear infinite;"></i> Generando...';
-            progress.style.display = "block";
-
-            try {
-                // 1. Fetch the current HTML source of this page
-                const response = await fetch(window.location.href);
-                let htmlSource = await response.text();
-
-                // 2. Build the embedded data block that will replace the markers
-                const data = window.dashboardData;
-                const embeddedBlock = `// Data Storage \u2014 @@DREP_DATA_START@@
-        window.dashboardData = {
-            matriculaArea: ${JSON.stringify(data.matriculaArea)},
-            matriculaSexo: ${JSON.stringify(data.matriculaSexo)},
-            docentes: ${JSON.stringify(data.docentes)},
-            noDocentes: ${JSON.stringify(data.noDocentes)},
-            servicios: ${JSON.stringify(data.servicios)},
-            locales: ${JSON.stringify(data.locales)}
-        };
-        // @@DREP_DATA_END@@`;
-
-                // 3. Replace the block between markers safely (ignoring encoding issues with dashes)
-                const startMarker = '@@DREP_DATA_START@@';
-                const endMarker   = '@@DREP_DATA_END@@';
-                const startIdx = htmlSource.indexOf(startMarker);
-                const endIdx   = htmlSource.indexOf(endMarker);
-
-                if (startIdx === -1 || endIdx === -1) {
-                    throw new Error('No se encontraron los marcadores de datos en el HTML. Intente refrescar la página (Ctrl+F5) y vuelva a subir el Excel.');
-                }
-
-                // Find the exact line starts to ensure clean replacement
-                const actualStart = htmlSource.lastIndexOf('\n', startIdx) + 1;
-                const actualEnd = htmlSource.indexOf('\n', endIdx + endMarker.length);
-
-                const updatedHTML = htmlSource.substring(0, actualStart) + embeddedBlock + '\n' + htmlSource.substring(actualEnd !== -1 ? actualEnd : endIdx + endMarker.length);
-
-                // 4. Download the updated HTML
-                const blob = new Blob([updatedHTML], { type: 'text/html;charset=utf-8' });
-                const url  = URL.createObjectURL(blob);
-                const a    = document.createElement('a');
-                a.href     = url;
-                a.download = 'index.html';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-
-                showToast('\u00a1index.html descargado! S\u00fabelo a GitHub para publicar los datos.', false);
-                closeStaticExportModal();
-
-            } catch (err) {
-                console.error('Error generando HTML est\u00e1tico:', err);
-                showToast('Error: ' + err.message, true);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="ph ph-download-simple"></i> Descargar index.html';
-                progress.style.display = "none";
-            }
-        }
-
-        // ============================================================
-        // OLS REGRESSION HELPER: computes m, c for a series of points
-        // ============================================================
-        function olsRegression(dataPoints) {
-            const n = dataPoints.length;
-            if (n < 2) return { m: 0, c: dataPoints[0] ? dataPoints[0].y : 0 };
-            let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
-            dataPoints.forEach(pt => { sumX += pt.x; sumY += pt.y; sumXY += pt.x * pt.y; sumXX += pt.x * pt.x; });
-            const meanX = sumX / n, meanY = sumY / n;
-            let num = 0, den = 0;
-            dataPoints.forEach(pt => { num += (pt.x - meanX) * (pt.y - meanY); den += (pt.x - meanX) ** 2; });
-            const m = den !== 0 ? num / den : 0;
-            return { m, c: meanY - m * meanX };
-        }
-
-        // EXPORT EXECUTIVE REPORT TO PDF (PDFMAKE)
-        function exportToPDF() {
-            try {
-                showToast("Generando PDF Ejecutivo... Espere por favor", false);
-
-                const ugelFilter  = window.activeFilters.ugel;
-                const yearFilter  = window.activeFilters.year;
-                const levelFilter = window.activeFilters.level;
-                const areaFilter  = window.activeFilters.area;
-                const isAllYears  = (yearFilter === "Todos");
-
-                const dateStr = new Date().toLocaleDateString("es-PE", {
-                    year: 'numeric', month: 'long', day: 'numeric',
-                    hour: '2-digit', minute: '2-digit'
-                });
-
-                const historicalYears = ["2021", "2022", "2023", "2024", "2025"];
-
-                // ── Helper: build UGEL totals map for a given year subset ──────
-                function buildUgelTotals(rows) {
-                    const map = {};
-                    rows.forEach(row => {
-                        const u = row.UGEL || "No Definido";
-                        map[u] = (map[u] || 0) + (row.Total || 0);
-                    });
-                    return map;
-                }
-
-                // ── Helper: pdfmake UGEL table body ──────────────────────────
-                function ugelTableRows(ugelMap, headerLabel) {
-                    const rows = [
-                        [{ text: 'UGEL / Unidad de Medida', style: 'tableHeader' }, { text: headerLabel, style: 'tableHeader' }]
-                    ];
-                    let grand = 0;
-                    Object.keys(ugelMap).sort().forEach(u => {
-                        grand += ugelMap[u];
-                        rows.push([
-                            { text: u, style: 'tableBody' },
-                            { text: ugelMap[u].toLocaleString(), style: 'tableBodyNumeric' }
-                        ]);
-                    });
-                    rows.push([
-                        { text: 'TOTAL CONSOLIDADO', bold: true, style: 'tableBody' },
-                        { text: grand.toLocaleString(), bold: true, style: 'tableBodyNumeric' }
-                    ]);
-                    return rows;
-                }
-
-                // ── UGEL list from dashboardData (all UGELs seen) ────────────
-                const allUgels = Array.from(new Set(
-                    (window.dashboardData.matriculaArea || []).map(r => r.UGEL).filter(Boolean)
-                )).sort();
-
-                // ── OLS forecast per UGEL ────────────────────────────────────
-                function ugelForecast(ugel) {
-                    const base = (window.dashboardData.matriculaArea || []).filter(r => r.UGEL === ugel);
-                    const yearSum = {};
-                    historicalYears.forEach(y => { yearSum[y] = 0; });
-                    base.forEach(r => {
-                        const y = r.Año ? r.Año.toString() : "";
-                        if (historicalYears.includes(y)) yearSum[y] += (r.Total || 0);
-                    });
-                    const pts = historicalYears.map(y => ({ x: parseInt(y), y: yearSum[y] }));
-                    const { m, c } = olsRegression(pts);
-                    return {
-                        hist: yearSum,
-                        f2026: Math.max(0, Math.round(m * 2026 + c)),
-                        f2027: Math.max(0, Math.round(m * 2027 + c)),
-                        f2028: Math.max(0, Math.round(m * 2028 + c)),
-                        trend: m
-                    };
-                }
-
-                // ── GLOBAL KPI values for single-year or fallback ───────────
-                const ratio     = document.getElementById("kpi-ratio-pupil").innerText;
-                const pctPublic = document.getElementById("kpi-pct-publica").innerText;
-                const pctRural  = document.getElementById("kpi-pct-rural").innerText;
-
-                // ── Global forecast values (regional) ───────────────────────
-                const gf2026 = document.getElementById("forecast-2026").innerText;
-                const gf2027 = document.getElementById("forecast-2027").innerText;
-                const gf2028 = document.getElementById("forecast-2028").innerText;
-
-                // ════════════════════════════════════════════════════════════
-                // CONTENT BUILDER
-                // ════════════════════════════════════════════════════════════
-                const content = [];
-
-                // ── COVER ────────────────────────────────────────────────────
-                content.push({ text: 'DREP PIURA - REPORTE EJECUTIVO', style: 'reportSubtitle' });
-                content.push({ text: 'SISTEMA DE GESTIÓN Y ANÁLISIS EDUCATIVO', style: 'reportTitle' });
-                content.push({ canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 2, lineColor: '#2563eb' }] });
-                content.push({ text: `Fecha de Generación: ${dateStr}`, style: 'dateStyle', margin: [0, 8, 0, 15] });
-
-                // ── FILTROS ──────────────────────────────────────────────────
-                content.push({ text: 'Filtros Activos en el Reporte:', style: 'sectionHeader' });
-                content.push({
-                    style: 'tableExample',
-                    table: {
-                        widths: ['20%', '30%', '20%', '30%'],
-                        body: [
-                            [
-                                { text: 'Año Fiscal:', bold: true, fillColor: '#f3f4f6' }, { text: isAllYears ? 'Todos (2021-2025)' : yearFilter },
-                                { text: 'UGEL Seleccionada:', bold: true, fillColor: '#f3f4f6' }, { text: ugelFilter }
-                            ],
-                            [
-                                { text: 'Nivel Educativo:', bold: true, fillColor: '#f3f4f6' }, { text: levelFilter },
-                                { text: 'Área Geográfica:', bold: true, fillColor: '#f3f4f6' }, { text: areaFilter }
-                            ]
-                        ]
-                    },
-                    layout: 'lightHorizontalLines',
-                    margin: [0, 0, 0, 15]
-                });
-
-                // ════════════════════════════════════════════════════════════
-                // CASE A: AÑO ESPECÍFICO — comportamiento original
-                // ════════════════════════════════════════════════════════════
-                if (!isAllYears) {
-                    const totalMatricula = document.getElementById("kpi-matricula").innerText;
-                    const totalDocentes  = document.getElementById("kpi-docentes").innerText;
-                    const totalLocales   = document.getElementById("kpi-locales").innerText;
-                    const totalServicios = document.getElementById("kpi-servicios").innerText;
-
-                    content.push({ text: 'Resumen de Indicadores Clave (KPIs):', style: 'sectionHeader' });
-                    content.push({
-                        style: 'kpiTable',
-                        table: {
-                            widths: ['25%', '25%', '25%', '25%'],
-                            body: [
-                                [
-                                    { text: 'Matrícula Escolar', style: 'kpiHeader' },
-                                    { text: 'Docentes Activos', style: 'kpiHeader' },
-                                    { text: 'Locales Escolares', style: 'kpiHeader' },
-                                    { text: 'Servicios Educ.', style: 'kpiHeader' }
-                                ],
-                                [
-                                    { text: totalMatricula, style: 'kpiValue' },
-                                    { text: totalDocentes, style: 'kpiValue' },
-                                    { text: totalLocales, style: 'kpiValue' },
-                                    { text: totalServicios, style: 'kpiValue' }
-                                ]
-                            ]
-                        },
-                        layout: {
-                            hLineWidth: (i) => (i === 0 || i === 2) ? 2 : 1,
-                            vLineWidth: () => 0,
-                            hLineColor: () => '#2563eb',
-                            paddingLeft: () => 10, paddingRight: () => 10,
-                            paddingTop: () => 10, paddingBottom: () => 10
-                        },
-                        margin: [0, 0, 0, 20]
-                    });
-
-                    content.push({
-                        columns: [
-                            {
-                                width: '50%',
-                                text: [
-                                    { text: 'Relación Alumno/Docente: ', bold: true }, { text: `${ratio}\n` },
-                                    { text: 'Porcentaje Locales Públicos: ', bold: true }, { text: `${pctPublic}\n` },
-                                    { text: 'Porcentaje Matrícula Rural: ', bold: true }, { text: `${pctRural}\n` }
-                                ],
-                                style: 'ratiosText'
-                            },
-                            {
-                                width: '50%',
-                                text: 'Este reporte ejecutivo presenta el consolidado oficial de los datos cargados en la plataforma regional DREP.',
-                                style: 'briefText'
-                            }
-                        ],
-                        margin: [0, 0, 0, 20]
-                    });
-
-                    const ugelMap = buildUgelTotals(window.filteredData.matriculaArea || []);
-                    content.push({ text: `Matrícula Consolidada por UGEL — Año ${yearFilter}:`, style: 'sectionHeader' });
-                    content.push({
-                        style: 'tableDataStyle',
-                        table: { headerRows: 1, widths: ['60%', '40%'], body: ugelTableRows(ugelMap, 'Estudiantes Matriculados') },
-                        layout: 'headerLineOnly',
-                        margin: [0, 0, 0, 25]
-                    });
-
-                    content.push({ text: 'Estimaciones de Matrícula Regional para Próximos Periodos:', style: 'sectionHeader' });
-                    content.push({
-                        style: 'tableExample',
-                        table: {
-                            widths: ['33.3%', '33.3%', '33.4%'],
-                            body: [
-                                [
-                                    { text: 'Predicho Año 2026', style: 'forecastTableHeader' },
-                                    { text: 'Predicho Año 2027', style: 'forecastTableHeader' },
-                                    { text: 'Predicho Año 2028', style: 'forecastTableHeader' }
-                                ],
-                                [
-                                    { text: gf2026, style: 'forecastTableValue' },
-                                    { text: gf2027, style: 'forecastTableValue' },
-                                    { text: gf2028, style: 'forecastTableValue' }
-                                ]
-                            ]
-                        },
-                        layout: 'lightHorizontalLines',
-                        margin: [0, 0, 0, 15]
-                    });
-
-                // ════════════════════════════════════════════════════════════
-                // CASE B: TODOS LOS AÑOS — desglose por año
-                // ════════════════════════════════════════════════════════════
-                } else {
-                    content.push({
-                        text: 'Nota: Se seleccionaron TODOS los años. El reporte muestra un desglose independiente por año. Los valores no se suman entre años para evitar duplicaciones.',
-                        style: 'noteText',
-                        margin: [0, 0, 0, 15]
-                    });
-
-                    // One section per historical year
-                    const allData = window.dashboardData.matriculaArea || [];
-                    historicalYears.forEach((yr, idx) => {
-                        const rowsForYear = allData.filter(r => {
-                            const matchY = r.Año && r.Año.toString() === yr;
-                            const matchU = (ugelFilter === "Todas" || r.UGEL === ugelFilter);
-                            const matchL = (levelFilter === "Todos" || r.Nivel === levelFilter);
-                            const matchA = (areaFilter === "Todas" || !r.Área || r.Área === areaFilter);
-                            return matchY && matchU && matchL && matchA;
-                        });
-
-                        const ugelMap  = buildUgelTotals(rowsForYear);
-                        const totalYr  = Object.values(ugelMap).reduce((a, b) => a + b, 0);
-                        const docRows  = (window.dashboardData.docentes || []).filter(r => r.Año && r.Año.toString() === yr && (ugelFilter === "Todas" || r.UGEL === ugelFilter));
-                        const totalDoc = docRows.reduce((s, r) => s + (r.Total || 0), 0);
-
-                        content.push({
-                            text: `▌ AÑO ${yr}`,
-                            style: 'yearBanner',
-                            margin: [0, idx === 0 ? 0 : 20, 0, 6]
-                        });
-
-                        // KPI mini-row for this year
-                        content.push({
-                            columns: [
-                                { width: '50%', stack: [
-                                    { text: 'Matrícula Total', style: 'miniKpiLabel' },
-                                    { text: totalYr.toLocaleString(), style: 'miniKpiValue', color: '#2563eb' }
-                                ]},
-                                { width: '50%', stack: [
-                                    { text: 'Docentes Totales', style: 'miniKpiLabel' },
-                                    { text: totalDoc.toLocaleString(), style: 'miniKpiValue', color: '#10b981' }
-                                ]}
-                            ],
-                            margin: [0, 0, 0, 8]
-                        });
-
-                        content.push({
-                            style: 'tableDataStyle',
-                            table: { headerRows: 1, widths: ['60%', '40%'], body: ugelTableRows(ugelMap, `Matrícula ${yr}`) },
-                            layout: 'headerLineOnly',
-                            margin: [0, 0, 0, 10]
-                        });
-                    });
-                }
-
-                // ════════════════════════════════════════════════════════════
-                // PROYECCIONES POR UGEL (siempre incluidas, nueva página)
-                // ════════════════════════════════════════════════════════════
-                content.push({ text: '', pageBreak: 'before' });
-                content.push({ text: 'PROYECCIONES DE MATRÍCULA POR UGEL (2021-2028)', style: 'reportTitle', margin: [0, 0, 0, 4] });
-                content.push({ text: 'Modelo de regresión lineal OLS · Datos históricos 2021-2025 · Proyección 2026-2028', style: 'reportSubtitle', margin: [0, 0, 0, 4] });
-                content.push({ canvas: [{ type: 'line', x1: 0, y1: 3, x2: 515, y2: 3, lineWidth: 1.5, lineColor: '#e11d48' }] });
-                content.push({ text: '', margin: [0, 0, 0, 12] });
-
-                const ugelsToProject = ugelFilter === "Todas" ? allUgels : [ugelFilter];
-
-                ugelsToProject.forEach((ugel, idx) => {
-                    const fc = ugelForecast(ugel);
-                    const trendSign = fc.trend >= 0 ? '▲' : '▼';
-                    const trendColor = fc.trend >= 0 ? '#10b981' : '#e11d48';
-
-                    // Header for each UGEL
-                    content.push({
-                        columns: [
-                            { width: '*', text: ugel, style: 'ugelProjectionTitle' },
-                            { width: 'auto', text: `${trendSign} Tendencia: ${fc.trend >= 0 ? '+' : ''}${Math.round(fc.trend).toLocaleString()} alumnos/año`, fontSize: 8, color: trendColor, alignment: 'right', margin: [0, 6, 0, 0] }
-                        ],
-                        margin: [0, idx === 0 ? 0 : 16, 0, 4]
-                    });
-
-                    // Build the 8-column projection table
-                    const headerRow = [
-                        { text: 'UGEL', style: 'projTableHeader' },
-                        ...historicalYears.map(y => ({ text: y, style: 'projTableHeaderHist' })),
-                        { text: '2026 (P)', style: 'projTableHeaderForecast' },
-                        { text: '2027 (P)', style: 'projTableHeaderForecast' },
-                        { text: '2028 (P)', style: 'projTableHeaderForecast' }
-                    ];
-
-                    const dataRow = [
-                        { text: ugel, fontSize: 8, bold: true },
-                        ...historicalYears.map(y => ({ text: (fc.hist[y] || 0).toLocaleString(), style: 'projCellHist' })),
-                        { text: fc.f2026.toLocaleString(), style: 'projCellForecast' },
-                        { text: fc.f2027.toLocaleString(), style: 'projCellForecast' },
-                        { text: fc.f2028.toLocaleString(), style: 'projCellForecast' }
-                    ];
-
-                    content.push({
-                        style: 'tableDataStyle',
-                        table: {
-                            headerRows: 1,
-                            widths: ['18%', '9%', '9%', '9%', '9%', '9%', '12%', '12%', '13%'],
-                            body: [headerRow, dataRow]
-                        },
-                        layout: {
-                            hLineWidth: (i) => (i === 0 || i === 1 || i === 2) ? 1 : 0.5,
-                            vLineWidth: () => 0.3,
-                            hLineColor: (i) => i <= 1 ? '#2563eb' : '#e2e8f0',
-                            vLineColor: () => '#e2e8f0',
-                            fillColor: (rowIndex, node, colIndex) => {
-                                if (rowIndex === 0) return colIndex < 6 ? '#2563eb' : '#e11d48';
-                                return colIndex >= 6 ? '#fff5f5' : null;
-                            }
-                        },
-                        margin: [0, 0, 0, 4]
-                    });
-
-                    // Variation bar: show % change from 2021 to 2028
-                    const base2021 = fc.hist["2021"] || 0;
-                    const pct2028 = base2021 > 0 ? (((fc.f2028 - base2021) / base2021) * 100).toFixed(1) : 'N/D';
-                    content.push({
-                        text: `Variación estimada 2021→2028: ${pct2028 !== 'N/D' ? (pct2028 >= 0 ? '+' : '') + pct2028 + '%' : 'Datos insuficientes'}`,
-                        fontSize: 7, color: '#64748b', italics: true, margin: [2, 0, 0, 0]
-                    });
-                });
-
-                // ── FOOTER SIGNATURE ─────────────────────────────────────────
-                content.push({
-                    text: 'Dirección Regional de Educación de Piura (DREP)\nOficina de Estadística y Monitoreo de Datos Regionales',
-                    style: 'footerSignature',
-                    margin: [0, 30, 0, 0]
-                });
-
-                // ════════════════════════════════════════════════════════════
-                // STYLES
-                // ════════════════════════════════════════════════════════════
-                const styles = {
-                    reportTitle:          { fontSize: 18, bold: true, color: '#1e293b', alignment: 'center', margin: [0, 0, 0, 5] },
-                    reportSubtitle:       { fontSize: 10, color: '#2563eb', bold: true, alignment: 'center', margin: [0, 5, 0, 2] },
-                    dateStyle:            { fontSize: 8, color: '#64748b', alignment: 'right' },
-                    sectionHeader:        { fontSize: 11, bold: true, color: '#1e293b', margin: [0, 10, 0, 6] },
-                    tableHeader:          { fontSize: 9, bold: true, fillColor: '#2563eb', color: 'white', padding: 6 },
-                    tableBody:            { fontSize: 9, padding: 5 },
-                    tableBodyNumeric:     { fontSize: 9, alignment: 'right', padding: 5 },
-                    kpiHeader:            { fontSize: 9, bold: true, color: '#475569', alignment: 'center' },
-                    kpiValue:             { fontSize: 14, bold: true, color: '#2563eb', alignment: 'center' },
-                    ratiosText:           { fontSize: 9, color: '#334155', lineHeight: 1.4 },
-                    briefText:            { fontSize: 9, italics: true, color: '#64748b', lineHeight: 1.4 },
-                    forecastTableHeader:  { fontSize: 9, bold: true, color: '#1e293b', alignment: 'center', fillColor: '#f1f5f9' },
-                    forecastTableValue:   { fontSize: 11, bold: true, color: '#e11d48', alignment: 'center', padding: 6 },
-                    footerSignature:      { fontSize: 8, alignment: 'center', color: '#94a3b8', bold: true },
-                    noteText:             { fontSize: 8.5, italics: true, color: '#64748b', background: '#fef9c3', margin: [0, 0, 0, 8] },
-                    yearBanner:           { fontSize: 12, bold: true, color: '#ffffff', fillColor: '#2563eb', padding: 6 },
-                    miniKpiLabel:         { fontSize: 7.5, color: '#64748b', bold: false },
-                    miniKpiValue:         { fontSize: 13, bold: true },
-                    ugelProjectionTitle:  { fontSize: 10, bold: true, color: '#1e293b' },
-                    projTableHeader:      { fontSize: 7.5, bold: true, color: 'white', alignment: 'center', padding: 4 },
-                    projTableHeaderHist:  { fontSize: 7.5, bold: true, color: 'white', alignment: 'center', padding: 4 },
-                    projTableHeaderForecast: { fontSize: 7.5, bold: true, color: 'white', alignment: 'center', padding: 4 },
-                    projCellHist:         { fontSize: 8, alignment: 'right', color: '#1e293b' },
-                    projCellForecast:     { fontSize: 8, alignment: 'right', color: '#e11d48', bold: true }
-                };
-
-                const docDefinition = {
-                    pageSize: 'A4',
-                    pageOrientation: 'portrait',
-                    pageMargins: [40, 40, 40, 40],
-                    content,
-                    styles
-                };
-
-                pdfMake.createPdf(docDefinition).download(`DREP_Reporte_Ejecutivo_${yearFilter}_${ugelFilter}.pdf`);
-                showToast("PDF Ejecutivo exportado con éxito", false);
-
-            } catch (err) {
-                console.error("Error generating PDF", err);
-                showToast("Error al exportar el PDF: " + err.message, true);
-            }
-        }
+        
     </script>
 </body>
 </html>
+
+
+
