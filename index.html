@@ -960,9 +960,149 @@
 
         /* Hide elements helper */
         .hidden { display: none !important; }
+        /* RESPONSIVE DESIGN STYLES FOR MOBILE BROWSERS */
+        .mobile-header {
+            display: none;
+        }
+        .filter-toggle-btn {
+            display: none;
+        }
+        .sidebar-overlay {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                height: 100vh;
+                z-index: 1000;
+                box-shadow: var(--shadow-lg);
+                top: 0;
+                left: 0;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100% !important;
+                padding: 1rem !important;
+                gap: 1rem !important;
+            }
+            .sidebar-overlay {
+                display: block !important;
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(2px);
+                z-index: 999;
+                transition: opacity 0.3s ease;
+            }
+            .sidebar-overlay.hidden {
+                display: none !important;
+            }
+            .filters-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem !important;
+            }
+            .filters-panel.mobile-collapsed > *:not(.filter-toggle-btn) {
+                display: none !important;
+            }
+            .filter-toggle-btn {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                width: 100%;
+                padding: 0.6rem;
+                font-size: 0.85rem;
+                font-weight: 600;
+                border-radius: var(--btn-radius);
+                border: 1px solid var(--border-color);
+                background-color: var(--bg-sidebar);
+                color: var(--text-main);
+                cursor: pointer;
+                margin-bottom: 0.5rem;
+            }
+            .topbar {
+                display: none !important;
+            }
+            .mobile-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                background-color: var(--bg-sidebar);
+                border-bottom: 1px solid var(--border-color);
+                padding: 0.75rem 1rem;
+                position: sticky;
+                top: 0;
+                z-index: 105;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+            .mobile-menu-toggle {
+                background: transparent;
+                border: none;
+                color: var(--text-main);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+            .mobile-logo-text h2 {
+                font-family: 'Outfit', sans-serif;
+                font-size: 1.25rem;
+                font-weight: 800;
+                color: var(--accent-primary);
+            }
+            .kpis-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.75rem !important;
+            }
+            .kpi-card {
+                padding: 0.75rem !important;
+                gap: 0.4rem !important;
+            }
+            .kpi-info .kpi-value {
+                font-size: 1.25rem !important;
+            }
+            .kpi-icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 1.1rem !important;
+                border-radius: 8px !important;
+            }
+            .chart-box {
+                min-height: 220px !important;
+                max-height: 250px !important;
+            }
+            #admin-dropdown-panel {
+                position: fixed !important;
+                top: 60px !important;
+                right: 10px !important;
+                left: 10px !important;
+                width: auto !important;
+                z-index: 1010 !important;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .charts-row-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .kpis-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
     </style>
 </head>
 <body class="light-mode">
+    <div class="sidebar-overlay hidden" onclick="toggleMobileSidebar(false)"></div>
 
     <div class="app-wrapper">
         
@@ -999,9 +1139,9 @@
                     <button class="btn btn-primary" style="width: 100%;" onclick="loadDashboardData(true)">
                         <i class="ph ph-arrows-clockwise"></i> Sincronizar Google Sheets
                     </button>
-                    <button class="btn btn-outline btn-warning" style="width: 100%; font-size:0.75rem; padding: 0.4rem;" onclick="resetDemoData()">
+                    <!--<button class="btn btn-outline btn-warning" style="width: 100%; font-size:0.75rem; padding: 0.4rem;" onclick="resetDemoData()">
                         <i class="ph ph-trash"></i> Restablecer Demo
-                    </button>
+                    </button>-->
                     <button class="btn btn-outline" style="width:100%; font-size:0.75rem; padding:0.4rem; color:var(--text-muted);" onclick="lockAdminPanel()">
                         <i class="ph ph-lock"></i> Cerrar Sesión Admin
                     </button>
@@ -1021,6 +1161,19 @@
 
         <!-- MAIN CONTENT AREA -->
         <main class="main-content">
+            
+            <!-- Mobile Header (Visible on Mobile only) -->
+            <div class="mobile-header">
+                <button class="mobile-menu-toggle" onclick="toggleMobileSidebar(true)">
+                    <i class="ph ph-list"></i>
+                </button>
+                <div class="mobile-logo-text">
+                    <h2>DREP Piura</h2>
+                </div>
+                <button class="btn-theme-toggle" onclick="toggleTheme()">
+                    <i class="ph ph-moon" id="theme-icon-mobile"></i>
+                </button>
+            </div>
             
             <!-- TOPBAR -->
             <header class="topbar">
@@ -1085,9 +1238,9 @@
                                 <button class="btn btn-outline" style="width:100%; justify-content:flex-start; gap:0.5rem;" onclick="switchMainTab('informacion'); closeAdminAccessPanel();">
                                     <i class="ph ph-info"></i> Información General
                                 </button>
-                                <button class="btn btn-outline btn-warning" style="width:100%; font-size:0.78rem; justify-content:flex-start; gap:0.5rem;" onclick="resetDemoData(); closeAdminAccessPanel();">
+                                <!-- <button class="btn btn-outline btn-warning" style="width:100%; font-size:0.78rem; justify-content:flex-start; gap:0.5rem;" onclick="resetDemoData(); closeAdminAccessPanel();">
                                     <i class="ph ph-trash"></i> Restablecer Demo
-                                </button>
+                                </button>-->
                                 <div style="border-top:1px solid var(--border-color); padding-top:0.5rem; margin-top:0.25rem;">
                                     <button onclick="lockAdminPanel()" style="width:100%; background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:0.75rem; padding:0.35rem; display:flex; align-items:center; gap:0.4rem; border-radius:6px;" onmouseenter="this.style.background='var(--bg-hover)'" onmouseleave="this.style.background='none'">
                                         <i class="ph ph-lock"></i> Cerrar sesión de administrador
@@ -1103,7 +1256,10 @@
             <div id="tab-dashboard" class="tab-panel active">
                 
                 <!-- FILTERS PANEL -->
-                <section class="filters-panel">
+                <section class="filters-panel mobile-collapsed">
+                    <button class="filter-toggle-btn" id="btn-toggle-filters" onclick="toggleMobileFilters()">
+                        <i class="ph ph-caret-down"></i> <span id="btn-toggle-filters-text">Mostrar Filtros</span>
+                    </button>
                     <div class="filter-group">
                         <label for="filter-year">Año Histórico</label>
                         <select id="filter-year" class="filter-select" onchange="applyFilters()">
@@ -1219,7 +1375,7 @@
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <div class="dashboard-card-title">
-                                <h3>Distribución Espacial UGEL Piura</h3>
+                                <h3>Distribución Espacial UGELs de Piura</h3>
                                 <p>Haz clic en los marcadores de las UGELs para filtrar los datos automáticamente</p>
                             </div>
                             <span class="badge" style="background-color: var(--accent-glow); color: var(--accent-primary); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 4px;">Interactivo</span>
@@ -1646,6 +1802,32 @@
 
     <script>
         // CONFIGURATIONS AND INITIAL STATES
+        // SafeStorage: Try-catch wrapper for localStorage to prevent security crashes on local files
+        const SafeStorage = {
+            getItem: function(key) {
+                try {
+                    return window.localStorage.getItem(key);
+                } catch(e) {
+                    console.warn("SafeStorage.getItem blocked:", e.message);
+                    return null;
+                }
+            },
+            setItem: function(key, value) {
+                try {
+                    window.localStorage.setItem(key, value);
+                } catch(e) {
+                    console.warn("SafeStorage.setItem blocked:", e.message);
+                }
+            },
+            removeItem: function(key) {
+                try {
+                    window.localStorage.removeItem(key);
+                } catch(e) {
+                    console.warn("SafeStorage.removeItem blocked:", e.message);
+                }
+            }
+        };
+
         const UGEL_COLORS = {
             "DRE Piura": "#e11d48",
             "UGEL Ayabaca": "#FF6B6B",
@@ -1740,7 +1922,7 @@
                 body.classList.remove("dark-mode");
                 body.classList.add("light-mode");
                 icon.className = "ph ph-moon";
-                localStorage.setItem("drep-theme", "light");
+                SafeStorage.setItem("drep-theme", "light");
                 if (window.map) {
                     window.map.removeLayer(darkTileLayer);
                     lightTileLayer.addTo(window.map);
@@ -1749,7 +1931,7 @@
                 body.classList.remove("light-mode");
                 body.classList.add("dark-mode");
                 icon.className = "ph ph-sun";
-                localStorage.setItem("drep-theme", "dark");
+                SafeStorage.setItem("drep-theme", "dark");
                 if (window.map) {
                     window.map.removeLayer(lightTileLayer);
                     darkTileLayer.addTo(window.map);
@@ -1759,7 +1941,7 @@
         }
 
         function loadThemeFromStorage() {
-            const savedTheme = localStorage.getItem("drep-theme") || "light";
+            const savedTheme = SafeStorage.getItem("drep-theme") || "light";
             const body = document.body;
             const icon = document.getElementById("theme-icon");
             if (savedTheme === "dark") {
@@ -2041,13 +2223,13 @@
         // PERSIST DATA IN LOCALSTORAGE
         function saveDashboardToStorage() {
             try {
-                localStorage.setItem("drep_data_matriculaArea", JSON.stringify(window.dashboardData.matriculaArea));
-                localStorage.setItem("drep_data_matriculaSexo", JSON.stringify(window.dashboardData.matriculaSexo));
-                localStorage.setItem("drep_data_docentes", JSON.stringify(window.dashboardData.docentes));
-                localStorage.setItem("drep_data_noDocentes", JSON.stringify(window.dashboardData.noDocentes));
-                localStorage.setItem("drep_data_servicios", JSON.stringify(window.dashboardData.servicios));
-                localStorage.setItem("drep_data_locales", JSON.stringify(window.dashboardData.locales));
-                localStorage.setItem("drep_data_loaded", "true");
+                SafeStorage.setItem("drep_data_matriculaArea", JSON.stringify(window.dashboardData.matriculaArea));
+                SafeStorage.setItem("drep_data_matriculaSexo", JSON.stringify(window.dashboardData.matriculaSexo));
+                SafeStorage.setItem("drep_data_docentes", JSON.stringify(window.dashboardData.docentes));
+                SafeStorage.setItem("drep_data_noDocentes", JSON.stringify(window.dashboardData.noDocentes));
+                SafeStorage.setItem("drep_data_servicios", JSON.stringify(window.dashboardData.servicios));
+                SafeStorage.setItem("drep_data_locales", JSON.stringify(window.dashboardData.locales));
+                SafeStorage.setItem("drep_data_loaded", "true");
                 return true;
             } catch(e) {
                 console.error("Error writing to localStorage", e);
@@ -2059,13 +2241,13 @@
         // RESET STORAGE AND RESTORE DEMO DATA
         function resetDemoData() {
             if (confirm("¿Estás seguro de restablecer los datos? Esto eliminará cualquier Excel subido y recargará la data de demostración de Piura.")) {
-                localStorage.removeItem("drep_data_matriculaArea");
-                localStorage.removeItem("drep_data_matriculaSexo");
-                localStorage.removeItem("drep_data_docentes");
-                localStorage.removeItem("drep_data_noDocentes");
-                localStorage.removeItem("drep_data_servicios");
-                localStorage.removeItem("drep_data_locales");
-                localStorage.removeItem("drep_data_loaded");
+                SafeStorage.removeItem("drep_data_matriculaArea");
+                SafeStorage.removeItem("drep_data_matriculaSexo");
+                SafeStorage.removeItem("drep_data_docentes");
+                SafeStorage.removeItem("drep_data_noDocentes");
+                SafeStorage.removeItem("drep_data_servicios");
+                SafeStorage.removeItem("drep_data_locales");
+                SafeStorage.removeItem("drep_data_loaded");
                 
                 initApp();
                 showToast("Data de demostración restaurada con éxito", false);
@@ -2073,7 +2255,36 @@
         }
 
         // TAB SWITCH NAVIGATION
+        // Mobile Sidebar & Filters Controls
+        function toggleMobileSidebar(isOpen) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (isOpen) {
+                sidebar.classList.add('active');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.remove('active');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function toggleMobileFilters() {
+            const filtersPanel = document.querySelector('.filters-panel');
+            const toggleBtnText = document.getElementById('btn-toggle-filters-text');
+            const toggleBtnIcon = document.querySelector('#btn-toggle-filters i');
+            if (filtersPanel.classList.contains('mobile-collapsed')) {
+                filtersPanel.classList.remove('mobile-collapsed');
+                toggleBtnText.textContent = "Ocultar Filtros";
+                toggleBtnIcon.className = "ph ph-caret-up";
+            } else {
+                filtersPanel.classList.add('mobile-collapsed');
+                toggleBtnText.textContent = "Mostrar Filtros";
+                toggleBtnIcon.className = "ph ph-caret-down";
+            }
+        }
+
         function switchMainTab(tabId) {
+            toggleMobileSidebar(false);
             $(".nav-item").removeClass("active");
             $(`.nav-item[onclick*="${tabId}"]`).addClass("active");
             
@@ -3244,12 +3455,636 @@
         }
 
         // ============================================================
-        // STATIC HTML EXPORT (for GitHub Pages deployment)
+        // OLS REGRESSION HELPER: computes m, c for a series of points
         // ============================================================
-        
+        // CHART GENERATOR IN MEMORY FOR PDF EXPORT
+        // ============================================================
+        function generateScatterChartImage(indicatorKey, titleText) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 650;
+            canvas.height = 320;
+            document.body.appendChild(canvas);
+
+            const historicalYears = ["2021", "2022", "2023", "2024", "2025"];
+            
+            // Get sorted UGEL list with DRE Piura first
+            let ugels = Array.from(new Set((window.dashboardData.matriculaArea || []).map(d => d.UGEL).filter(Boolean))).sort();
+            if (ugels.includes("DRE Piura")) {
+                ugels = ["DRE Piura"].concat(ugels.filter(u => u !== "DRE Piura"));
+            }
+
+            const datasets = ugels.map(uName => {
+                const points = historicalYears.map(yr => {
+                    const rows = (window.dashboardData[indicatorKey] || []).filter(r => {
+                        const rYear = r.AÃ±o ? r.AÃ±o.toString().trim() : "";
+                        const matchYear = (rYear === yr);
+                        const matchUgel = (r.UGEL === uName);
+                        const matchLvl = (window.activeFilters.level === "Todos" || r.Nivel === window.activeFilters.level);
+                        const matchArea = (window.activeFilters.area === "Todas" || !r.Ãrea || r.Ãrea === window.activeFilters.area);
+                        return matchYear && matchUgel && matchLvl && matchArea;
+                    });
+                    const sum = rows.reduce((s, r) => s + (r.Total || 0), 0);
+                    return { x: parseInt(yr), y: sum };
+                });
+
+                return {
+                    label: uName,
+                    data: points,
+                    borderColor: UGEL_COLORS[uName] || '#64748b',
+                    backgroundColor: UGEL_COLORS[uName] || '#64748b',
+                    showLine: true,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.1
+                };
+            });
+
+            const chart = new Chart(canvas.getContext('2d'), {
+                type: 'scatter',
+                data: {
+                    datasets: datasets
+                },
+                options: {
+                    responsive: false,
+                    animation: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: titleText,
+                            font: { size: 12, weight: 'bold', family: 'Inter' }
+                        },
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                boxWidth: 8,
+                                font: { size: 7, family: 'Inter' }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: { display: true, text: 'AÃ±o', font: { size: 9, family: 'Inter' } },
+                            ticks: {
+                                callback: function(value) {
+                                    if (historicalYears.includes(value.toString())) return value;
+                                    return '';
+                                },
+                                stepSize: 1
+                            }
+                        },
+                        y: {
+                            title: { display: true, text: 'Cantidad', font: { size: 9, family: 'Inter' } },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            chart.destroy();
+            document.body.removeChild(canvas);
+            return imgData;
+        }
+
+        // ============================================================
+        // OLS REGRESSION HELPER: computes m, c for a series of points
+        // ============================================================
+        function olsRegression(dataPoints) {
+            const n = dataPoints.length;
+            if (n < 2) return { m: 0, c: dataPoints[0] ? dataPoints[0].y : 0 };
+            let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+            dataPoints.forEach(pt => {
+                sumX += pt.x;
+                sumY += pt.y;
+                sumXY += pt.x * pt.y;
+                sumXX += pt.x * pt.x;
+            });
+            const meanX = sumX / n;
+            const meanY = sumY / n;
+            let num = 0, den = 0;
+            dataPoints.forEach(pt => {
+                num += (pt.x - meanX) * (pt.y - meanY);
+                den += (pt.x - meanX) * (pt.x - meanX);
+            });
+            const m = den !== 0 ? num / den : 0;
+            return { m, c: meanY - m * meanX };
+        }
+
+        // EXPORT EXECUTIVE REPORT TO PDF (PDFMAKE)
+        function exportToPDF() {
+            try {
+                showToast("Generando PDF Ejecutivo... Espere por favor", false);
+
+                const ugelFilter  = window.activeFilters.ugel;
+                const yearFilter  = window.activeFilters.year;
+                const levelFilter = window.activeFilters.level;
+                const areaFilter  = window.activeFilters.area;
+                const isAllYears  = (yearFilter === "Todos");
+
+                const dateStr = new Date().toLocaleDateString("es-PE", {
+                    year: 'numeric', month: 'long', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                const historicalYears = ["2021", "2022", "2023", "2024", "2025"];
+                
+                // Get sorted list of UGELs with DRE Piura first
+                let ugelList = Array.from(new Set((window.dashboardData.matriculaArea || []).map(d => d.UGEL).filter(Boolean))).sort();
+                if (ugelList.includes("DRE Piura")) {
+                    ugelList = ["DRE Piura"].concat(ugelList.filter(u => u !== "DRE Piura"));
+                }
+
+                // Build content array
+                const content = [];
+
+                // Title and Header block
+                content.push({
+                    text: 'Filtros Activos en el Reporte:',
+                    fontSize: 10,
+                    bold: true,
+                    margin: [0, 0, 0, 4]
+                });
+
+                content.push({
+                    table: {
+                        widths: ['15%', '35%', '15%', '35%'],
+                        body: [
+                            [
+                                { text: 'AÃ±o Fiscal:', bold: true, style: 'filterLabel' },
+                                { text: yearFilter === "Todos" ? "Todos (2021-2025)" : yearFilter, style: 'filterVal' },
+                                { text: 'UGEL Seleccionada:', bold: true, style: 'filterLabel' },
+                                { text: ugelFilter === "Todas" ? "Todas" : ugelFilter, style: 'filterVal' }
+                            ],
+                            [
+                                { text: 'Nivel Educativo:', bold: true, style: 'filterLabel' },
+                                { text: levelFilter === "Todos" ? "Todos" : levelFilter, style: 'filterVal' },
+                                { text: 'Ãrea GeogrÃ¡fica:', bold: true, style: 'filterLabel' },
+                                { text: areaFilter === "Todas" ? "Todas" : areaFilter, style: 'filterVal' }
+                            ]
+                        ]
+                    },
+                    layout: {
+                        hLineWidth: function (i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1.5 : 0;
+                        },
+                        vLineWidth: function () { return 0; },
+                        hLineColor: function () { return '#000000'; }
+                    },
+                    margin: [0, 0, 0, 10]
+                });
+
+                if (isAllYears) {
+                    // Shaded yellow note banner
+                    content.push({
+                        table: {
+                            widths: ['100%'],
+                            body: [
+                                [
+                                    {
+                                        text: 'Nota: Se seleccionaron TODOS los aÃ±os. El reporte muestra un desglose independiente por aÃ±o. Los valores no se suman entre aÃ±os para evitar duplicaciones.',
+                                        style: 'briefText',
+                                        italics: true
+                                    }
+                                ]
+                            ]
+                        },
+                        layout: {
+                            hLineWidth: function () { return 0; },
+                            vLineWidth: function () { return 0; },
+                            fillColor: function () { return '#fef9c3'; }
+                        },
+                        margin: [0, 0, 0, 15]
+                    });
+
+                    // Generate a table for each historical year
+                    historicalYears.forEach(yr => {
+                        const tableRows = [];
+                        let sumMat = 0;
+                        let sumDoc = 0;
+                        let sumNoDoc = 0;
+                        let sumServ = 0;
+                        let sumLoc = 0;
+
+                        ugelList.forEach(uName => {
+                            const mRows = (window.dashboardData.matriculaArea || []).filter(r => {
+                                return r.AÃ±o.toString() === yr && r.UGEL === uName &&
+                                       (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                       (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                            });
+                            const dRows = (window.dashboardData.docentes || []).filter(r => {
+                                return r.AÃ±o.toString() === yr && r.UGEL === uName &&
+                                       (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                       (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                            });
+                            const ndRows = (window.dashboardData.noDocentes || []).filter(r => {
+                                return r.AÃ±o.toString() === yr && r.UGEL === uName &&
+                                       (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                       (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                            });
+                            const sRows = (window.dashboardData.servicios || []).filter(r => {
+                                return r.AÃ±o.toString() === yr && r.UGEL === uName &&
+                                       (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                       (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                            });
+                            const lRows = (window.dashboardData.locales || []).filter(r => {
+                                return r.AÃ±o.toString() === yr && r.UGEL === uName &&
+                                       (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                       (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                            });
+
+                            const mat = mRows.reduce((s, r) => s + (r.Total || 0), 0);
+                            const doc = dRows.reduce((s, r) => s + (r.Total || 0), 0);
+                            const nodoc = ndRows.reduce((s, r) => s + (r.Total || 0), 0);
+                            const serv = sRows.reduce((s, r) => s + (r.Total || 0), 0);
+                            const loc = lRows.reduce((s, r) => s + (r.Total || 0), 0);
+
+                            sumMat += mat;
+                            sumDoc += doc;
+                            sumNoDoc += nodoc;
+                            sumServ += serv;
+                            sumLoc += loc;
+
+                            tableRows.push([
+                                { text: uName, style: 'tableBody' },
+                                { text: mat > 0 ? mat.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                                { text: doc > 0 ? doc.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                                { text: nodoc > 0 ? nodoc.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                                { text: serv > 0 ? serv.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                                { text: loc > 0 ? loc.toLocaleString() : '0', alignment: 'right', style: 'tableBody' }
+                            ]);
+                        });
+
+                        // Append TOTAL CONSOLIDADO row
+                        tableRows.push([
+                            { text: 'TOTAL CONSOLIDADO', bold: true, style: 'tableBody' },
+                            { text: sumMat.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                            { text: sumDoc.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                            { text: sumNoDoc.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                            { text: sumServ.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                            { text: sumLoc.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' }
+                        ]);
+
+                        const tableHeader = [
+                            [
+                                { text: 'UGEL / Unidad de Medida', style: 'tableHeader', bold: true },
+                                { text: MatrÃ­cula , style: 'tableHeader', alignment: 'right', bold: true },
+                                { text: Docentes , style: 'tableHeader', alignment: 'right', bold: true },
+                                { text: No Docentes , style: 'tableHeader', alignment: 'right', bold: true },
+                                { text: Servicios , style: 'tableHeader', alignment: 'right', bold: true },
+                                { text: Locales , style: 'tableHeader', alignment: 'right', bold: true }
+                            ]
+                        ].concat(tableRows);
+
+                        // Year KPI display
+                        content.push({
+                            columns: [
+                                {
+                                    width: '50%',
+                                    stack: [
+                                        { text: 'MatrÃ­cula Total', style: 'miniKpiLabel' },
+                                        { text: sumMat.toLocaleString(), style: 'miniKpiValueBlue' }
+                                    ]
+                                },
+                                {
+                                    width: '50%',
+                                    stack: [
+                                        { text: 'Docentes Totales', style: 'miniKpiLabel' },
+                                        { text: sumDoc.toLocaleString(), style: 'miniKpiValueGreen' }
+                                    ]
+                                }
+                            ],
+                            margin: [0, 5, 0, 8]
+                        });
+
+                        // Render the Year Table
+                        content.push({
+                            table: {
+                                headerRows: 1,
+                                widths: ['25%', '15%', '15%', '15%', '15%', '15%'],
+                                body: tableHeader
+                            },
+                            layout: {
+                                hLineWidth: function (i, node) {
+                                    return (i === 0 || i === 1 || i === node.table.body.length - 1 || i === node.table.body.length) ? 1.5 : 0.5;
+                                },
+                                vLineWidth: function () { return 0; },
+                                hLineColor: function (i, node) {
+                                    return (i === 0 || i === 1 || i === node.table.body.length - 1) ? '#2563eb' : '#e2e8f0';
+                                },
+                                fillColor: function (rowIndex, node, columnIndex) {
+                                    return (rowIndex === 0) ? '#2563eb' : (rowIndex % 2 === 0 && rowIndex < node.table.body.length - 1) ? '#f8fafc' : null;
+                                }
+                            },
+                            margin: [0, 0, 0, 20]
+                        });
+                    });
+
+                } else {
+                    // Single Year report
+                    let sumMat = 0;
+                    let sumDoc = 0;
+                    let sumNoDoc = 0;
+                    let sumServ = 0;
+                    let sumLoc = 0;
+
+                    const tableRows = [];
+                    ugelList.forEach(uName => {
+                        const mRows = (window.dashboardData.matriculaArea || []).filter(r => {
+                            return r.AÃ±o.toString() === yearFilter && r.UGEL === uName &&
+                                   (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                   (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                        });
+                        const dRows = (window.dashboardData.docentes || []).filter(r => {
+                            return r.AÃ±o.toString() === yearFilter && r.UGEL === uName &&
+                                   (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                   (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                        });
+                        const ndRows = (window.dashboardData.noDocentes || []).filter(r => {
+                            return r.AÃ±o.toString() === yearFilter && r.UGEL === uName &&
+                                   (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                   (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                        });
+                        const sRows = (window.dashboardData.servicios || []).filter(r => {
+                            return r.AÃ±o.toString() === yearFilter && r.UGEL === uName &&
+                                   (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                   (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                        });
+                        const lRows = (window.dashboardData.locales || []).filter(r => {
+                            return r.AÃ±o.toString() === yearFilter && r.UGEL === uName &&
+                                   (levelFilter === "Todos" || r.Nivel === levelFilter) &&
+                                   (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                        });
+
+                        const mat = mRows.reduce((s, r) => s + (r.Total || 0), 0);
+                        const doc = dRows.reduce((s, r) => s + (r.Total || 0), 0);
+                        const nodoc = ndRows.reduce((s, r) => s + (r.Total || 0), 0);
+                        const serv = sRows.reduce((s, r) => s + (r.Total || 0), 0);
+                        const loc = lRows.reduce((s, r) => s + (r.Total || 0), 0);
+
+                        sumMat += mat;
+                        sumDoc += doc;
+                        sumNoDoc += nodoc;
+                        sumServ += serv;
+                        sumLoc += loc;
+
+                        tableRows.push([
+                            { text: uName, style: 'tableBody' },
+                            { text: mat > 0 ? mat.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                            { text: doc > 0 ? doc.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                            { text: nodoc > 0 ? nodoc.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                            { text: serv > 0 ? serv.toLocaleString() : '0', alignment: 'right', style: 'tableBody' },
+                            { text: loc > 0 ? loc.toLocaleString() : '0', alignment: 'right', style: 'tableBody' }
+                        ]);
+                    });
+
+                    // Add TOTAL CONSOLIDADO row
+                    tableRows.push([
+                        { text: 'TOTAL CONSOLIDADO', bold: true, style: 'tableBody' },
+                        { text: sumMat.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                        { text: sumDoc.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                        { text: sumNoDoc.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                        { text: sumServ.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' },
+                        { text: sumLoc.toLocaleString(), bold: true, alignment: 'right', style: 'tableBody' }
+                    ]);
+
+                    const tableHeader = [
+                        [
+                            { text: 'UGEL / Unidad de Medida', style: 'tableHeader', bold: true },
+                            { text: MatrÃ­cula , style: 'tableHeader', alignment: 'right', bold: true },
+                            { text: Docentes , style: 'tableHeader', alignment: 'right', bold: true },
+                            { text: No Docentes , style: 'tableHeader', alignment: 'right', bold: true },
+                            { text: Servicios , style: 'tableHeader', alignment: 'right', bold: true },
+                            { text: Locales , style: 'tableHeader', alignment: 'right', bold: true }
+                        ]
+                    ].concat(tableRows);
+
+                    content.push({
+                        columns: [
+                            {
+                                width: '50%',
+                                stack: [
+                                    { text: 'MatrÃ­cula Total', style: 'miniKpiLabel' },
+                                    { text: sumMat.toLocaleString(), style: 'miniKpiValueBlue' }
+                                ]
+                            },
+                            {
+                                width: '50%',
+                                stack: [
+                                    { text: 'Docentes Totales', style: 'miniKpiLabel' },
+                                    { text: sumDoc.toLocaleString(), style: 'miniKpiValueGreen' }
+                                ]
+                            }
+                        ],
+                        margin: [0, 5, 0, 10]
+                    });
+
+                    // Render the Table
+                    content.push({
+                        table: {
+                            headerRows: 1,
+                            widths: ['25%', '15%', '15%', '15%', '15%', '15%'],
+                            body: tableHeader
+                        },
+                        layout: {
+                            hLineWidth: function (i, node) {
+                                return (i === 0 || i === 1 || i === node.table.body.length - 1 || i === node.table.body.length) ? 1.5 : 0.5;
+                            },
+                            vLineWidth: function () { return 0; },
+                            hLineColor: function (i, node) {
+                                return (i === 0 || i === 1 || i === node.table.body.length - 1) ? '#2563eb' : '#e2e8f0';
+                            },
+                            fillColor: function (rowIndex, node, columnIndex) {
+                                return (rowIndex === 0) ? '#2563eb' : (rowIndex % 2 === 0 && rowIndex < node.table.body.length - 1) ? '#f8fafc' : null;
+                            }
+                        },
+                        margin: [0, 0, 0, 20]
+                    });
+                }
+
+                // Section 3: Scatter Plots (DispersiÃ³n)
+                content.push({
+                    text: '3. AnÃ¡lisis de DispersiÃ³n y EvoluciÃ³n HistÃ³rica (2021-2025)',
+                    style: 'sectionHeader',
+                    pageBreak: 'before'
+                });
+
+                content.push({
+                    text: 'Los siguientes grÃ¡ficos de dispersiÃ³n representan la evoluciÃ³n y distribuciÃ³n anual de la matrÃ­cula y los docentes activos por UGEL en la RegiÃ³n Piura, permitiendo identificar patrones geogrÃ¡ficos e histÃ³ricos de crecimiento.',
+                    style: 'briefText',
+                    margin: [0, 0, 0, 15]
+                });
+
+                // Generate and append Base64 chart images
+                const matChart = generateScatterChartImage('matriculaArea', 'DispersiÃ³n HistÃ³rica: EvoluciÃ³n de MatrÃ­cula por UGEL');
+                const docChart = generateScatterChartImage('docentes', 'DispersiÃ³n HistÃ³rica: EvoluciÃ³n de Docentes por UGEL');
+
+                content.push({
+                    image: matChart,
+                    width: 500,
+                    alignment: 'center',
+                    margin: [0, 0, 0, 20]
+                });
+
+                content.push({
+                    image: docChart,
+                    width: 500,
+                    alignment: 'center',
+                    margin: [0, 0, 0, 20]
+                });
+
+                // Section 4: Proyecciones por UGEL
+                content.push({
+                    text: '4. Proyecciones Predictivas del Comportamiento Escolar (2026-2028)',
+                    style: 'sectionHeader'
+                });
+
+                // Decide which UGELs to project
+                let ugelsToProject = [];
+                if (ugelFilter === "Todas") {
+                    ugelsToProject = ugelList;
+                } else {
+                    ugelsToProject = [ugelFilter];
+                }
+
+                ugelsToProject.forEach((uName, idx) => {
+                    content.push({
+                        text: Proyecciones de MatrÃ­cula: ,
+                        style: 'ugelProjectionTitle',
+                        pageBreak: 'before',
+                        margin: [0, 10, 0, 10]
+                    });
+
+                    // Gather historical data for this UGEL
+                    const yearSums = {};
+                    historicalYears.forEach(y => { yearSums[y] = 0; });
+
+                    const uRows = (window.dashboardData.matriculaArea || []).filter(r => {
+                        const matchUgel = (r.UGEL === uName);
+                        const matchLvl = (levelFilter === "Todos" || r.Nivel === levelFilter);
+                        const matchArea = (areaFilter === "Todas" || !r.Ãrea || r.Ãrea === areaFilter);
+                        return matchUgel && matchLvl && matchArea;
+                    });
+
+                    uRows.forEach(row => {
+                        const yr = row.AÃ±o ? row.AÃ±o.toString().trim() : "";
+                        if (historicalYears.includes(yr)) {
+                            yearSums[yr] += row.Total || 0;
+                        }
+                    });
+
+                    // Build regression points
+                    const points = historicalYears.map(yr => ({
+                        x: parseInt(yr),
+                        y: yearSums[yr]
+                    }));
+
+                    const reg = olsRegression(points);
+
+                    // Predict 2026, 2027, 2028
+                    const p2026 = Math.max(0, Math.round(reg.m * 2026 + reg.c));
+                    const p2027 = Math.max(0, Math.round(reg.m * 2027 + reg.c));
+                    const p2028 = Math.max(0, Math.round(reg.m * 2028 + reg.c));
+
+                    // Slope indicator
+                    const trendArrow = reg.m > 0 ? 'â–² Crecimiento' : reg.m < 0 ? 'â–¼ Decrecimiento' : 'â–  Estable';
+                    const trendColor = reg.m > 0 ? '#10b981' : reg.m < 0 ? '#ef4444' : '#64748b';
+
+                    // Projection table
+                    content.push({
+                        table: {
+                            headerRows: 1,
+                            widths: ['20%', '10%', '10%', '10%', '10%', '10%', '10%', '10%', '10%'],
+                            body: [
+                                [
+                                    { text: 'UGEL', style: 'tableHeader', alignment: 'center' },
+                                    { text: '2021', style: 'tableHeader', alignment: 'right' },
+                                    { text: '2022', style: 'tableHeader', alignment: 'right' },
+                                    { text: '2023', style: 'tableHeader', alignment: 'right' },
+                                    { text: '2024', style: 'tableHeader', alignment: 'right' },
+                                    { text: '2025', style: 'tableHeader', alignment: 'right' },
+                                    { text: '2026 (P)', style: 'tableHeader', alignment: 'right', fillColor: '#fef2f2' },
+                                    { text: '2027 (P)', style: 'tableHeader', alignment: 'right', fillColor: '#fef2f2' },
+                                    { text: '2028 (P)', style: 'tableHeader', alignment: 'right', fillColor: '#fef2f2' }
+                                ],
+                                [
+                                    { text: uName, alignment: 'center', style: 'tableBody', bold: true },
+                                    { text: yearSums["2021"].toLocaleString(), alignment: 'right', style: 'tableBody' },
+                                    { text: yearSums["2022"].toLocaleString(), alignment: 'right', style: 'tableBody' },
+                                    { text: yearSums["2023"].toLocaleString(), alignment: 'right', style: 'tableBody' },
+                                    { text: yearSums["2024"].toLocaleString(), alignment: 'right', style: 'tableBody' },
+                                    { text: yearSums["2025"].toLocaleString(), alignment: 'right', style: 'tableBody' },
+                                    { text: p2026.toLocaleString(), alignment: 'right', style: 'tableBody', bold: true, color: '#e11d48' },
+                                    { text: p2027.toLocaleString(), alignment: 'right', style: 'tableBody', bold: true, color: '#e11d48' },
+                                    { text: p2028.toLocaleString(), alignment: 'right', style: 'tableBody', bold: true, color: '#e11d48' }
+                                ]
+                            ]
+                        },
+                        layout: 'lightHorizontalLines',
+                        margin: [0, 5, 0, 10]
+                    });
+
+                    // Trend description
+                    content.push({
+                        text: [
+                            { text: 'AnÃ¡lisis de Tendencia Lineal (OLS):\n', bold: true },
+                            { text: DirecciÃ³n: , bold: false },
+                            { text: trendArrow, bold: true, color: trendColor },
+                            { text:  | Pendiente anual estimada (m):  },
+                            { text: ${Math.round(reg.m).toLocaleString()} alumnos/aÃ±o.\n, bold: true },
+                            { text: Basado en el histÃ³rico de los Ãºltimos 5 aÃ±os, el modelo estima que la matrÃ­cula para 2028 alcanzarÃ¡ aproximadamente  },
+                            { text: ${p2028.toLocaleString()}, bold: true },
+                            { text:  alumnos bajo los filtros de nivel y Ã¡reas correspondientes. }
+                        ],
+                        style: 'ratiosText',
+                        margin: [0, 5, 0, 15]
+                    });
+                });
+
+                // Footer Signature
+                content.push({
+                    text: 'DREP Piura - DirecciÃ³n Regional de EducaciÃ³n de Piura\nÂ© 2026 Todos los derechos reservados. Reporte oficial autogenerado.',
+                    style: 'footerSignature',
+                    margin: [0, 20, 0, 0]
+                });
+
+                // Styles definition
+                const styles = {
+                    filterLabel: { fontSize: 9, bold: true, color: '#000000', padding: 2 },
+                    filterVal: { fontSize: 9, color: '#334155', padding: 2 },
+                    sectionHeader: { fontSize: 11, bold: true, color: '#1e3a8a', margin: [0, 10, 0, 6] },
+                    yearSectionTitle: { fontSize: 10, bold: true, color: '#1e3a8a', margin: [0, 5, 0, 5] },
+                    tableHeader: { fontSize: 8, bold: true, fillColor: '#2563eb', color: 'white', padding: 4 },
+                    tableBody: { fontSize: 7.5, padding: 3 },
+                    miniKpiLabel: { fontSize: 8, color: '#64748b', bold: false },
+                    miniKpiValueBlue: { fontSize: 13, bold: true, color: '#2563eb' },
+                    miniKpiValueGreen: { fontSize: 13, bold: true, color: '#10b981' },
+                    ratiosText: { fontSize: 8.5, color: '#334155', lineHeight: 1.4 },
+                    briefText: { fontSize: 8, italic: true, color: '#64748b', lineHeight: 1.3 },
+                    ugelProjectionTitle: { fontSize: 11, bold: true, color: '#1e3a8a', margin: [0, 0, 0, 5] },
+                    footerSignature: { fontSize: 7.5, alignment: 'center', color: '#94a3b8', bold: true }
+                };
+
+                const docDefinition = {
+                    pageSize: 'A4',
+                    pageOrientation: 'portrait',
+                    pageMargins: [40, 40, 40, 40],
+                    content: content,
+                    styles: styles
+                };
+
+                pdfMake.createPdf(docDefinition).download(DREP_Reporte_Ejecutivo__.pdf);
+                showToast("Â¡PDF Ejecutivo exportado con Ã©xito!", false);
+            } catch (err) {
+                console.error("Error generating PDF", err);
+                showToast("Error al exportar el PDF: " + err.message, true);
+            }
+        }
     </script>
 </body>
 </html>
-
-
-

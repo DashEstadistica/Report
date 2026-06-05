@@ -1,0 +1,471 @@
+:root {
+    /* Paleta Premium Dark Mode con Acentos Neón */
+    --bg-dark: #090a0f;
+    --bg-glass: rgba(20, 25, 40, 0.6);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    
+    --accent-cyan: #00f2fe;
+    --accent-blue: #4facfe;
+    --accent-pink: #ff0844;
+    --accent-orange: #ffb199;
+    
+    --text-main: #ffffff;
+    --text-muted: #8b92a5;
+    
+    --success: #00d2ff;
+    --danger: #ff4b2b;
+    --warning: #fce043;
+    
+    --warning-bg: rgba(255, 170, 0, 0.05);
+    --warning-border: rgba(255, 170, 0, 0.2);
+    --warning-text: #ffaa00;
+    
+    --danger-bg: rgba(255, 60, 60, 0.05);
+    --danger-border: rgba(255, 60, 60, 0.2);
+    --danger-text: #ff3c3c;
+    
+    --font-ui: 'Inter', sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+}
+
+body.light-mode {
+    background: #f4f6f9;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --border-glass: rgba(0, 0, 0, 0.08);
+    --text-main: #000000;
+    --text-muted: #334155;
+    
+    /* Oscurecer los acentos primarios para mayor legibilidad sobre blancos */
+    --accent-cyan: #0077b6;
+    --accent-blue: #023e8a;
+    --accent-pink: #c9184a;
+    --accent-orange: #d95a43;
+    
+    --success: #0077b6;
+    --danger: #d90429;
+    --warning: #d97706;
+
+    --warning-bg: rgba(217, 119, 6, 0.08);
+    --warning-border: rgba(217, 119, 6, 0.25);
+    --warning-text: #d97706;
+    
+    --danger-bg: rgba(217, 4, 41, 0.08);
+    --danger-border: rgba(217, 4, 41, 0.25);
+    --danger-text: #d90429;
+}
+
+body.light-mode .glass, 
+body.light-mode .glass-card, 
+body.light-mode .sidebar {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+body.light-mode .nav-item { color: var(--text-muted); }
+body.light-mode .nav-item:hover { background: rgba(0, 0, 0, 0.03); color: var(--text-main); }
+body.light-mode .nav-item.active { 
+    color: var(--accent-blue);
+    background: linear-gradient(90deg, rgba(0,172,254,0.08) 0%, transparent 100%);
+}
+body.light-mode .table-glass th { border-bottom-color: var(--border-glass); }
+body.light-mode .table-glass tr { border-bottom-color: rgba(0,0,0,0.03); }
+body.light-mode input, body.light-mode select, body.light-mode textarea {
+    background: rgba(0,0,0,0.04);
+    color: #000000;
+    font-weight: 500;
+}
+body.light-mode select option,
+body.light-mode .form-input option {
+    background: #ffffff;
+    color: #000000;
+}
+body.light-mode .btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-main) !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+body.light-mode .btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-ui);
+    background: radial-gradient(circle at 10% 20%, #1a1a2e 0%, #0f0c29 100%);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* Tipografía y Gradientes */
+h1, h2, h3, h4 { font-family: var(--font-heading); }
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Classes */
+.glass {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.glass-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 242, 254, 0.4);
+}
+
+/* Disposición Principal */
+.app-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    z-index: 10;
+}
+
+.logo h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.nav-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.nav-item i {
+    font-size: 1.2rem;
+}
+
+.nav-item:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(0,242,254,0.15) 0%, transparent 100%);
+    border-left: 4px solid var(--accent-cyan);
+}
+
+.sidebar-footer .btn-clear-data {
+    background: rgba(255, 75, 43, 0.1);
+    color: var(--danger);
+    border: 1px solid rgba(255, 75, 43, 0.3);
+    border-radius: 12px;
+    padding: 0.8rem;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.sidebar-footer .btn-clear-data:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
+/* Contenido Principal */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 1rem 0;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.view-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
+    font-size: 1.2rem;
+}
+
+.content-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 1rem;
+}
+.content-body::-webkit-scrollbar { width: 6px; }
+.content-body::-webkit-scrollbar-thumb { background: var(--border-glass); border-radius: 10px; }
+
+/* Grid Dashboard */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.stat-title {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.stat-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+}
+
+.stat-value.income { color: var(--success); }
+.stat-value.expense { color: var(--danger); }
+.stat-value.balance { color: var(--accent-cyan); }
+
+/* Secciones genéricas (Ventas, Compras, etc.) */
+.layout-split {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+.form-input {
+    width: 100%;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-glass);
+    color: #fff;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    transition: 0.3s;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+}
+.form-input option {
+    background: #1a1a2e;
+    color: #fff;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    color: #000;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: filter 0.3s;
+    font-size: 1rem;
+}
+.btn-primary:hover { filter: brightness(1.2); }
+
+.btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid var(--border-glass);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+.table-glass {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+.table-glass th, .table-glass td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-glass);
+}
+.table-glass th {
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+.badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.badge-income { background: rgba(0, 210, 255, 0.15); color: var(--success); }
+.badge-expense { background: rgba(255, 75, 43, 0.15); color: var(--danger); }
+
+/* Modal y Animaciones */
+.fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Área de Proformas (Constructor) */
+.proforma-builder { display: flex; flex-direction: column; gap: 1.5rem; }
+.proforma-list { margin-top: 1rem; }
+.proforma-item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+}
+
+/* Ocultar elementos principales en impresión */
+@media screen {
+    #print-view { display: none !important; }
+}
+
+@media print {
+    body { background: #fff !important; color: #000 !important; }
+    .app-wrapper { display: none !important; }
+    #print-view {
+        display: block !important;
+        background: #fff;
+        width: 100%;
+        color: #000;
+        font-family: 'Inter', sans-serif;
+    }
+}
+
+/* Estilos de la Proforma para Impresión ("El Chino") */
+.print-view {
+    padding: 2cm;
+    font-size: 12px;
+}
+.proforma-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed #ff0000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.proforma-logo h1 { color: #cc0000; font-size: 24px; margin: 0; }
+.proforma-logo p { margin: 2px 0; font-weight: bold; }
+.proforma-ruc {
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+}
+.proforma-ruc h3 { margin: 0; font-size: 16px; }
+.proforma-client-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+.pro-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+.pro-table th {
+    background-color: #0066cc;
+    color: white;
+    padding: 5px;
+    border: 1px solid #000;
+}
+.pro-table td {
+    padding: 5px;
+    border: 1px solid #000;
+    text-align: left;
+}
+.pro-table td.text-right { text-align: right; }
+.pro-totals { margin-left: auto; width: 300px; }
+.bank-accounts {
+    margin-top: 20px;
+    font-size: 10px;
+}
+.bank-accounts th { background: #ccc; }
+
+.hidden { display: none !important; }
