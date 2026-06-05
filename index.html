@@ -1010,8 +1010,14 @@
                 align-items: stretch;
                 gap: 0.5rem !important;
                 padding: 1rem !important;
+                max-height: 360px; /* Limita la altura del panel en móviles */
+                overflow-y: auto;  /* Habilita barra de desplazamiento independiente */
+                position: sticky;
+                top: 70px; /* Lo mantiene bajo el header móvil */
+                z-index: 99;
             }
             .filter-group {
+                flex: none !important; /* Evita que los filtros se estiren y se separen verticalmente */
                 gap: 0.2rem !important;
             }
             .filter-select {
