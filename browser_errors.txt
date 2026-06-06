@@ -1,0 +1,33 @@
+
+Console Log: Starting automated UI interaction tests...
+Console Log: Triggered year filter change to 2025
+Console Log: Triggered sex filter change to Masculino
+Console Log: Triggered locales filter change to CETPRO
+Console Log: Clicked Clear Filters button
+Console Log: Automated UI tests completed.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Starting automated UI interaction tests...
+Console Log: Triggered year filter change to 2025
+Console Log: Triggered sex filter change to Masculino
+Console Log: Triggered locales filter change to CETPRO
+Console Log: Clicked Clear Filters button
+Console Log: Automated UI tests completed.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Starting automated UI interaction tests...
+Console Log: Triggered year filter change to 2025
+Console Log: Triggered sex filter change to Masculino
+Console Log: Triggered locales filter change to CETPRO
+Console Log: Clicked Clear Filters button
+Console Log: Automated UI tests completed.
+Console Log: Data loaded successfully from localStorage cache.
+Console Log: Starting automated UI interaction tests...
+Console Log: Triggered year filter change to 2025
+Console Log: Triggered sex filter change to Masculino
+Console Log: Triggered locales filter change to CETPRO
+Console Log: Clicked Clear Filters button
+Console Log: Automated UI tests completed.
+Console Log: Data loaded successfully from localStorage cache.

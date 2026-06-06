@@ -5,6 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DREP Piura - Dashboard de Gestión Educativa Pro</title>
     
+    <script>
+        (function() {
+            var oldLog = console.log;
+            console.log = function() {
+                var args = Array.prototype.slice.call(arguments).map(function(arg) {
+                    return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
+                });
+                var msg = "Console Log: " + args.join(" ");
+                fetch('/log_error.php?msg=' + encodeURIComponent(msg));
+                oldLog.apply(console, arguments);
+            };
+
+            var oldError = console.error;
+            console.error = function() {
+                var args = Array.prototype.slice.call(arguments).map(function(arg) {
+                    return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
+                });
+                var msg = "Console Error: " + args.join(" ");
+                fetch('/log_error.php?msg=' + encodeURIComponent(msg));
+                oldError.apply(console, arguments);
+            };
+
+            var oldWarn = console.warn;
+            console.warn = function() {
+                var args = Array.prototype.slice.call(arguments).map(function(arg) {
+                    return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
+                });
+                var msg = "Console Warn: " + args.join(" ");
+                fetch('/log_error.php?msg=' + encodeURIComponent(msg));
+                oldWarn.apply(console, arguments);
+            };
+        })();
+
+        window.onerror = function(message, source, lineno, colno, error) {
+            var errMsg = "Error: " + message + " at " + source + ":" + lineno + ":" + colno;
+            if (error && error.stack) {
+                errMsg += "\nStack: " + error.stack;
+            }
+            fetch('/log_error.php?msg=' + encodeURIComponent(errMsg));
+        };
+        window.onunhandledrejection = function(event) {
+            var errMsg = "Unhandled Rejection: " + event.reason;
+            if (event.reason && event.reason.stack) {
+                errMsg += "\nStack: " + event.reason.stack;
+            }
+            fetch('/log_error.php?msg=' + encodeURIComponent(errMsg));
+        };
+        // Auto-run interactive tests if ?run_test=true is in URL
+        if (window.location.search.indexOf('run_test=true') !== -1) {
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    try {
+                        console.log("Starting automated UI interaction tests...");
+                        
+                        var yearSelect = document.getElementById('filter-year');
+                        var ugelSelect = document.getElementById('filter-ugel');
+                        var lvlSelect = document.getElementById('filter-level');
+                        var areaSelect = document.getElementById('filter-area');
+                        var sexSelect = document.getElementById('filter-sex');
+                        
+                        // Assert that toggles are hidden initially (since year is Todos)
+                        var mainChartsWithToggles = ["chart-t1","chart-t3","chart-t4","chart-t5","chart-t6"];
+                        mainChartsWithToggles.forEach(function(id) {
+                            var toggleEl = document.querySelector('.toggle-btn-group[data-chart="' + id + '"]');
+                            if (toggleEl && toggleEl.style.display !== "none") {
+                                console.warn("Assertion Failed: Toggle for " + id + " should be hidden when year is Todos");
+                            }
+                        });
+                        
+                        // Assert default overlays are visible initially
+                        var overlays = ["t1", "t2", "t3", "t4", "t5", "t6", "ranking"];
+                        overlays.forEach(function(id) {
+                            var ov = document.getElementById("overlay-" + id);
+                            if (ov && !ov.classList.contains("visible")) {
+                                console.warn("Assertion Failed: Overlay for " + id + " should be visible initially");
+                            }
+                        });
+
+                        // 1. Change year filter to 2025
+                        if (yearSelect) {
+                            yearSelect.value = '2025';
+                            yearSelect.dispatchEvent(new Event('change'));
+                            console.log("Triggered year filter change to 2025");
+                        }
+                        
+                        // Assert toggles are now visible
+                        mainChartsWithToggles.forEach(function(id) {
+                            var toggleEl = document.querySelector('.toggle-btn-group[data-chart="' + id + '"]');
+                            if (toggleEl && toggleEl.style.display === "none") {
+                                console.warn("Assertion Failed: Toggle for " + id + " should be visible when year is selected");
+                            }
+                        });
+
+                        // 2. Change sex filter to Masculino
+                        if (sexSelect) {
+                            sexSelect.value = 'Masculino';
+                            sexSelect.dispatchEvent(new Event('change'));
+                            console.log("Triggered sex filter change to Masculino");
+                        }
+                        
+                        // Assert overlay behavior for sex filter
+                        var ovT2 = document.getElementById("overlay-t2");
+                        if (ovT2 && ovT2.classList.contains("visible")) {
+                            console.warn("Assertion Failed: Overlay for t2 should be hidden when year=2025 and Sex=Masculino");
+                        }
+                        
+                        // Other charts should show "Este grafico no cuenta con este detalle" overlay
+                        ["t1", "t3", "t4", "t5", "t6", "ranking"].forEach(function(id) {
+                            var ov = document.getElementById("overlay-" + id);
+                            if (!ov || !ov.classList.contains("visible")) {
+                                console.warn("Assertion Failed: Overlay for " + id + " should be visible when Sex filter is active");
+                            } else {
+                                var span = ov.querySelector("span:nth-of-type(1)");
+                                if (span && span.innerText !== "Este grafico no cuenta con este detalle") {
+                                    console.warn("Assertion Failed: Overlay text for " + id + " is not correct: " + span.innerText);
+                                }
+                            }
+                        });
+
+                        // 3. Test Locales filter
+                        var localesSelect = document.getElementById('filter-locales');
+                        if (localesSelect) {
+                            var options = Array.from(localesSelect.options).map(function(o) { return o.value; });
+                            var levelToSelect = options.find(function(val) { return val !== 'Todos'; });
+                            if (levelToSelect) {
+                                localesSelect.value = levelToSelect;
+                                localesSelect.dispatchEvent(new Event('change'));
+                                console.log("Triggered locales filter change to " + levelToSelect);
+
+                                var standardGrid = document.getElementById("standard-charts-grid");
+                                if (standardGrid && standardGrid.style.display !== "none") {
+                                    console.warn("Assertion Failed: Standard grid should be hidden when locales filter is selected");
+                                }
+
+                                var localesGrid = document.getElementById("locales-charts-grid");
+                                if (localesGrid && localesGrid.style.display === "none") {
+                                    console.warn("Assertion Failed: Locales grid should be visible when locales filter is selected");
+                                }
+
+                                var sullanaCard = document.getElementById("card-local-ugel-sullana");
+                                if (!sullanaCard) {
+                                    console.warn("Assertion Failed: Card for UGEL Sullana should exist in locales grid");
+                                }
+
+                                changeLocalesChartDim("UGEL Sullana", "Area");
+                                if (window.localesChartDimensions["UGEL Sullana"] !== "Area") {
+                                    console.warn("Assertion Failed: Dimension for UGEL Sullana should be Area after toggle");
+                                }
+                            }
+                        }
+
+                        // 4. Click clear button
+                        var clearBtn = document.querySelector('.filters-panel button[onclick*="clearAllFilters"]');
+                        if (clearBtn) {
+                            clearBtn.click();
+                            console.log("Clicked Clear Filters button");
+                        }
+
+                        if (localesSelect && localesSelect.value !== "Todos") {
+                            console.warn("Assertion Failed: Locales select should reset to Todos after clearAllFilters");
+                        }
+                        var standardGridAfter = document.getElementById("standard-charts-grid");
+                        if (standardGridAfter && standardGridAfter.style.display === "none") {
+                            console.warn("Assertion Failed: Standard grid should be visible after clearing filters");
+                        }
+                        var localesGridAfter = document.getElementById("locales-charts-grid");
+                        if (localesGridAfter && localesGridAfter.style.display !== "none") {
+                            console.warn("Assertion Failed: Locales grid should be hidden after clearing filters");
+                        }
+
+                        console.log("Automated UI tests completed.");
+                    } catch (e) {
+                        console.error("Test execution failed: " + e.message);
+                    }
+                }, 2000);
+            });
+        }
+    </script>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -337,8 +516,7 @@
             flex-wrap: wrap;
             gap: 1rem;
             align-items: flex-end;
-            position: sticky;
-            top: 0;
+            position: relative;
             z-index: 90;
             backdrop-filter: blur(10px);
             transition: var(--transition-smooth);
@@ -1012,8 +1190,7 @@
                 padding: 1rem !important;
                 max-height: 360px; /* Limita la altura del panel en móviles */
                 overflow-y: auto;  /* Habilita barra de desplazamiento independiente */
-                position: sticky;
-                top: 70px; /* Lo mantiene bajo el header móvil */
+                position: relative;
                 z-index: 99;
             }
             .filter-group {
@@ -1307,6 +1484,12 @@
                             <option value="Todos">Todos</option>
                         </select>
                     </div>
+                    <div class="filter-group">
+                        <label for="filter-locales">Locales</label>
+                        <select id="filter-locales" class="filter-select" onchange="applyFilters()">
+                            <option value="Todos">Todos los locales</option>
+                        </select>
+                    </div>
                     <button class="btn btn-outline" style="height: 38px; padding: 0 1rem;" onclick="clearAllFilters()">
                         <i class="ph ph-funnel-simple-x"></i> Limpiar
                     </button>
@@ -1414,7 +1597,7 @@
                             <canvas id="chart-ranking"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-ranking">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico para ver el ranking</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">El ranking no suma múltiples años</span>
                             </div>
                         </div>
@@ -1422,7 +1605,7 @@
                 </section>
 
                 <!-- CHARTS GRID (6 CHARTS MULTI-DETAIL) -->
-                <section class="charts-row-grid">
+                <section class="charts-row-grid" id="standard-charts-grid">
                     
                     <!-- TABLA 1: MATRICULA AREA Y GEOGRAFIA -->
                     <div class="dashboard-card">
@@ -1443,7 +1626,7 @@
                             <canvas id="chart-t1"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t1">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
                             </div>
                         </div>
@@ -1467,7 +1650,7 @@
                             <canvas id="chart-t2"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t2">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
                             </div>
                         </div>
@@ -1492,7 +1675,7 @@
                             <canvas id="chart-t3"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t3">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
                             </div>
                         </div>
@@ -1517,7 +1700,7 @@
                             <canvas id="chart-t4"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t4">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
                             </div>
                         </div>
@@ -1542,7 +1725,7 @@
                             <canvas id="chart-t5"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t5">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
                             </div>
                         </div>
@@ -1567,13 +1750,16 @@
                             <canvas id="chart-t6"></canvas>
                             <div class="chart-no-year-overlay" id="overlay-t6">
                                 <i class="ph ph-calendar-x"></i>
-                                <span>Selecciona un año específico</span>
+                                <span>Selecciona algun tipo de filtro para mostrar el grafico</span>
                                 <span style="font-size:0.75rem; opacity:0.7;">Los gráficos no suman múltiples años</span>
                             </div>
                         </div>
                     </div>
 
                 </section>
+
+                <!-- LOCALES CHARTS GRID (13 CHARTS FOR LOCALES FILTER) -->
+                <section class="charts-row-grid hidden" id="locales-charts-grid" style="display: none;"></section>
             </div>
 
             <!-- TAB 2: DATA TABLES TABULAR VIEW -->
@@ -1894,6 +2080,9 @@
         window.mapMarkers = {};
         window.dataTables = [];
         
+        window.localesChartDimensions = {};
+        window.localesCharts = {};
+
         // Active visual dimension per chart card
         window.chartDimensions = {
             "chart-t1": "UGEL",
@@ -1910,7 +2099,8 @@
             ugel: "Todas",
             level: "Todos",
             area: "Todas",
-            sex: "Todos"
+            sex: "Todos",
+            locales: "Todos"
         };
 
         // Global Leaflet map tile layers
@@ -1923,12 +2113,13 @@
         });
 
         async function initApp() {
-            loadThemeFromStorage();
-            await loadDashboardData();
-            initLeafletMap();
-            populateFilters();
-            applyFilters(true); // first run setup
-            initDataTables();
+            try { loadThemeFromStorage(); } catch(e) { console.error("Theme load failed", e); }
+            try { await loadDashboardData(); } catch(e) { console.error("Data load failed", e); }
+            try { initLeafletMap(); } catch(e) { console.error("Leaflet map initialization failed", e); }
+            try { populateFilters(); } catch(e) { console.error("Populate filters failed", e); }
+            try { initLocalesChartsHTML(); } catch(e) { console.error("Locales HTML initialization failed", e); }
+            try { applyFilters(true); } catch(e) { console.error("Apply filters failed", e); }
+            try { initDataTables(); } catch(e) { console.error("DataTables initialization failed", e); }
         }
 
         // THEME MANAGEMENT
@@ -2163,16 +2354,40 @@
                 const loaded = SafeStorage.getItem("drep_data_loaded");
                 if (loaded === "true") {
                     try {
-                        window.dashboardData = {
-                            matriculaArea: JSON.parse(SafeStorage.getItem("drep_data_matriculaArea") || "[]"),
-                            matriculaSexo: JSON.parse(SafeStorage.getItem("drep_data_matriculaSexo") || "[]"),
-                            docentes: JSON.parse(SafeStorage.getItem("drep_data_docentes") || "[]"),
-                            noDocentes: JSON.parse(SafeStorage.getItem("drep_data_noDocentes") || "[]"),
-                            servicios: JSON.parse(SafeStorage.getItem("drep_data_servicios") || "[]"),
-                            locales: JSON.parse(SafeStorage.getItem("drep_data_locales") || "[]")
-                        };
-                        console.log("Data loaded successfully from localStorage cache.");
-                        return; // Loaded from cache, skip initial fetch
+                        const rawMatriculaArea = SafeStorage.getItem("drep_data_matriculaArea");
+                        const rawMatriculaSexo = SafeStorage.getItem("drep_data_matriculaSexo");
+                        const rawDocentes = SafeStorage.getItem("drep_data_docentes");
+                        const rawNoDocentes = SafeStorage.getItem("drep_data_noDocentes");
+                        const rawServicios = SafeStorage.getItem("drep_data_servicios");
+                        const rawLocales = SafeStorage.getItem("drep_data_locales");
+
+                        const ma = rawMatriculaArea ? JSON.parse(rawMatriculaArea) : null;
+                        const ms = rawMatriculaSexo ? JSON.parse(rawMatriculaSexo) : null;
+                        const dc = rawDocentes ? JSON.parse(rawDocentes) : null;
+                        const nd = rawNoDocentes ? JSON.parse(rawNoDocentes) : null;
+                        const sv = rawServicios ? JSON.parse(rawServicios) : null;
+                        const lc = rawLocales ? JSON.parse(rawLocales) : null;
+
+                        if (Array.isArray(ma) && ma.length > 0 &&
+                            Array.isArray(ms) && ms.length > 0 &&
+                            Array.isArray(dc) && dc.length > 0 &&
+                            Array.isArray(nd) && nd.length > 0 &&
+                            Array.isArray(sv) && sv.length > 0 &&
+                            Array.isArray(lc) && lc.length > 0) {
+                            
+                            window.dashboardData = {
+                                matriculaArea: ma,
+                                matriculaSexo: ms,
+                                docentes: dc,
+                                noDocentes: nd,
+                                servicios: sv,
+                                locales: lc
+                            };
+                            console.log("Data loaded successfully from localStorage cache.");
+                            return; // Loaded from cache, skip initial fetch
+                        } else {
+                            console.warn("Cached data is empty or invalid. Fetching fresh data.");
+                        }
                     } catch(err) {
                         console.error("Error reading cache from localStorage", err);
                     }
@@ -2541,16 +2756,27 @@
 
         // FILTERS AND DYNAMIC CASCADE POPULATOR
         function populateFilters() {
-            const data = window.dashboardData.matriculaArea;
+            const data = (window.dashboardData && Array.isArray(window.dashboardData.matriculaArea))
+                ? window.dashboardData.matriculaArea
+                : [];
             
             // Extract Unique Values
-            const yearsSet = new Set(data.map(d => d.Anio).filter(Boolean));
-            const ugelsSet = new Set(data.map(d => d.UGEL).filter(Boolean));
-            const levelsSet = new Set(data.map(d => d.Nivel).filter(Boolean));
-            const areasSet = new Set(data.map(d => d.Area).filter(Boolean));
+            const yearsSet = new Set(data.map(d => d ? d.Anio : null).filter(Boolean));
+            const ugelsSet = new Set(data.map(d => d ? d.UGEL : null).filter(Boolean));
+            const levelsSet = new Set(data.map(d => d ? d.Nivel : null).filter(Boolean));
+            const areasSet = new Set(data.map(d => d ? d.Area : null).filter(Boolean));
             
             // Sex comes from TB_MATRICULA_SEXO
-            const sexsSet = new Set(window.dashboardData.matriculaSexo.map(d => d.Sexo).filter(Boolean));
+            const sexData = (window.dashboardData && Array.isArray(window.dashboardData.matriculaSexo))
+                ? window.dashboardData.matriculaSexo
+                : [];
+            const sexsSet = new Set(sexData.map(d => d ? d.Sexo : null).filter(Boolean));
+
+            // Locales levels
+            const localesData = (window.dashboardData && Array.isArray(window.dashboardData.locales))
+                ? window.dashboardData.locales
+                : [];
+            const localesNivelesSet = new Set(localesData.map(d => d ? d.Nivel : null).filter(Boolean));
 
             // Populate HTML selectors
             updateDropdown("filter-year", Array.from(yearsSet).sort(), "Todos (2021-2025)", "Todos");
@@ -2558,6 +2784,7 @@
             updateDropdown("filter-level", Array.from(levelsSet).sort(), "Todos los Niveles", "Todos");
             updateDropdown("filter-area", Array.from(areasSet).sort(), "Todas las Áreas", "Todas");
             updateDropdown("filter-sex", Array.from(sexsSet).sort(), "Todos", "Todos");
+            updateDropdown("filter-locales", Array.from(localesNivelesSet).sort(), "Todos los locales", "Todos");
         }
 
         function updateDropdown(elementId, items, defaultText, defaultValue) {
@@ -2584,80 +2811,205 @@
             document.getElementById("filter-level").value = "Todos";
             document.getElementById("filter-area").value = "Todas";
             document.getElementById("filter-sex").value = "Todos";
+            document.getElementById("filter-locales").value = "Todos";
             
-            applyFilters();
+            populateFilters();
+            applyFilters(false, null);
+        }
+
+        // DYNAMIC CASCADE CASCADING FILTERS
+        function updateCascadeFilters(changedElementId) {
+            try {
+                const yearVal = document.getElementById("filter-year").value;
+                const ugelVal = document.getElementById("filter-ugel").value;
+                const lvlVal = document.getElementById("filter-level").value;
+                const areaVal = document.getElementById("filter-area").value;
+                const sexVal = document.getElementById("filter-sex").value;
+
+                const rawMatArea = (window.dashboardData && Array.isArray(window.dashboardData.matriculaArea)) ? window.dashboardData.matriculaArea : [];
+                const rawMatSex = (window.dashboardData && Array.isArray(window.dashboardData.matriculaSexo)) ? window.dashboardData.matriculaSexo : [];
+
+                // 1. UGEL dropdown
+                if (changedElementId !== 'filter-ugel') {
+                    const maUgelRows = rawMatArea.filter(row => {
+                        if (!row) return false;
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        const matchArea = (areaVal === "Todas" || !row.Area || row.Area === areaVal);
+                        return matchLvl && matchArea;
+                    });
+                    const msUgelRows = rawMatSex.filter(row => {
+                        if (!row) return false;
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        const matchSex = (sexVal === "Todos" || row.Sexo === sexVal);
+                        return matchLvl && matchSex;
+                    });
+                    const validUgels = new Set([
+                        ...maUgelRows.map(r => r.UGEL).filter(Boolean),
+                        ...msUgelRows.map(r => r.UGEL).filter(Boolean)
+                    ]);
+                    updateDropdown("filter-ugel", Array.from(validUgels).sort(), "Todas las UGELs", "Todas");
+                }
+
+                // 2. Level dropdown
+                if (changedElementId !== 'filter-level') {
+                    const maLvlRows = rawMatArea.filter(row => {
+                        if (!row) return false;
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchArea = (areaVal === "Todas" || !row.Area || row.Area === areaVal);
+                        return matchUgel && matchArea;
+                    });
+                    const msLvlRows = rawMatSex.filter(row => {
+                        if (!row) return false;
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchSex = (sexVal === "Todos" || row.Sexo === sexVal);
+                        return matchUgel && matchSex;
+                    });
+                    const validLvls = new Set([
+                        ...maLvlRows.map(r => r.Nivel).filter(Boolean),
+                        ...msLvlRows.map(r => r.Nivel).filter(Boolean)
+                    ]);
+                    updateDropdown("filter-level", Array.from(validLvls).sort(), "Todos los Niveles", "Todos");
+                }
+
+                // 3. Area dropdown
+                if (changedElementId !== 'filter-area') {
+                    const maAreaRows = rawMatArea.filter(row => {
+                        if (!row) return false;
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        return matchUgel && matchLvl;
+                    });
+                    const validAreas = new Set(maAreaRows.map(r => r.Area).filter(Boolean));
+                    updateDropdown("filter-area", Array.from(validAreas).sort(), "Todas las Áreas", "Todas");
+                }
+
+                // 4. Sex dropdown
+                if (changedElementId !== 'filter-sex') {
+                    const msSexRows = rawMatSex.filter(row => {
+                        if (!row) return false;
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        return matchUgel && matchLvl;
+                    });
+                    const validSexs = new Set(msSexRows.map(r => r.Sexo).filter(Boolean));
+                    updateDropdown("filter-sex", Array.from(validSexs).sort(), "Todos", "Todos");
+                }
+            } catch (e) {
+                console.error("Error updating cascade filters:", e);
+            }
         }
 
         // MULTI-TABLE INTERCONNECTED FILTER ENGINE
-        function applyFilters(isFirstRun = false) {
-            const yearVal = document.getElementById("filter-year").value;
-            const ugelVal = document.getElementById("filter-ugel").value;
-            const lvlVal = document.getElementById("filter-level").value;
-            const areaVal = document.getElementById("filter-area").value;
-            const sexVal = document.getElementById("filter-sex").value;
-
-            window.activeFilters = {
-                year: yearVal,
-                ugel: ugelVal,
-                level: lvlVal,
-                area: areaVal,
-                sex: sexVal
-            };
-
-            // Filter datasets safely (prevents crashes on blank/missing values)
-            const filterStandardTable = (dataset) => {
-                if (!dataset || !Array.isArray(dataset)) return [];
-                return dataset.filter(row => {
-                    if (!row) return false;
-                    const rowYear = row.Anio ? row.Anio.toString().trim() : "";
-                    const matchYear = (yearVal === "Todos" || rowYear === yearVal);
-                    const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
-                    const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
-                    const matchArea = (areaVal === "Todas" || !row.Area || row.Area === areaVal);
-                    return matchYear && matchUgel && matchLvl && matchArea;
-                });
-            };
-
-            const filterSexTable = (dataset) => {
-                if (!dataset || !Array.isArray(dataset)) return [];
-                return dataset.filter(row => {
-                    if (!row) return false;
-                    const rowYear = row.Anio ? row.Anio.toString().trim() : "";
-                    const matchYear = (yearVal === "Todos" || rowYear === yearVal);
-                    const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
-                    const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
-                    const matchSex = (sexVal === "Todos" || row.Sexo === sexVal);
-                    return matchYear && matchUgel && matchLvl && matchSex;
-                });
-            };
-
-            window.filteredData = {
-                matriculaArea: filterStandardTable(window.dashboardData.matriculaArea),
-                matriculaSexo: filterSexTable(window.dashboardData.matriculaSexo),
-                docentes: filterStandardTable(window.dashboardData.docentes),
-                noDocentes: filterStandardTable(window.dashboardData.noDocentes),
-                servicios: filterStandardTable(window.dashboardData.servicios),
-                locales: filterStandardTable(window.dashboardData.locales)
-            };
-
-            // Recalculate and update interface UI
-            updateKPIs();
-            renderCharts();
-            updateForecast(); // Keep OLS forecasts and chart in sync
-            updateLeafletMarkers();
-            updateAlerts();
-            
-            // Sync DataTables client filter dynamically
-            if (!isFirstRun) {
-                updateDataTablesContent();
-            }
-
-            // Auto-collapse filters on mobile after selection to prevent covering the screen
-            if (!isFirstRun && window.innerWidth <= 768) {
-                const filtersPanel = document.querySelector('.filters-panel');
-                if (filtersPanel && !filtersPanel.classList.contains('mobile-collapsed')) {
-                    toggleMobileFilters();
+        function applyFilters(isFirstRun = false, changedElementId = null) {
+            try {
+                const targetId = changedElementId || (window.event && window.event.target ? window.event.target.id : null);
+                
+                // 1. Update cascade filter options (except for Year and Locales)
+                if (!isFirstRun && targetId && targetId !== 'filter-year' && targetId !== 'filter-locales') {
+                    updateCascadeFilters(targetId);
                 }
+
+                const yearVal = document.getElementById("filter-year").value;
+                const ugelVal = document.getElementById("filter-ugel").value;
+                const lvlVal = document.getElementById("filter-level").value;
+                const areaVal = document.getElementById("filter-area").value;
+                const sexVal = document.getElementById("filter-sex").value;
+                const localesVal = document.getElementById("filter-locales").value;
+
+                window.activeFilters = {
+                    year: yearVal,
+                    ugel: ugelVal,
+                    level: lvlVal,
+                    area: areaVal,
+                    sex: sexVal,
+                    locales: localesVal
+                };
+
+                // Filter datasets safely (prevents crashes on blank/missing values)
+                const filterStandardTable = (dataset) => {
+                    if (!dataset || !Array.isArray(dataset)) return [];
+                    return dataset.filter(row => {
+                        if (!row) return false;
+                        const rowYear = row.Anio ? row.Anio.toString().trim() : "";
+                        const matchYear = (yearVal === "Todos" || rowYear === yearVal);
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        const matchArea = (areaVal === "Todas" || !row.Area || row.Area === areaVal);
+                        return matchYear && matchUgel && matchLvl && matchArea;
+                    });
+                };
+
+                const filterSexTable = (dataset) => {
+                    if (!dataset || !Array.isArray(dataset)) return [];
+                    return dataset.filter(row => {
+                        if (!row) return false;
+                        const rowYear = row.Anio ? row.Anio.toString().trim() : "";
+                        const matchYear = (yearVal === "Todos" || rowYear === yearVal);
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        const matchSex = (sexVal === "Todos" || row.Sexo === sexVal);
+                        return matchYear && matchUgel && matchLvl && matchSex;
+                    });
+                };
+
+                window.filteredData = {
+                    matriculaArea: filterStandardTable(window.dashboardData.matriculaArea),
+                    matriculaSexo: filterSexTable(window.dashboardData.matriculaSexo),
+                    docentes: filterStandardTable(window.dashboardData.docentes),
+                    noDocentes: filterStandardTable(window.dashboardData.noDocentes),
+                    servicios: filterStandardTable(window.dashboardData.servicios),
+                    locales: filterStandardTable(window.dashboardData.locales)
+                };
+
+                // Recalculate and update interface UI
+                try { updateKPIs(); } catch (e) { console.error("updateKPIs failed", e); }
+
+                // Toggle visibility of standard charts vs locales charts
+                const standardGrid = document.getElementById("standard-charts-grid");
+                const localesGrid = document.getElementById("locales-charts-grid");
+                
+                if (localesVal === "Todos") {
+                    if (standardGrid) {
+                        standardGrid.style.display = "";
+                        standardGrid.classList.remove("hidden");
+                    }
+                    if (localesGrid) {
+                        localesGrid.style.display = "none";
+                        localesGrid.classList.add("hidden");
+                    }
+                    
+                    try { renderCharts(); } catch (e) { console.error("renderCharts failed", e); }
+                } else {
+                    if (standardGrid) {
+                        standardGrid.style.display = "none";
+                        standardGrid.classList.add("hidden");
+                    }
+                    if (localesGrid) {
+                        localesGrid.style.display = "";
+                        localesGrid.classList.remove("hidden");
+                    }
+                    
+                    try { renderLocalesCharts(); } catch (e) { console.error("renderLocalesCharts failed", e); }
+                }
+
+                try { updateForecast(); } catch (e) { console.error("updateForecast failed", e); }
+                try { updateLeafletMarkers(); } catch (e) { console.error("updateLeafletMarkers failed", e); }
+                try { updateAlerts(); } catch (e) { console.error("updateAlerts failed", e); }
+                
+                // Sync DataTables client filter dynamically
+                if (!isFirstRun) {
+                    try { updateDataTablesContent(); } catch (e) { console.error("updateDataTablesContent failed", e); }
+                }
+
+                // Auto-collapse filters on mobile after selection to prevent covering the screen
+                if (!isFirstRun && window.innerWidth <= 768) {
+                    const filtersPanel = document.querySelector('.filters-panel');
+                    if (filtersPanel && !filtersPanel.classList.contains('mobile-collapsed')) {
+                        toggleMobileFilters();
+                    }
+                }
+            } catch (err) {
+                console.error("Error inside applyFilters:", err);
             }
         }
 
@@ -2745,82 +3097,113 @@
 
         // UPDATE KPI CARDS
         function updateKPIs() {
-            const yearFilterVal = window.activeFilters.year;
-            const ugelFilterVal = window.activeFilters.ugel;
-            const isAllYears = (yearFilterVal === "Todos");
+            try {
+                if (!window.activeFilters) return;
+                const yearFilterVal = window.activeFilters.year;
+                const ugelFilterVal = window.activeFilters.ugel;
+                const isAllYears = (yearFilterVal === "Todos");
 
-            // Always draw sparklines using the FULL dataset (not filtered by year)
-            const rawMat = window.dashboardData ? window.dashboardData.matriculaArea : [];
-            const rawDoc = window.dashboardData ? window.dashboardData.docentes : [];
-            const rawLoc = window.dashboardData ? window.dashboardData.locales : [];
-            const rawSrv = window.dashboardData ? window.dashboardData.servicios : [];
+                // Always draw sparklines using the FULL dataset (not filtered by year)
+                const rawMat = window.dashboardData ? window.dashboardData.matriculaArea : [];
+                const rawDoc = window.dashboardData ? window.dashboardData.docentes : [];
+                const rawLoc = window.dashboardData ? window.dashboardData.locales : [];
+                const rawSrv = window.dashboardData ? window.dashboardData.servicios : [];
 
-            drawSparkline("spark-matricula", getSparklineByYear(rawMat, ugelFilterVal), "#2563eb");
-            drawSparkline("spark-docentes",  getSparklineByYear(rawDoc, ugelFilterVal), "#10b981");
-            drawSparkline("spark-locales",   getSparklineByYear(rawLoc, ugelFilterVal), "#8b5cf6");
-            drawSparkline("spark-servicios", getSparklineByYear(rawSrv, ugelFilterVal), "#06b6d4");
+                drawSparkline("spark-matricula", getSparklineByYear(rawMat, ugelFilterVal), "#2563eb");
+                drawSparkline("spark-docentes",  getSparklineByYear(rawDoc, ugelFilterVal), "#10b981");
+                drawSparkline("spark-locales",   getSparklineByYear(rawLoc, ugelFilterVal), "#8b5cf6");
+                drawSparkline("spark-servicios", getSparklineByYear(rawSrv, ugelFilterVal), "#06b6d4");
 
-            if (isAllYears) {
-                // Show "-" when all years selected (would inflate numbers)
-                document.getElementById("kpi-matricula").innerText = "—";
-                document.getElementById("kpi-docentes").innerText  = "—";
-                document.getElementById("kpi-locales").innerText   = "—";
-                document.getElementById("kpi-servicios").innerText = "—";
-                document.getElementById("kpi-ratio-pupil").innerText  = "—";
-                document.getElementById("kpi-pct-publica").innerText  = "—";
-                document.getElementById("kpi-pct-rural").innerText    = "—";
-                document.getElementById("kpi-matricula-sub").innerText = `Ver gráfico de evolución histórica`;
-                // Show overlay on ranking chart
+                const kpiMat = document.getElementById("kpi-matricula");
+                const kpiDoc = document.getElementById("kpi-docentes");
+                const kpiLoc = document.getElementById("kpi-locales");
+                const kpiSrv = document.getElementById("kpi-servicios");
+                const kpiRatio = document.getElementById("kpi-ratio-pupil");
+                const kpiPctPub = document.getElementById("kpi-pct-publica");
+                const kpiPctRur = document.getElementById("kpi-pct-rural");
+                const kpiMatSub = document.getElementById("kpi-matricula-sub");
+
+                if (isAllYears) {
+                    // Show "-" when all years selected (would inflate numbers)
+                    if (kpiMat) kpiMat.innerText = "—";
+                    if (kpiDoc) kpiDoc.innerText = "—";
+                    if (kpiLoc) kpiLoc.innerText = "—";
+                    if (kpiSrv) kpiSrv.innerText = "—";
+                    if (kpiRatio) kpiRatio.innerText = "—";
+                    if (kpiPctPub) kpiPctPub.innerText = "—";
+                    if (kpiPctRur) kpiPctRur.innerText = "—";
+                    if (kpiMatSub) kpiMatSub.innerText = `Ver gráfico de evolución histórica`;
+                    // Show overlay on ranking chart
+                    const ov = document.getElementById("overlay-ranking");
+                    if (ov) ov.classList.add("visible");
+                    return;
+                }
+
+                // Hide ranking overlay
                 const ov = document.getElementById("overlay-ranking");
-                if (ov) ov.classList.add("visible");
-                return;
+                if (ov) ov.classList.remove("visible");
+
+                // Totals
+                const matArea = (window.filteredData && Array.isArray(window.filteredData.matriculaArea)) ? window.filteredData.matriculaArea : [];
+                const docData = (window.filteredData && Array.isArray(window.filteredData.docentes)) ? window.filteredData.docentes : [];
+                const locData = (window.filteredData && Array.isArray(window.filteredData.locales)) ? window.filteredData.locales : [];
+                const srvData = (window.filteredData && Array.isArray(window.filteredData.servicios)) ? window.filteredData.servicios : [];
+
+                const totalMatricula = matArea.reduce((sum, d) => sum + (d ? (d.Total || 0) : 0), 0);
+                const totalDocentes = docData.reduce((sum, d) => sum + (d ? (d.Total || 0) : 0), 0);
+                const totalLocales = locData.reduce((sum, d) => sum + (d ? (d.Total || 0) : 0), 0);
+                const totalServicios = srvData.reduce((sum, d) => sum + (d ? (d.Total || 0) : 0), 0);
+
+                // Pupil-Teacher Ratio
+                const pupilTeacherRatio = totalDocentes > 0 ? (totalMatricula / totalDocentes).toFixed(1) : "N/D";
+                
+                // % Public Locales
+                const publicLocales = locData.filter(d => d && d.Gestion === "Pública").reduce((sum, d) => sum + (d.Total || 0), 0);
+                const pctPublic = totalLocales > 0 ? Math.round((publicLocales / totalLocales) * 100) : 0;
+
+                // % Rural Matrícula
+                const ruralMatricula = matArea.filter(d => d && d.Area === "Rural").reduce((sum, d) => sum + (d.Total || 0), 0);
+                const pctRural = totalMatricula > 0 ? Math.round((ruralMatricula / totalMatricula) * 100) : 0;
+
+                // Assign values to HTML DOM
+                if (kpiMat) kpiMat.innerText = totalMatricula.toLocaleString();
+                if (kpiDoc) kpiDoc.innerText = totalDocentes.toLocaleString();
+                if (kpiLoc) kpiLoc.innerText = totalLocales.toLocaleString();
+                if (kpiSrv) kpiSrv.innerText = totalServicios.toLocaleString();
+
+                if (kpiRatio) kpiRatio.innerText = pupilTeacherRatio;
+                if (kpiPctPub) kpiPctPub.innerText = `${pctPublic}%`;
+                if (kpiPctRur) kpiPctRur.innerText = `${pctRural}%`;
+                
+                // Subtexts adjustments
+                if (kpiMatSub) kpiMatSub.innerText = `Matrícula ${yearFilterVal} en ${ugelFilterVal === 'Todas' ? 'Toda la Región' : ugelFilterVal}`;
+            } catch (e) {
+                console.error("Error in updateKPIs:", e);
             }
-
-            // Hide ranking overlay
-            const ov = document.getElementById("overlay-ranking");
-            if (ov) ov.classList.remove("visible");
-
-            // Totals
-            const totalMatricula = window.filteredData.matriculaArea.reduce((sum, d) => sum + d.Total, 0);
-            const totalDocentes = window.filteredData.docentes.reduce((sum, d) => sum + d.Total, 0);
-            const totalLocales = window.filteredData.locales.reduce((sum, d) => sum + d.Total, 0);
-            const totalServicios = window.filteredData.servicios.reduce((sum, d) => sum + d.Total, 0);
-
-            // Pupil-Teacher Ratio
-            const pupilTeacherRatio = totalDocentes > 0 ? (totalMatricula / totalDocentes).toFixed(1) : "N/D";
-            
-            // % Public Locales
-            const publicLocales = window.filteredData.locales.filter(d => d.Gestion === "Pública").reduce((sum, d) => sum + d.Total, 0);
-            const pctPublic = totalLocales > 0 ? Math.round((publicLocales / totalLocales) * 100) : 0;
-
-            // % Rural Matrícula
-            const ruralMatricula = window.filteredData.matriculaArea.filter(d => d.Area === "Rural").reduce((sum, d) => sum + d.Total, 0);
-            const pctRural = totalMatricula > 0 ? Math.round((ruralMatricula / totalMatricula) * 100) : 0;
-
-            // Assign values to HTML DOM
-            document.getElementById("kpi-matricula").innerText = totalMatricula.toLocaleString();
-            document.getElementById("kpi-docentes").innerText = totalDocentes.toLocaleString();
-            document.getElementById("kpi-locales").innerText = totalLocales.toLocaleString();
-            document.getElementById("kpi-servicios").innerText = totalServicios.toLocaleString();
-
-            document.getElementById("kpi-ratio-pupil").innerText = pupilTeacherRatio;
-            document.getElementById("kpi-pct-publica").innerText = `${pctPublic}%`;
-            document.getElementById("kpi-pct-rural").innerText = `${pctRural}%`;
-            
-            // Subtexts adjustments
-            document.getElementById("kpi-matricula-sub").innerText = `Matrícula ${yearFilterVal} en ${ugelFilterVal === 'Todas' ? 'Toda la Región' : ugelFilterVal}`;
         }
 
         // SWITCH CHART DIMENSION
         function changeChartDim(chartId, dimension) {
-            // Update active state in UI
-            $(`.toggle-btn-group[data-chart="${chartId}"] .toggle-btn`).removeClass("active");
-            $(`.toggle-btn-group[data-chart="${chartId}"] .toggle-btn:contains("${dimension}")`).addClass("active");
+            try {
+                // Update active state in UI
+                $(`.toggle-btn-group[data-chart="${chartId}"] .toggle-btn`).removeClass("active");
+                
+                // Match using onclick attribute to avoid accent issues with contains
+                const targetBtn = $(`.toggle-btn-group[data-chart="${chartId}"] .toggle-btn[onclick*="'${dimension}'"]`);
+                if (targetBtn.length > 0) {
+                    targetBtn.addClass("active");
+                } else {
+                    // Fallback to text matching if onclick not matched
+                    $(`.toggle-btn-group[data-chart="${chartId}"] .toggle-btn:contains("${dimension}")`).addClass("active");
+                }
 
-            window.chartDimensions[chartId] = dimension;
-            
-            // Re-render specific chart
-            updateChartObject(chartId);
+                window.chartDimensions[chartId] = dimension;
+                
+                // Re-render specific chart
+                updateChartObject(chartId);
+            } catch (e) {
+                console.error("Error in changeChartDim:", e);
+            }
         }
 
         // INITIALIZE CHART.JS & DEFINE THE 6 CHARTS
@@ -2870,191 +3253,390 @@
         }
 
         function updateChartObject(chartId) {
-            const isDark = document.body.classList.contains("dark-mode");
-            const textColor = isDark ? "#e2e8f0" : "#1e293b";
-            const gridColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
+            try {
+                const canvasEl = document.getElementById(chartId);
+                if (!canvasEl) return;
 
-            // Handle year=Todos: show overlay and skip chart render for T1-T6
-            const isAllYears = window.activeFilters && window.activeFilters.year === "Todos";
-            const mainCharts = ["chart-t1","chart-t2","chart-t3","chart-t4","chart-t5","chart-t6"];
-            if (mainCharts.includes(chartId)) {
-                const ovId = "overlay-" + chartId.replace("chart-","");
-                const ov = document.getElementById(ovId);
-                if (isAllYears) {
-                    if (ov) ov.classList.add("visible");
-                    // Destroy existing chart
+                const isDark = document.body.classList.contains("dark-mode");
+                const textColor = isDark ? "#e2e8f0" : "#1e293b";
+                const gridColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
+
+                // Check active filters
+                const isUgelFiltered = window.activeFilters && (window.activeFilters.ugel !== "Todas");
+                const isLevelFiltered = window.activeFilters && (window.activeFilters.level !== "Todos");
+                const isSexFiltered = window.activeFilters && (window.activeFilters.sex !== "Todos");
+                const isAreaFiltered = window.activeFilters && (window.activeFilters.area !== "Todas");
+                const isAnyFilterActive = isUgelFiltered || isLevelFiltered || isSexFiltered || isAreaFiltered;
+
+                // Handle year=Todos: show overlay and skip chart render for T1-T6
+                const isAllYears = window.activeFilters && window.activeFilters.year === "Todos";
+                const mainCharts = ["chart-t1","chart-t2","chart-t3","chart-t4","chart-t5","chart-t6"];
+                const mainChartsWithToggles = ["chart-t1","chart-t3","chart-t4","chart-t5","chart-t6"];
+
+                // Toggle-button groups visibility (UGEL, Gestión, Área options) for charts 1, 3, 4, 5, 6
+                if (mainChartsWithToggles.includes(chartId)) {
+                    const toggleEl = document.querySelector(`.toggle-btn-group[data-chart="${chartId}"]`);
+                    if (toggleEl) {
+                        toggleEl.style.display = (!isAllYears) ? "inline-flex" : "none";
+                    }
+                }
+
+                const hasOverlay = mainCharts.includes(chartId) || chartId === "chart-ranking";
+                if (hasOverlay) {
+                    const ovId = chartId === "chart-ranking" ? "overlay-ranking" : "overlay-" + chartId.replace("chart-","");
+                    const ov = document.getElementById(ovId);
+                    if (ov) {
+                        const mainSpan = ov.querySelector("span:nth-of-type(1)");
+                        const subSpan = ov.querySelector("span:nth-of-type(2)");
+                        const iconEl = ov.querySelector("i");
+
+                        if (isSexFiltered && chartId !== "chart-t2") {
+                            // Sex filter active: hide all other charts and show "Este grafico no cuenta con este detalle"
+                            ov.classList.add("visible");
+                            if (mainSpan) mainSpan.innerText = "Este grafico no cuenta con este detalle";
+                            if (subSpan) subSpan.style.display = "none";
+                            if (iconEl) iconEl.className = "ph ph-info";
+                            
+                            // Destroy chart and return
+                            if (window.charts[chartId]) {
+                                window.charts[chartId].destroy();
+                                window.charts[chartId] = null;
+                            }
+                            return;
+                        } else {
+                            // Restore overlay defaults
+                            if (mainSpan) mainSpan.innerText = "Selecciona algun tipo de filtro para mostrar el grafico";
+                            if (subSpan) {
+                                subSpan.innerText = (chartId === "chart-ranking") ? "El ranking no suma múltiples años" : "Los gráficos no suman múltiples años";
+                                subSpan.style.display = "";
+                            }
+                            if (iconEl) iconEl.className = "ph ph-calendar-x";
+                        }
+
+                        // Handle year=Todos overlay logic
+                        if (isAllYears && !isAnyFilterActive) {
+                            ov.classList.add("visible");
+                            if (window.charts[chartId]) {
+                                window.charts[chartId].destroy();
+                                window.charts[chartId] = null;
+                            }
+                            return;
+                        } else {
+                            ov.classList.remove("visible");
+                        }
+                    }
+                }
+
+                // If year=Todos and this is ranking, hide it (overlay shown in updateKPIs)
+                if (chartId === "chart-ranking" && window.activeFilters && window.activeFilters.year === "Todos") {
+                    // Destroy existing chart and skip rendering
                     if (window.charts[chartId]) {
                         window.charts[chartId].destroy();
                         window.charts[chartId] = null;
                     }
                     return;
-                } else {
-                    if (ov) ov.classList.remove("visible");
                 }
-            }
-            
-            let dataset = null;
-            let dimension = window.chartDimensions[chartId] || "UGEL";
-            let chartTitle = "";
-            let dataColor = "rgba(37, 99, 235, 0.85)";
+                
+                let dataset = null;
+                let dimension = window.chartDimensions[chartId] || "UGEL";
+                let chartTitle = "";
+                let dataColor = "rgba(37, 99, 235, 0.85)";
 
-            // Pick correct dataset and configure labels
-            if (chartId === "chart-t1") {
-                dataset = window.filteredData.matriculaArea;
-                chartTitle = "Estudiantes Matriculados";
-            } else if (chartId === "chart-t2") {
-                dataset = window.filteredData.matriculaSexo;
-                chartTitle = "Matrícula Sexo";
-                // Sex has no Area, ensure toggle is mapped correctly
-                if (dimension !== "UGEL" && dimension !== "Sexo") {
-                    dimension = "UGEL";
-                    window.chartDimensions[chartId] = "UGEL";
-                    $(`.toggle-btn-group[data-chart="chart-t2"] .toggle-btn`).removeClass("active");
-                    $(`.toggle-btn-group[data-chart="chart-t2"] .toggle-btn:contains("UGEL")`).addClass("active");
-                }
-            } else if (chartId === "chart-t3") {
-                dataset = window.filteredData.docentes;
-                chartTitle = "Docentes Activos";
-                dataColor = "rgba(16, 185, 129, 0.85)";
-            } else if (chartId === "chart-t4") {
-                dataset = window.filteredData.noDocentes;
-                chartTitle = "Personal Administrativo";
-                dataColor = "rgba(245, 158, 11, 0.85)";
-            } else if (chartId === "chart-t5") {
-                dataset = window.filteredData.servicios;
-                chartTitle = "Servicios Educativos";
-                dataColor = "rgba(6, 182, 212, 0.85)";
-            } else if (chartId === "chart-t6") {
-                dataset = window.filteredData.locales;
-                chartTitle = "Locales Escolares";
-                dataColor = "rgba(139, 92, 246, 0.85)";
-            } else if (chartId === "chart-ranking") {
-                dataset = window.filteredData.matriculaArea;
-                dimension = "UGEL"; // Force ranking to be UGEL
-            }
+                if (isAnyFilterActive && mainCharts.includes(chartId)) {
+                    // Ignore year filter for the dataset of T1-T6
+                    const rawDataKey = (chartId === "chart-t1") ? "matriculaArea" :
+                                       (chartId === "chart-t2") ? "matriculaSexo" :
+                                       (chartId === "chart-t3") ? "docentes" :
+                                       (chartId === "chart-t4") ? "noDocentes" :
+                                       (chartId === "chart-t5") ? "servicios" :
+                                       (chartId === "chart-t6") ? "locales" : "";
+                    
+                    const raw = (window.dashboardData && window.dashboardData[rawDataKey]) ? window.dashboardData[rawDataKey] : [];
+                    const ugelVal = window.activeFilters ? window.activeFilters.ugel : "Todas";
+                    const lvlVal = window.activeFilters ? window.activeFilters.level : "Todos";
+                    const areaVal = window.activeFilters ? window.activeFilters.area : "Todas";
+                    const sexVal = window.activeFilters ? window.activeFilters.sex : "Todos";
 
-            // If year=Todos and this is ranking, hide it (overlay shown in updateKPIs)
-            if (chartId === "chart-ranking" && window.activeFilters.year === "Todos") {
-                // Destroy existing chart and skip rendering
-                if (window.charts[chartId]) {
-                    window.charts[chartId].destroy();
-                    window.charts[chartId] = null;
-                }
-                return;
-            }
-
-            // Use 4-partition Gestión×Área when dimension is "Area"
-            const aggregated = (dimension === "Area" && chartId !== "chart-t2")
-                ? getAggregateDataGestionArea(dataset)
-                : getAggregateData(dataset, dimension);
-
-            // Compute sorted arrays for Ranking Chart (high to low)
-            if (chartId === "chart-ranking") {
-                const combined = aggregated.labels.map((label, idx) => ({
-                    label: label,
-                    value: aggregated.data[idx]
-                }));
-                combined.sort((a, b) => b.value - a.value);
-                aggregated.labels = combined.map(c => c.label);
-                aggregated.data = combined.map(c => c.value);
-            }
-
-            // Colors setup: assign unique colors by dimension
-            // Área dimension: 4 colors linking Gestión to Urbana(strong)/Rural(tenue)
-            const GESTION_AREA_COLORS = {
-                "Pública - Urbana": "#0891b2",   // Teal strong
-                "Pública - Rural": "#67e8f9",    // Teal light/tenue
-                "Privada - Urbana": "#d97706",   // Amber strong
-                "Privada - Rural": "#fcd34d"     // Amber light/tenue
-            };
-            let colors = dataColor;
-            if (dimension === "UGEL") {
-                colors = aggregated.labels.map(lbl => getUgelColor(lbl));
-            } else if (dimension === "Sexo") {
-                colors = aggregated.labels.map(lbl => lbl === "Masculino" ? "#2563eb" : "#ec4899");
-            } else if (dimension === "Gestion") {
-                colors = aggregated.labels.map(lbl => lbl === "Pública" ? "#06b6d4" : "#f59e0b");
-            } else if (dimension === "Area") {
-                colors = aggregated.labels.map(lbl => GESTION_AREA_COLORS[lbl] || "#94a3b8");
-            }
-
-            const ctx = document.getElementById(chartId).getContext('2d');
-
-            // Destroy previous chart instance if exists
-            if (window.charts[chartId]) {
-                window.charts[chartId].destroy();
-            }
-
-            // Chart Configuration
-            const config = {
-                type: (chartId === "chart-ranking") ? 'bar' : 'bar',
-                data: {
-                    labels: aggregated.labels,
-                    datasets: [{
-                        label: chartTitle || 'Cantidad',
-                        data: aggregated.data,
-                        backgroundColor: colors,
-                        borderColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.4)',
-                        borderWidth: 1,
-                        borderRadius: 6,
-                        barPercentage: 0.65
-                    }]
-                },
-                options: {
-                    indexAxis: (chartId === "chart-ranking") ? 'y' : 'x',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: isDark ? '#1f2937' : '#ffffff',
-                            titleColor: isDark ? '#f3f4f6' : '#111827',
-                            bodyColor: isDark ? '#9ca3af' : '#4b5563',
-                            borderColor: 'rgba(37, 99, 235, 0.3)',
-                            borderWidth: 1,
-                            padding: 10,
-                            callbacks: {
-                                label: function(context) {
-                                    const dataset = context.dataset;
-                                    const total = dataset.data.reduce((sum, val) => sum + (val || 0), 0);
-                                    const currentValue = context.raw || 0;
-                                    const percentage = total > 0 ? ((currentValue / total) * 100).toFixed(1) : 0;
-                                    return ` ${context.label || 'Valor'}: ${currentValue.toLocaleString()} (${percentage}%)`;
-                                }
-                            }
+                    dataset = raw.filter(row => {
+                        if (!row) return false;
+                        const matchUgel = (ugelVal === "Todas" || row.UGEL === ugelVal);
+                        const matchLvl = (lvlVal === "Todos" || row.Nivel === lvlVal);
+                        
+                        if (rawDataKey === "matriculaSexo") {
+                            const matchSex = (sexVal === "Todos" || row.Sexo === sexVal);
+                            return matchUgel && matchLvl && matchSex;
+                        } else {
+                            const matchArea = (areaVal === "Todas" || !row.Area || row.Area === areaVal);
+                            return matchUgel && matchLvl && matchArea;
                         }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: gridColor },
-                            ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
-                        },
-                        y: {
-                            grid: { color: gridColor },
-                            ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
+                    });
+                } else {
+                    // Default year-filtered datasets
+                    if (window.filteredData) {
+                        if (chartId === "chart-t1") {
+                            dataset = window.filteredData.matriculaArea;
+                        } else if (chartId === "chart-t2") {
+                            dataset = window.filteredData.matriculaSexo;
+                        } else if (chartId === "chart-t3") {
+                            dataset = window.filteredData.docentes;
+                        } else if (chartId === "chart-t4") {
+                            dataset = window.filteredData.noDocentes;
+                        } else if (chartId === "chart-t5") {
+                            dataset = window.filteredData.servicios;
+                        } else if (chartId === "chart-t6") {
+                            dataset = window.filteredData.locales;
+                        } else if (chartId === "chart-ranking") {
+                            dataset = window.filteredData.matriculaArea;
                         }
                     }
                 }
-            };
 
-            // Switch to Pie chart for binary dimensions to show proportion beautifully
-            if (dimension !== "UGEL" && chartId !== "chart-ranking") {
-                config.type = 'doughnut';
-                config.options.plugins.legend = {
-                    display: true,
-                    position: 'bottom',
-                    labels: { color: textColor, font: { family: 'Inter', size: 10 } }
+                dataset = dataset || [];
+
+                // Pick correct configuration names
+                if (chartId === "chart-t1") {
+                    chartTitle = "Estudiantes Matriculados";
+                } else if (chartId === "chart-t2") {
+                    chartTitle = "Matrícula Sexo";
+                    // Sex has no Area, ensure toggle is mapped correctly
+                    if (dimension !== "UGEL" && dimension !== "Sexo") {
+                        dimension = "UGEL";
+                        window.chartDimensions[chartId] = "UGEL";
+                        $(`.toggle-btn-group[data-chart="chart-t2"] .toggle-btn`).removeClass("active");
+                        $(`.toggle-btn-group[data-chart="chart-t2"] .toggle-btn:contains("UGEL")`).addClass("active");
+                    }
+                } else if (chartId === "chart-t3") {
+                    chartTitle = "Docentes Activos";
+                    dataColor = "rgba(16, 185, 129, 0.85)";
+                } else if (chartId === "chart-t4") {
+                    chartTitle = "Personal Administrativo";
+                    dataColor = "rgba(245, 158, 11, 0.85)";
+                } else if (chartId === "chart-t5") {
+                    chartTitle = "Servicios Educativos";
+                    dataColor = "rgba(6, 182, 212, 0.85)";
+                } else if (chartId === "chart-t6") {
+                    chartTitle = "Locales Escolares";
+                    dataColor = "rgba(139, 92, 246, 0.85)";
+                } else if (chartId === "chart-ranking") {
+                    dimension = "UGEL"; // Force ranking to be UGEL
+                }
+
+                // If year=Todos and this is ranking, hide it (overlay shown in updateKPIs)
+                if (chartId === "chart-ranking" && window.activeFilters && window.activeFilters.year === "Todos") {
+                    // Destroy existing chart and skip rendering
+                    if (window.charts[chartId]) {
+                        window.charts[chartId].destroy();
+                        window.charts[chartId] = null;
+                    }
+                    return;
+                }
+
+                // Group and aggregate data
+                let aggregated = null;
+                if (isAnyFilterActive && mainCharts.includes(chartId)) {
+                    const grouped = {};
+                    const historicalYears = ["2021", "2022", "2023", "2024", "2025"];
+
+                    if (isUgelFiltered) {
+                        // Rule 1: Group by Nivel - Year (or Sexo - Year for T2)
+                        const groupKey = (chartId === "chart-t2") ? "Sexo" : "Nivel";
+                        dataset.forEach(row => {
+                            if (!row) return;
+                            const yr = row.Anio ? row.Anio.toString().trim() : "";
+                            if (historicalYears.includes(yr)) {
+                                const gVal = row[groupKey] || "No Definido";
+                                const key = `${gVal} - ${yr}`;
+                                grouped[key] = (grouped[key] || 0) + (row.Total || 0);
+                            }
+                        });
+                    } else if (isLevelFiltered) {
+                        // Rule 2: Group by Year (indicating year)
+                        dataset.forEach(row => {
+                            if (!row) return;
+                            const yr = row.Anio ? row.Anio.toString().trim() : "";
+                            if (historicalYears.includes(yr)) {
+                                grouped[yr] = (grouped[yr] || 0) + (row.Total || 0);
+                            }
+                        });
+                    } else if (isSexFiltered) {
+                        // Rule 4: Group by UGEL - Year (all UGELs and all years)
+                        dataset.forEach(row => {
+                            if (!row) return;
+                            const yr = row.Anio ? row.Anio.toString().trim() : "";
+                            if (historicalYears.includes(yr)) {
+                                const ugel = row.UGEL || "No Definido";
+                                const key = `${ugel} - ${yr}`;
+                                grouped[key] = (grouped[key] || 0) + (row.Total || 0);
+                            }
+                        });
+                    } else if (isAreaFiltered) {
+                        // Rule 3: Group by Year (show all years)
+                        dataset.forEach(row => {
+                            if (!row) return;
+                            const yr = row.Anio ? row.Anio.toString().trim() : "";
+                            if (historicalYears.includes(yr)) {
+                                grouped[yr] = (grouped[yr] || 0) + (row.Total || 0);
+                            }
+                        });
+                    }
+
+                    // Sort keys: category first, then year chronologically
+                    const keys = Object.keys(grouped).sort((a, b) => {
+                        const partsA = a.split(" - ");
+                        const partsB = b.split(" - ");
+                        if (partsA.length === 2 && partsB.length === 2) {
+                            if (partsA[0] !== partsB[0]) {
+                                return partsA[0].localeCompare(partsB[0]);
+                            }
+                            return parseInt(partsA[1]) - parseInt(partsB[1]);
+                        }
+                        return a.localeCompare(b);
+                    });
+
+                    aggregated = {
+                        labels: keys,
+                        data: keys.map(k => grouped[k])
+                    };
+                } else {
+                    // Standard behavior
+                    aggregated = (dimension === "Area" && chartId !== "chart-t2")
+                        ? getAggregateDataGestionArea(dataset)
+                        : getAggregateData(dataset, dimension);
+                }
+
+                if (!aggregated || !Array.isArray(aggregated.labels)) {
+                    aggregated = { labels: [], data: [] };
+                }
+
+                // Compute sorted arrays for Ranking Chart (high to low)
+                if (chartId === "chart-ranking") {
+                    const combined = aggregated.labels.map((label, idx) => ({
+                        label: label,
+                        value: aggregated.data[idx]
+                    }));
+                    combined.sort((a, b) => b.value - a.value);
+                    aggregated.labels = combined.map(c => c.label);
+                    aggregated.data = combined.map(c => c.value);
+                }
+
+                // Colors setup: assign unique colors by dimension (or by year if filter is active)
+                const GESTION_AREA_COLORS = {
+                    "Pública - Urbana": "#0891b2",   // Teal strong
+                    "Pública - Rural": "#67e8f9",    // Teal light/tenue
+                    "Privada - Urbana": "#d97706",   // Amber strong
+                    "Privada - Rural": "#fcd34d"     // Amber light/tenue
                 };
-                // Remove axes grids for doughnut charts
-                delete config.options.scales;
-                config.data.datasets[0].borderRadius = 2;
-                config.data.datasets[0].borderWidth = 2;
+                const YEAR_COLORS = {
+                    "2021": "#3b82f6",
+                    "2022": "#10b981",
+                    "2023": "#f59e0b",
+                    "2024": "#8b5cf6",
+                    "2025": "#e11d48"
+                };
+                const getColorByYear = (label, defaultColor) => {
+                    if (!label) return defaultColor;
+                    const labelStr = label.toString();
+                    for (const yr in YEAR_COLORS) {
+                        if (labelStr.includes(yr)) {
+                            return YEAR_COLORS[yr];
+                        }
+                    }
+                    return defaultColor;
+                };
+
+                let colors = dataColor;
+                if (isAnyFilterActive && mainCharts.includes(chartId)) {
+                    colors = aggregated.labels.map(label => getColorByYear(label, dataColor));
+                } else if (dimension === "UGEL") {
+                    colors = aggregated.labels.map(lbl => getUgelColor(lbl));
+                } else if (dimension === "Sexo") {
+                    colors = aggregated.labels.map(lbl => lbl === "Masculino" ? "#2563eb" : "#ec4899");
+                } else if (dimension === "Gestion") {
+                    colors = aggregated.labels.map(lbl => lbl === "Pública" ? "#06b6d4" : "#f59e0b");
+                } else if (dimension === "Area") {
+                    colors = aggregated.labels.map(lbl => GESTION_AREA_COLORS[lbl] || "#94a3b8");
+                }
+
+                const ctx = canvasEl.getContext('2d');
+
+                // Destroy previous chart instance if exists
+                if (window.charts[chartId]) {
+                    window.charts[chartId].destroy();
+                }
+
+                // Chart Configuration
+                const config = {
+                    type: (chartId === "chart-ranking") ? 'bar' : 'bar',
+                    data: {
+                        labels: aggregated.labels,
+                        datasets: [{
+                            label: chartTitle || 'Cantidad',
+                            data: aggregated.data,
+                            backgroundColor: colors,
+                            borderColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.4)',
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            barPercentage: 0.65
+                        }]
+                    },
+                    options: {
+                        indexAxis: (chartId === "chart-ranking") ? 'y' : 'x',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                                titleColor: isDark ? '#f3f4f6' : '#111827',
+                                bodyColor: isDark ? '#9ca3af' : '#4b5563',
+                                borderColor: 'rgba(37, 99, 235, 0.3)',
+                                borderWidth: 1,
+                                padding: 10,
+                                callbacks: {
+                                    label: function(context) {
+                                        const dataset = context.dataset;
+                                        const total = dataset.data.reduce((sum, val) => sum + (val || 0), 0);
+                                        const currentValue = context.raw || 0;
+                                        const percentage = total > 0 ? ((currentValue / total) * 100).toFixed(1) : 0;
+                                        return ` ${context.label || 'Valor'}: ${currentValue.toLocaleString()} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
+                            },
+                            y: {
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
+                            }
+                        }
+                    }
+                };
+
+                // Switch to Pie chart for binary dimensions to show proportion beautifully
+                // BUT only if we are NOT in active filter mode!
+                if (!isAnyFilterActive && dimension !== "UGEL" && chartId !== "chart-ranking") {
+                    config.type = 'doughnut';
+                    config.options.plugins.legend = {
+                        display: true,
+                        position: 'bottom',
+                        labels: { color: textColor, font: { family: 'Inter', size: 10 } }
+                    };
+                    // Remove axes grids for doughnut charts
+                    delete config.options.scales;
+                    config.data.datasets[0].borderRadius = 2;
+                    config.data.datasets[0].borderWidth = 2;
+                }
+
+                window.charts[chartId] = new Chart(ctx, config);
+            } catch (e) {
+                console.error("Error in updateChartObject for " + chartId + ":", e);
             }
-
-            window.charts[chartId] = new Chart(ctx, config);
-
         }
 
         // REDRAW CHART THEME COLORS
@@ -3065,17 +3647,266 @@
 
             for (let chartId in window.charts) {
                 const chart = window.charts[chartId];
-                if (chart.options.scales) {
+                if (chart && chart.options.scales) {
                     chart.options.scales.x.grid.color = gridColor;
                     chart.options.scales.x.ticks.color = textColor;
                     chart.options.scales.y.grid.color = gridColor;
                     chart.options.scales.y.ticks.color = textColor;
                 }
-                if (chart.options.plugins.legend) {
+                if (chart && chart.options.plugins.legend) {
                     chart.options.plugins.legend.labels.color = textColor;
                 }
-                chart.update();
+                if (chart) chart.update();
             }
+
+            for (let ugel in window.localesCharts) {
+                const chart = window.localesCharts[ugel];
+                if (chart && chart.options.scales) {
+                    chart.options.scales.x.grid.color = gridColor;
+                    chart.options.scales.x.ticks.color = textColor;
+                    chart.options.scales.y.grid.color = gridColor;
+                    chart.options.scales.y.ticks.color = textColor;
+                }
+                if (chart && chart.options.plugins.legend) {
+                    chart.options.plugins.legend.labels.color = textColor;
+                }
+                if (chart) chart.update();
+            }
+        }
+
+        function hexToRgba(hex, alpha) {
+            hex = hex.replace('#', '');
+            let r, g, b;
+            if (hex.length === 3) {
+                r = parseInt(hex.charAt(0) + hex.charAt(0), 16);
+                g = parseInt(hex.charAt(1) + hex.charAt(1), 16);
+                b = parseInt(hex.charAt(2) + hex.charAt(2), 16);
+            } else if (hex.length === 6) {
+                r = parseInt(hex.substring(0, 2), 16);
+                g = parseInt(hex.substring(2, 4), 16);
+                b = parseInt(hex.substring(4, 6), 16);
+            } else {
+                return hex;
+            }
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function initLocalesChartsHTML() {
+            const container = document.getElementById("locales-charts-grid");
+            if (!container) return;
+            container.innerHTML = "";
+            Object.keys(UGEL_COORDS).forEach(ugel => {
+                const idSafe = ugel.replace(/\s+/g, '-').toLowerCase();
+                const cardHtml = `
+                    <div class="dashboard-card" id="card-local-${idSafe}">
+                        <div class="dashboard-card-header">
+                            <div class="dashboard-card-title">
+                                <h3>${ugel}</h3>
+                                <p class="locales-subtitle">Locales Escolares</p>
+                            </div>
+                            <div class="dashboard-card-actions">
+                                <div class="toggle-btn-group" data-locales-chart="${ugel}">
+                                    <button class="toggle-btn active" onclick="changeLocalesChartDim('${ugel}', 'Gestion')">Gestión</button>
+                                    <button class="toggle-btn" onclick="changeLocalesChartDim('${ugel}', 'Area')">Área</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-box" style="position:relative;">
+                            <canvas id="chart-local-${idSafe}"></canvas>
+                            <div class="chart-no-year-overlay" id="overlay-local-${idSafe}">
+                                <i class="ph ph-warning"></i>
+                                <span>la ${ugel} no tiene esta administración</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+                window.localesChartDimensions[ugel] = "Gestion";
+            });
+        }
+
+        function changeLocalesChartDim(ugel, dimension) {
+            window.localesChartDimensions[ugel] = dimension;
+            
+            const btnGroup = document.querySelector(`.toggle-btn-group[data-locales-chart="${ugel}"]`);
+            if (btnGroup) {
+                const btns = btnGroup.querySelectorAll(".toggle-btn");
+                btns.forEach(btn => {
+                    const clickAttr = btn.getAttribute("onclick") || "";
+                    if (clickAttr.includes(dimension)) {
+                        btn.classList.add("active");
+                    } else {
+                        btn.classList.remove("active");
+                    }
+                });
+            }
+            
+            updateLocalesChart(ugel);
+        }
+
+        function updateLocalesChart(ugel) {
+            try {
+                const idSafe = ugel.replace(/\s+/g, '-').toLowerCase();
+                const canvasEl = document.getElementById(`chart-local-${idSafe}`);
+                if (!canvasEl) return;
+                
+                const isDark = document.body.classList.contains("dark-mode");
+                const textColor = isDark ? "#e2e8f0" : "#1e293b";
+                const gridColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
+                
+                const selectedLevel = window.activeFilters.locales;
+                const localesData = (window.dashboardData && Array.isArray(window.dashboardData.locales))
+                    ? window.dashboardData.locales
+                    : [];
+                
+                // Get latest year
+                const years = localesData.map(d => parseInt(d.Anio)).filter(y => !isNaN(y));
+                const latestYear = years.length > 0 ? Math.max(...years) : 2025;
+                
+                // Filter
+                const ugelData = localesData.filter(row => {
+                    return row &&
+                           row.UGEL === ugel &&
+                           row.Nivel === selectedLevel &&
+                           parseInt(row.Anio) === latestYear;
+                });
+                
+                const sumTotal = ugelData.reduce((sum, row) => sum + (row.Total || 0), 0);
+                const overlay = document.getElementById(`overlay-local-${idSafe}`);
+                
+                // Update subtitle
+                const card = document.getElementById(`card-local-${idSafe}`);
+                if (card) {
+                    const subtitle = card.querySelector(".locales-subtitle");
+                    if (subtitle) {
+                        subtitle.innerText = `Locales Escolares · ${selectedLevel} (${latestYear})`;
+                    }
+                }
+                
+                if (sumTotal === 0) {
+                    if (overlay) overlay.classList.add("visible");
+                    if (window.localesCharts[ugel]) {
+                        window.localesCharts[ugel].destroy();
+                        window.localesCharts[ugel] = null;
+                    }
+                    return;
+                } else {
+                    if (overlay) overlay.classList.remove("visible");
+                }
+                
+                const dim = window.localesChartDimensions[ugel] || "Gestion";
+                let valBottom = 0;
+                let valTop = 0;
+                let labelBottom = "";
+                let labelTop = "";
+                
+                if (dim === "Gestion") {
+                    labelBottom = "Pública";
+                    labelTop = "Privada";
+                    ugelData.forEach(row => {
+                        const g = (row.Gestion || "").toString().trim().toLowerCase();
+                        if (g.includes("púb") || g.includes("pub")) {
+                            valBottom += (row.Total || 0);
+                        } else if (g.includes("priv")) {
+                            valTop += (row.Total || 0);
+                        }
+                    });
+                } else {
+                    labelBottom = "Urbana";
+                    labelTop = "Rural";
+                    ugelData.forEach(row => {
+                        const a = (row.Area || "").toString().trim().toLowerCase();
+                        if (a.includes("urb")) {
+                            valBottom += (row.Total || 0);
+                        } else if (a.includes("rur")) {
+                            valTop += (row.Total || 0);
+                        }
+                    });
+                }
+                
+                const baseColor = UGEL_COLORS[ugel] || "#64748b";
+                const rgbaColor = hexToRgba(baseColor, 0.45);
+                
+                // Destroy existing chart if it exists
+                if (window.localesCharts[ugel]) {
+                    window.localesCharts[ugel].destroy();
+                }
+                
+                const ctx = canvasEl.getContext('2d');
+                window.localesCharts[ugel] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [selectedLevel],
+                        datasets: [
+                            {
+                                label: labelBottom,
+                                data: [valBottom],
+                                backgroundColor: baseColor,
+                                borderColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.4)',
+                                borderWidth: 1,
+                                borderRadius: valTop > 0 ? 0 : 6,
+                                barPercentage: 0.5
+                            },
+                            {
+                                label: labelTop,
+                                data: [valTop],
+                                backgroundColor: rgbaColor,
+                                borderColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.4)',
+                                borderWidth: 1,
+                                borderRadius: 6,
+                                barPercentage: 0.5
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: { color: textColor, font: { family: 'Inter', size: 10 } }
+                            },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                                titleColor: isDark ? '#f3f4f6' : '#111827',
+                                bodyColor: isDark ? '#9ca3af' : '#4b5563',
+                                borderColor: baseColor,
+                                borderWidth: 1,
+                                padding: 10,
+                                callbacks: {
+                                    label: function(context) {
+                                        const currentValue = context.raw || 0;
+                                        const total = valBottom + valTop;
+                                        const percentage = total > 0 ? ((currentValue / total) * 100).toFixed(1) : 0;
+                                        return ` ${context.dataset.label}: ${currentValue.toLocaleString()} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { family: 'Inter', size: 10 } }
+                            },
+                            y: {
+                                stacked: true,
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { family: 'Inter', size: 10 } }
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.error("Error in updateLocalesChart for " + ugel + ":", e);
+            }
+        }
+
+        function renderLocalesCharts() {
+            Object.keys(UGEL_COORDS).forEach(ugel => {
+                updateLocalesChart(ugel);
+            });
         }
 
         // INITIALIZE MAP (LEAFLET.JS)
@@ -3141,32 +3972,36 @@
 
         // UPDATE CIRCLES SCALE AND POPUPS
         function updateLeafletMarkers() {
-            if (!window.map) return;
+            try {
+                if (!window.map) return;
 
-            Object.entries(UGEL_COORDS).forEach(([ugel, coords]) => {
-                // Get filtered data for specific UGEL
-                const ugelMatricula = window.filteredData.matriculaArea.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
-                const ugelDocentes = window.filteredData.docentes.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
-                const ugelLocales = window.filteredData.locales.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
+                Object.entries(UGEL_COORDS).forEach(([ugel, coords]) => {
+                    // Get filtered data for specific UGEL
+                    const ugelMatricula = window.filteredData.matriculaArea.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
+                    const ugelDocentes = window.filteredData.docentes.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
+                    const ugelLocales = window.filteredData.locales.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
 
-                const marker = window.mapMarkers[ugel];
-                if (!marker) return;
+                    const marker = window.mapMarkers[ugel];
+                    if (!marker) return;
 
-                // Scale circle radius dynamically (relative scale)
-                const baseScale = Math.sqrt(ugelMatricula) * 0.05;
-                const finalRadius = Math.max(6, Math.min(28, baseScale || 6));
-                marker.setRadius(finalRadius);
+                    // Scale circle radius dynamically (relative scale)
+                    const baseScale = Math.sqrt(ugelMatricula) * 0.05;
+                    const finalRadius = Math.max(6, Math.min(28, baseScale || 6));
+                    marker.setRadius(finalRadius);
 
-                // Setup dynamic HTML content for popups
-                const popupContent = `
-                    <div class="ugel-popup-title">${ugel}</div>
-                    <div class="ugel-popup-detail"><span>Matrícula:</span><strong>${ugelMatricula.toLocaleString()}</strong></div>
-                    <div class="ugel-popup-detail"><span>Docentes:</span><strong>${ugelDocentes.toLocaleString()}</strong></div>
-                    <div class="ugel-popup-detail"><span>Locales:</span><strong>${ugelLocales.toLocaleString()}</strong></div>
-                    <div style="font-size:0.65rem; color:var(--text-muted); text-align:center; border-top:1px solid var(--border-color); padding-top:0.3rem; margin-top:0.4rem;">Haz clic para filtrar esta UGEL</div>
-                `;
-                marker.setPopupContent(popupContent);
-            });
+                    // Setup dynamic HTML content for popups
+                    const popupContent = `
+                        <div class="ugel-popup-title">${ugel}</div>
+                        <div class="ugel-popup-detail"><span>Matrícula:</span><strong>${ugelMatricula.toLocaleString()}</strong></div>
+                        <div class="ugel-popup-detail"><span>Docentes:</span><strong>${ugelDocentes.toLocaleString()}</strong></div>
+                        <div class="ugel-popup-detail"><span>Locales:</span><strong>${ugelLocales.toLocaleString()}</strong></div>
+                        <div style="font-size:0.65rem; color:var(--text-muted); text-align:center; border-top:1px solid var(--border-color); padding-top:0.3rem; margin-top:0.4rem;">Haz clic para filtrar esta UGEL</div>
+                    `;
+                    marker.setPopupContent(popupContent);
+                });
+            } catch (e) {
+                console.error("Error in updateLeafletMarkers:", e);
+            }
         }
 
         // INITIALIZE DATATABLES FOR THE 6 TABS
@@ -3216,303 +4051,318 @@
 
         // POPULATE TABLES WITH DYNAMICALLY FILTERED DATA
         function updateDataTablesContent() {
-            // Table 0: TB_MATRICULA_GESTION_AREA
-            const dt0 = window.dataTables[0];
-            if (dt0) {
-                dt0.clear();
-                window.filteredData.matriculaArea.forEach(row => {
-                    dt0.row.add([
-                        row.Anio || "",
-                        row.UGEL || "",
-                        row.Nivel || "",
-                        row.Gestion || "",
-                        row.Area || "",
-                        row.Total !== undefined && row.Total !== null ? row.Total : 0
-                    ]);
-                });
-                dt0.draw(false);
-            }
+            try {
+                // Table 0: TB_MATRICULA_GESTION_AREA
+                const dt0 = window.dataTables[0];
+                if (dt0) {
+                    dt0.clear();
+                    window.filteredData.matriculaArea.forEach(row => {
+                        dt0.row.add([
+                            row.Anio || "",
+                            row.UGEL || "",
+                            row.Nivel || "",
+                            row.Gestion || "",
+                            row.Area || "",
+                            row.Total !== undefined && row.Total !== null ? row.Total : 0
+                        ]);
+                    });
+                    dt0.draw(false);
+                }
 
-            // Table 1: TB_MATRICULA_SEXO
-            const dt1 = window.dataTables[1];
-            if (dt1) {
-                dt1.clear();
-                window.filteredData.matriculaSexo.forEach(row => {
-                    dt1.row.add([
-                        row.Anio || "",
-                        row.UGEL || "",
-                        row.Nivel || "",
-                        row.Sexo || "",
-                        row.Total !== undefined && row.Total !== null ? row.Total : 0
-                    ]);
-                });
-                dt1.draw(false);
-            }
+                // Table 1: TB_MATRICULA_SEXO
+                const dt1 = window.dataTables[1];
+                if (dt1) {
+                    dt1.clear();
+                    window.filteredData.matriculaSexo.forEach(row => {
+                        dt1.row.add([
+                            row.Anio || "",
+                            row.UGEL || "",
+                            row.Nivel || "",
+                            row.Sexo || "",
+                            row.Total !== undefined && row.Total !== null ? row.Total : 0
+                        ]);
+                    });
+                    dt1.draw(false);
+                }
 
-            // Table 2: TB_DOCENTES
-            const dt2 = window.dataTables[2];
-            if (dt2) {
-                dt2.clear();
-                window.filteredData.docentes.forEach(row => {
-                    dt2.row.add([
-                        row.Anio || "",
-                        row.UGEL || "",
-                        row.Nivel || "",
-                        row.Gestion || "",
-                        row.Area || "",
-                        row.Total !== undefined && row.Total !== null ? row.Total : 0
-                    ]);
-                });
-                dt2.draw(false);
-            }
+                // Table 2: TB_DOCENTES
+                const dt2 = window.dataTables[2];
+                if (dt2) {
+                    dt2.clear();
+                    window.filteredData.docentes.forEach(row => {
+                        dt2.row.add([
+                            row.Anio || "",
+                            row.UGEL || "",
+                            row.Nivel || "",
+                            row.Gestion || "",
+                            row.Area || "",
+                            row.Total !== undefined && row.Total !== null ? row.Total : 0
+                        ]);
+                    });
+                    dt2.draw(false);
+                }
 
-            // Table 3: TB_NO_DOCENTES
-            const dt3 = window.dataTables[3];
-            if (dt3) {
-                dt3.clear();
-                window.filteredData.noDocentes.forEach(row => {
-                    dt3.row.add([
-                        row.Anio || "",
-                        row.UGEL || "",
-                        row.Nivel || "",
-                        row.Gestion || "",
-                        row.Area || "",
-                        row.Total !== undefined && row.Total !== null ? row.Total : 0
-                    ]);
-                });
-                dt3.draw(false);
-            }
+                // Table 3: TB_NO_DOCENTES
+                const dt3 = window.dataTables[3];
+                if (dt3) {
+                    dt3.clear();
+                    window.filteredData.noDocentes.forEach(row => {
+                        dt3.row.add([
+                            row.Anio || "",
+                            row.UGEL || "",
+                            row.Nivel || "",
+                            row.Gestion || "",
+                            row.Area || "",
+                            row.Total !== undefined && row.Total !== null ? row.Total : 0
+                        ]);
+                    });
+                    dt3.draw(false);
+                }
 
-            // Table 4: TB_SERVICIOS
-            const dt4 = window.dataTables[4];
-            if (dt4) {
-                dt4.clear();
-                window.filteredData.servicios.forEach(row => {
-                    dt4.row.add([
-                        row.Anio || "",
-                        row.UGEL || "",
-                        row.Nivel || "",
-                        row.Gestion || "",
-                        row.Area || "",
-                        row.Total !== undefined && row.Total !== null ? row.Total : 0
-                    ]);
-                });
-                dt4.draw(false);
-            }
+                // Table 4: TB_SERVICIOS
+                const dt4 = window.dataTables[4];
+                if (dt4) {
+                    dt4.clear();
+                    window.filteredData.servicios.forEach(row => {
+                        dt4.row.add([
+                            row.Anio || "",
+                            row.UGEL || "",
+                            row.Nivel || "",
+                            row.Gestion || "",
+                            row.Area || "",
+                            row.Total !== undefined && row.Total !== null ? row.Total : 0
+                        ]);
+                    });
+                    dt4.draw(false);
+                }
 
-            // Table 5: TB_LOCALES
-            const dt5 = window.dataTables[5];
-            if (dt5) {
-                dt5.clear();
-                window.filteredData.locales.forEach(row => {
-                    dt5.row.add([
-                        row.Anio || "",
-                        row.UGEL || "",
-                        row.Nivel || "",
-                        row.Gestion || "",
-                        row.Area || "",
-                        row.Total !== undefined && row.Total !== null ? row.Total : 0
-                    ]);
-                });
-                dt5.draw(false);
+                // Table 5: TB_LOCALES
+                const dt5 = window.dataTables[5];
+                if (dt5) {
+                    dt5.clear();
+                    window.filteredData.locales.forEach(row => {
+                        dt5.row.add([
+                            row.Anio || "",
+                            row.UGEL || "",
+                            row.Nivel || "",
+                            row.Gestion || "",
+                            row.Area || "",
+                            row.Total !== undefined && row.Total !== null ? row.Total : 0
+                        ]);
+                    });
+                    dt5.draw(false);
+                }
+            } catch (e) {
+                console.error("Error in updateDataTablesContent:", e);
             }
         }
 
         // UPDATE DYNAMIC MONITORED ALERTS
         function updateAlerts() {
-            const container = document.getElementById("alerts-container");
-            if (!container) return;
-            
-            container.innerHTML = "";
-            const alertsList = [];
-            
-            // Loop through each UGEL and compute metrics from window.filteredData
-            const ugels = Object.keys(UGEL_COORDS);
-            
-            ugels.forEach(ugel => {
-                if (ugel === "DRE Piura") return; // skip regional office
-                const ugelMat = window.filteredData.matriculaArea.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
-                const ugelDoc = window.filteredData.docentes.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
+            try {
+                const container = document.getElementById("alerts-container");
+                if (!container) return;
                 
-                if (ugelDoc > 0 && ugelMat > 0) {
-                    const ratio = (ugelMat / ugelDoc).toFixed(1);
-                    if (parseFloat(ratio) > 30) {
-                        alertsList.push(`
-                            <div class="alert-item warning" style="flex: 1 1 300px; padding: 0.75rem; border-radius: 6px; border: 1px solid #f59e0b; background-color: rgba(245, 158, 11, 0.08); display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="ph ph-warning" style="color: #f59e0b; font-size: 1.25rem;"></i>
-                                <div>
-                                    <strong style="color: var(--text-main); font-size: 0.82rem;">${ugel} - Ratio Elevado</strong>
-                                    <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente (límite recomendado: 30).</p>
+                container.innerHTML = "";
+                const alertsList = [];
+                
+                // Loop through each UGEL and compute metrics from window.filteredData
+                const ugels = Object.keys(UGEL_COORDS);
+                
+                ugels.forEach(ugel => {
+                    if (ugel === "DRE Piura") return; // skip regional office
+                    const ugelMat = window.filteredData.matriculaArea.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
+                    const ugelDoc = window.filteredData.docentes.filter(d => d.UGEL === ugel).reduce((sum, d) => sum + d.Total, 0);
+                    
+                    if (ugelDoc > 0 && ugelMat > 0) {
+                        const ratio = (ugelMat / ugelDoc).toFixed(1);
+                        if (parseFloat(ratio) > 30) {
+                            alertsList.push(`
+                                <div class="alert-item warning" style="flex: 1 1 300px; padding: 0.75rem; border-radius: 6px; border: 1px solid #f59e0b; background-color: rgba(245, 158, 11, 0.08); display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="ph ph-warning" style="color: #f59e0b; font-size: 1.25rem;"></i>
+                                    <div>
+                                        <strong style="color: var(--text-main); font-size: 0.82rem;">${ugel} - Ratio Elevado</strong>
+                                        <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente (límite recomendado: 30).</p>
+                                    </div>
                                 </div>
-                            </div>
-                        `);
-                    } else if (parseFloat(ratio) < 12) {
-                        alertsList.push(`
-                            <div class="alert-item info" style="flex: 1 1 300px; padding: 0.75rem; border-radius: 6px; border: 1px solid #3b82f6; background-color: rgba(59, 130, 246, 0.08); display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="ph ph-info" style="color: #3b82f6; font-size: 1.25rem;"></i>
-                                <div>
-                                    <strong style="color: var(--text-main); font-size: 0.82rem;">${ugel} - Baja Densidad</strong>
-                                    <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente. Posible sobredotación.</p>
+                            `);
+                        } else if (parseFloat(ratio) < 12) {
+                            alertsList.push(`
+                                <div class="alert-item info" style="flex: 1 1 300px; padding: 0.75rem; border-radius: 6px; border: 1px solid #3b82f6; background-color: rgba(59, 130, 246, 0.08); display: flex; align-items: center; gap: 0.5rem;">
+                                    <i class="ph ph-info" style="color: #3b82f6; font-size: 1.25rem;"></i>
+                                    <div>
+                                        <strong style="color: var(--text-main); font-size: 0.82rem;">${ugel} - Baja Densidad</strong>
+                                        <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Ratio de ${ratio} alumnos por docente. Posible sobredotación.</p>
+                                    </div>
                                 </div>
-                            </div>
-                        `);
+                            `);
+                        }
                     }
-                }
-            });
-            
-            if (alertsList.length === 0) {
-                container.innerHTML = `
-                    <div class="alert-item success" style="flex: 1 1 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #10b981; background-color: rgba(16, 185, 129, 0.08); display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="ph ph-check-circle" style="color: #10b981; font-size: 1.25rem;"></i>
-                        <div>
-                            <strong style="color: var(--text-main); font-size: 0.82rem;">Parámetros Estables</strong>
-                            <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Todos los indicadores de gestión de las UGELs de Piura se encuentran en los rangos recomendados.</p>
+                });
+                
+                if (alertsList.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert-item success" style="flex: 1 1 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #10b981; background-color: rgba(16, 185, 129, 0.08); display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-check-circle" style="color: #10b981; font-size: 1.25rem;"></i>
+                            <div>
+                                <strong style="color: var(--text-main); font-size: 0.82rem;">Parámetros Estables</strong>
+                                <p style="color: var(--text-muted); font-size: 0.75rem; margin: 0;">Todos los indicadores de gestión de las UGELs de Piura se encuentran en los rangos recomendados.</p>
+                            </div>
                         </div>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = alertsList.join("");
+                    `;
+                } else {
+                    container.innerHTML = alertsList.join("");
+                }
+            } catch (e) {
+                console.error("Error in updateAlerts:", e);
             }
         }
 
         // FORECAST AND PROJECTIONS (OLS MODEL 2026-2028)
         function updateForecast() {
-            const dataset = window.filteredData.matriculaArea || [];
-            
-            // Group by year and sum totals
-            const yearSum = {};
-            const historicalYears = ["2021", "2022", "2023", "2024", "2025"];
-            historicalYears.forEach(y => { yearSum[y] = 0; });
-            
-            dataset.forEach(row => {
-                if (row && row.Anio && historicalYears.includes(row.Anio.toString())) {
-                    const y = row.Anio.toString();
-                    yearSum[y] = (yearSum[y] || 0) + (row.Total || 0);
+            try {
+                const dataset = window.filteredData.matriculaArea || [];
+                
+                // Group by year and sum totals
+                const yearSum = {};
+                const historicalYears = ["2021", "2022", "2023", "2024", "2025"];
+                historicalYears.forEach(y => { yearSum[y] = 0; });
+                
+                dataset.forEach(row => {
+                    if (row && row.Anio && historicalYears.includes(row.Anio.toString())) {
+                        const y = row.Anio.toString();
+                        yearSum[y] = (yearSum[y] || 0) + (row.Total || 0);
+                    }
+                });
+                
+                // Build data points for regression
+                const dataPoints = [];
+                historicalYears.forEach(y => {
+                    dataPoints.push({ x: parseInt(y), y: yearSum[y] });
+                });
+                
+                // Linear regression calculation: y = mx + c
+                const n = dataPoints.length;
+                let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+                dataPoints.forEach(pt => {
+                    sumX += pt.x;
+                    sumY += pt.y;
+                    sumXY += pt.x * pt.y;
+                    sumXX += pt.x * pt.x;
+                });
+                
+                const meanX = sumX / n;
+                const meanY = sumY / n;
+                
+                let numerator = 0;
+                let denominator = 0;
+                dataPoints.forEach(pt => {
+                    numerator += (pt.x - meanX) * (pt.y - meanY);
+                    denominator += (pt.x - meanX) * (pt.x - meanX);
+                });
+                
+                const m = denominator !== 0 ? numerator / denominator : 0;
+                const c = meanY - m * meanX;
+                
+                // Predict for 2026, 2027, 2028
+                const forecast2026 = Math.max(0, Math.round(m * 2026 + c));
+                const forecast2027 = Math.max(0, Math.round(m * 2027 + c));
+                const forecast2028 = Math.max(0, Math.round(m * 2028 + c));
+                
+                // Update UI KPI elements
+                const el2026 = document.getElementById("forecast-2026");
+                const el2027 = document.getElementById("forecast-2027");
+                const el2028 = document.getElementById("forecast-2028");
+                if (el2026) el2026.innerText = forecast2026.toLocaleString();
+                if (el2027) el2027.innerText = forecast2027.toLocaleString();
+                if (el2028) el2028.innerText = forecast2028.toLocaleString();
+                
+                // Render Chart
+                const isDark = document.body.classList.contains("dark-mode");
+                const textColor = isDark ? "#e2e8f0" : "#1e293b";
+                const gridColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
+                
+                const canvas = document.getElementById("chart-forecast");
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                
+                if (window.charts["chart-forecast"]) {
+                    window.charts["chart-forecast"].destroy();
                 }
-            });
-            
-            // Build data points for regression
-            const dataPoints = [];
-            historicalYears.forEach(y => {
-                dataPoints.push({ x: parseInt(y), y: yearSum[y] });
-            });
-            
-            // Linear regression calculation: y = mx + c
-            const n = dataPoints.length;
-            let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
-            dataPoints.forEach(pt => {
-                sumX += pt.x;
-                sumY += pt.y;
-                sumXY += pt.x * pt.y;
-                sumXX += pt.x * pt.x;
-            });
-            
-            const meanX = sumX / n;
-            const meanY = sumY / n;
-            
-            let numerator = 0;
-            let denominator = 0;
-            dataPoints.forEach(pt => {
-                numerator += (pt.x - meanX) * (pt.y - meanY);
-                denominator += (pt.x - meanX) * (pt.x - meanX);
-            });
-            
-            const m = denominator !== 0 ? numerator / denominator : 0;
-            const c = meanY - m * meanX;
-            
-            // Predict for 2026, 2027, 2028
-            const forecast2026 = Math.max(0, Math.round(m * 2026 + c));
-            const forecast2027 = Math.max(0, Math.round(m * 2027 + c));
-            const forecast2028 = Math.max(0, Math.round(m * 2028 + c));
-            
-            // Update UI KPI elements
-            document.getElementById("forecast-2026").innerText = forecast2026.toLocaleString();
-            document.getElementById("forecast-2027").innerText = forecast2027.toLocaleString();
-            document.getElementById("forecast-2028").innerText = forecast2028.toLocaleString();
-            
-            // Render Chart
-            const isDark = document.body.classList.contains("dark-mode");
-            const textColor = isDark ? "#e2e8f0" : "#1e293b";
-            const gridColor = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
-            
-            const canvas = document.getElementById("chart-forecast");
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            
-            if (window.charts["chart-forecast"]) {
-                window.charts["chart-forecast"].destroy();
-            }
-            
-            const labels = ["2021", "2022", "2023", "2024", "2025", "2026 (P)", "2027 (P)", "2028 (P)"];
-            const histData = [yearSum["2021"], yearSum["2022"], yearSum["2023"], yearSum["2024"], yearSum["2025"], null, null, null];
-            const projData = [null, null, null, null, yearSum["2025"], forecast2026, forecast2027, forecast2028];
-            
-            window.charts["chart-forecast"] = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Matrícula Histórica (2021-2025)',
-                            data: histData,
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 3,
-                            pointBackgroundColor: '#3b82f6',
-                            pointRadius: 5,
-                            fill: true,
-                            tension: 0.1
-                        },
-                        {
-                            label: 'Proyección Predictiva (2026-2028)',
-                            data: projData,
-                            borderColor: '#e11d48',
-                            backgroundColor: 'rgba(225, 29, 72, 0.05)',
-                            borderWidth: 3,
-                            borderDash: [5, 5],
-                            pointBackgroundColor: '#e11d48',
-                            pointRadius: 5,
-                            fill: true,
-                            tension: 0.1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: { color: textColor, font: { family: 'Inter', size: 10 } }
-                        },
-                        tooltip: {
-                            backgroundColor: isDark ? '#1f2937' : '#ffffff',
-                            titleColor: isDark ? '#f3f4f6' : '#111827',
-                            bodyColor: isDark ? '#9ca3af' : '#4b5563',
-                            borderColor: 'rgba(37, 99, 235, 0.3)',
-                            borderWidth: 1,
-                            padding: 10,
-                            callbacks: {
-                                label: function(context) {
-                                    const currentValue = context.raw || 0;
-                                    return ` Matrícula: ${currentValue.toLocaleString()}`;
+                
+                const labels = ["2021", "2022", "2023", "2024", "2025", "2026 (P)", "2027 (P)", "2028 (P)"];
+                const histData = [yearSum["2021"], yearSum["2022"], yearSum["2023"], yearSum["2024"], yearSum["2025"], null, null, null];
+                const projData = [null, null, null, null, yearSum["2025"], forecast2026, forecast2027, forecast2028];
+                
+                window.charts["chart-forecast"] = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Matrícula Histórica (2021-2025)',
+                                data: histData,
+                                borderColor: '#3b82f6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 3,
+                                pointBackgroundColor: '#3b82f6',
+                                pointRadius: 5,
+                                fill: true,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Proyección Predictiva (2026-2028)',
+                                data: projData,
+                                borderColor: '#e11d48',
+                                backgroundColor: 'rgba(225, 29, 72, 0.05)',
+                                borderWidth: 3,
+                                borderDash: [5, 5],
+                                pointBackgroundColor: '#e11d48',
+                                pointRadius: 5,
+                                fill: true,
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: { color: textColor, font: { family: 'Inter', size: 10 } }
+                            },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                                titleColor: isDark ? '#f3f4f6' : '#111827',
+                                bodyColor: isDark ? '#9ca3af' : '#4b5563',
+                                borderColor: 'rgba(37, 99, 235, 0.3)',
+                                borderWidth: 1,
+                                padding: 10,
+                                callbacks: {
+                                    label: function(context) {
+                                        const currentValue = context.raw || 0;
+                                        return ` Matrícula: ${currentValue.toLocaleString()}`;
+                                    }
                                 }
                             }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: { color: gridColor },
-                            ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
                         },
-                        y: {
-                            grid: { color: gridColor },
-                            ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
+                        scales: {
+                            x: {
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
+                            },
+                            y: {
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { family: 'Inter', size: 9 } }
+                            }
                         }
                     }
-                }
-            });
+                });
+            } catch (e) {
+                console.error("Error in updateForecast:", e);
+            }
         }
 
         // ============================================================
